@@ -2,7 +2,7 @@ package com.danil.kleshchin.rss.domain.interactor
 
 import io.reactivex.Observable
 
-interface UseCase<T> {
+interface UseCase<T, Params> {
 
-    fun execute(): Observable<T>
+    fun execute(params: Params): Observable<T>
 }
