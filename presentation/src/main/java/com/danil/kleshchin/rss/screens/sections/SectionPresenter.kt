@@ -8,11 +8,15 @@ import io.reactivex.schedulers.Schedulers
 
 class SectionPresenter(
     private val getSectionListUseCase: GetSectionListUseCase,
-    private val navigator: Navigator,
-    private val sectionView: SectionContract.View
+    private val navigator: Navigator
 ): SectionContract.Presenter {
 
+    private lateinit var sectionView: SectionContract.View
     private var sectionList: List<Section> = emptyList()
+
+    override fun setView(view: SectionContract.View) {
+        sectionView = view
+    }
 
     override fun onAttach() {
         sectionView.showLoadingView()

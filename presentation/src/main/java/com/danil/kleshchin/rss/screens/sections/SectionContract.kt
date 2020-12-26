@@ -1,5 +1,6 @@
 package com.danil.kleshchin.rss.screens.sections
 
+import com.danil.kleshchin.rss.BasePresenter
 import com.danil.kleshchin.rss.domain.entity.Section
 
 interface SectionContract {
@@ -11,9 +12,7 @@ interface SectionContract {
         fun showErrorMessage()
     }
 
-    interface Presenter {
-        fun onAttach()
-        fun onDetach()
+    interface Presenter: BasePresenter<View> {
         fun onSectionSelected(section: Section)
     }
 }
