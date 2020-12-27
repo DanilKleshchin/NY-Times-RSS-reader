@@ -1,10 +1,9 @@
-package com.danil.kleshchin.rss.navigator
+package com.danil.kleshchin.rss.screens.sections
 
 import com.danil.kleshchin.rss.domain.entity.Section
 
+//TODO replace with Cicerone
 interface Navigator {
-
-    fun showWebPage(url: String)
 
     fun showFeedView(section: Section)
 }
