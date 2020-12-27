@@ -2,11 +2,11 @@ package com.danil.kleshchin.rss.screens.sections
 
 import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.domain.interactor.section.GetSectionListUseCase
-import com.danil.kleshchin.rss.navigator.Navigator
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class SectionPresenter(
+class SectionPresenter @Inject constructor(
     private val getSectionListUseCase: GetSectionListUseCase,
     private val navigator: Navigator
 ): SectionContract.Presenter {
