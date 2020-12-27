@@ -4,9 +4,9 @@ import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.domain.interactor.UseCase
 import io.reactivex.Observable
 
-class GetSectionListUseCase: UseCase<List<Section>, Any> {
+class GetSectionListUseCase: UseCase<List<Section>, Unit> {
 
-    override fun execute(params: Any): Observable<List<Section>> {
+    override fun execute(params: Unit): Observable<List<Section>> {
         return Observable.just(getSectionList())
     }
 

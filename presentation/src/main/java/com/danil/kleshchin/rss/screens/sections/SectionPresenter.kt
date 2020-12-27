@@ -21,7 +21,7 @@ class SectionPresenter(
     override fun onAttach() {
         sectionView.showLoadingView()
 
-        getSectionListUseCase.execute(null)
+        getSectionListUseCase.execute(Unit)
             .subscribeOn(Schedulers.io()) // TODO try here observerOn(Schedulers.io()). Will it crash or not?
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
