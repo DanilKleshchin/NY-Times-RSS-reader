@@ -6,7 +6,7 @@ import io.reactivex.Observable
 
 class GetSectionListUseCase: UseCase<List<Section>, Any> {
 
-    override fun execute(params: Any?): Observable<List<Section>> {
+    override fun execute(params: Any): Observable<List<Section>> {
         return Observable.just(getSectionList())
     }
 

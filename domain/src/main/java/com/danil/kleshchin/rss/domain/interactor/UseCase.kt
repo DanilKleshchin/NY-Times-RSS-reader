@@ -4,5 +4,5 @@ import io.reactivex.Observable
 
 interface UseCase<T, Params> {
 
-    fun execute(params: Params?): Observable<T>
+    fun execute(params: Params): Observable<T>
 }
