@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorItemBackground">#EAEAEA</color>
     <color name="colorAccent">#2196F3</color>
+    <color name="colorOtherItemBackground">#CEDBE6</color>
     <color name="colorTextPrimary">#000000</color>
     <color name="colorTextSecondary">#4A4A4A</color>
 </resources>
