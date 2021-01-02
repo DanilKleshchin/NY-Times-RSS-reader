@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+
     implementation project(':domain')
     implementation project(':data')
 
@@ -54,6 +55,11 @@ dependencies {
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
+
+    androidTestImplementation "androidx.test:rules:$androidInstrumentalTestVersion"
+    androidTestImplementation "androidx.test:runner:$androidInstrumentalTestVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidInstrumentalJUnitVersion"
+    androidTestImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "com.android.support.test:runner:$test_runner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
 }
