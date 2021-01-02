@@ -20,19 +20,22 @@ class SectionPresenter @Inject constructor(
 
     override fun onAttach() {
         sectionView.showLoadingView()
+        executeGetSectionListUseCase()
+    }
 
+    private fun executeGetSectionListUseCase() {
         getSectionListUseCase.execute(Unit)
             .subscribeOn(Schedulers.io()) // TODO try here observerOn(Schedulers.io()). Will it crash or not?
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    sections ->
+                        sections ->
                     sectionList = sections
                     sectionView.showSectionList(sectionList)
                     sectionView.hideLoadingView()
                 },
                 {
-                    th ->
+                        th ->
                     th.printStackTrace()
                     sectionView.showErrorMessage()
                 },

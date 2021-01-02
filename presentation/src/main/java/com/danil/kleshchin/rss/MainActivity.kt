@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         initSectionView()
     }
 
+    //TODO think about location of dagger components initialization
     private fun initSectionView() {
         val sectionFragment = SectionFragment()
         (application as NYTimesRSSFeedsApp).initSectionComponent(sectionFragment)
