@@ -1,3 +1,5 @@
 <resources>
+    <string name="app_title">The New York Times RSS</string>
     <string name="app_name">NY Times RSS Feeds</string>
+    <string name="choose_news_section">Choose news section</string>
 </resources>
