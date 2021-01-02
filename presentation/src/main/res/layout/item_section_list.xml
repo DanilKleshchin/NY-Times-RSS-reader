@@ -6,14 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
-    android:layout_marginBottom="5dp">
+    android:layout_marginBottom="@dimen/margin_primary">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:padding="4dp"
-        android:layout_margin="4dp"
-        card_view:cardCornerRadius="4dp"
+        android:layout_height="@dimen/section_cardview_height"
+        android:padding="@dimen/padding_small"
+        android:layout_margin="@dimen/margin_small"
+        card_view:cardCornerRadius="@dimen/cardview_radius"
         card_view:cardBackgroundColor="@color/colorItemBackground">
 
         <TextView
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@color/colorTextPrimary"
-            android:textSize="@dimen/text_size_primary"
+            android:textSize="@dimen/text_size_big"
             android:fontFamily="@font/ubuntu_light"
             tools:text="Section name"/>
     </androidx.cardview.widget.CardView>
