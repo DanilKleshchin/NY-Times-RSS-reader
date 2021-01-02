@@ -11,8 +11,8 @@ class GetFeedBySectionUseCase(
 ) : UseCase<List<Feed>, GetFeedBySectionUseCase.Params> {
 
     override fun execute(params: Params): Observable<List<Feed>> {
-        return repository.getFeedListBySection(params.sectionPosition)
+        return repository.getFeedListBySection(params.sectionName)
     }
 
-    data class Params(val sectionPosition: Int)
+    data class Params(val sectionName: String)
 }

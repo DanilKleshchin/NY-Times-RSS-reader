@@ -3,7 +3,7 @@ package com.danil.kleshchin.rss.domain.repository
 import com.danil.kleshchin.rss.domain.entity.Feed
 import io.reactivex.Observable
 
-public interface FeedRepository {
+interface FeedRepository {
 
-    fun getFeedListBySection(sectionId: Int): Observable<List<Feed>>
+    fun getFeedListBySection(sectionName: String): Observable<List<Feed>>
 }
