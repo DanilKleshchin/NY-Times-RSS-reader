@@ -10,10 +10,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.danil.kleshchin.rss.databinding.FragmentFeedsBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.screens.feeds.adapters.FeedListAdapter
 import java.lang.NullPointerException
 import javax.inject.Inject
 
-class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
+class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
+    FeedListAdapter.OnFeedClickListener {
+
+    private val ERROR_LOG_MESSAGE = "Section fragment wasn't attached."
 
     @Inject
     lateinit var feedPresenter: FeedContract.Presenter
@@ -51,7 +55,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         super.onViewCreated(view, savedInstanceState)
         feedPresenter.setView(this)
         feedPresenter.onAttach()
-        loadFeedList()
+        initPresenterForSection()
 
         binding.backButton.setOnClickListener { finish() }
     }
@@ -91,7 +95,12 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
     }
 
     override fun showFeedList(feedList: List<Feed>) {
+        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
+        binding.feedListView.adapter = FeedListAdapter(feedList, context, this)
+    }
 
+    override fun onFeedClick(feed: Feed) {
+        feedPresenter.onFeedSelected(feed)
     }
 
     override fun showWebPage(url: String) {
@@ -121,7 +130,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         Log.d("TAG", "initializeFragment: $sectionName")
     }
 
-    private fun loadFeedList() {
+    private fun initPresenterForSection() {
         val sectionName = getSectionName()
         feedPresenter.initialize(sectionName ?: throw NullPointerException("Section is null"))
     }
