@@ -1,1 +1,1 @@
-NYT-RSS
+News are parces from https://developer.nytimes.com/docs/rss-api/1/overview

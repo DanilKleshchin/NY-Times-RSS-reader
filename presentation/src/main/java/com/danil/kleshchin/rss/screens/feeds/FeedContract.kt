@@ -11,9 +11,12 @@ interface FeedContract {
         fun showLoadingView()
         fun hideLoadingView()
         fun showErrorMessage()
+        fun showRetry()
+        fun hideRetry()
     }
 
     interface Presenter:BasePresenter<View> {
+        fun initialize(sectionName: String)
         fun onFeedSelected(feedModel: FeedModel)
     }
 }

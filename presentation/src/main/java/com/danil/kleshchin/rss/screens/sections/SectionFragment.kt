@@ -2,20 +2,23 @@ package com.danil.kleshchin.rss.screens.sections
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
+import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.screens.feeds.FeedFragment
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     SectionListAdapter.OnSectionClickListener {
+
+    private val ERROR_LOG_MESSAGE = "Section fragment wasn't attached."
 
     @Inject
     lateinit var sectionPresenter: SectionContract.Presenter
@@ -45,7 +48,7 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     }
 
     override fun showSectionList(sectionList: List<Section>) {
-        val context = activity ?: throw  IllegalStateException("Section fragment wasn't attached.")
+        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
         binding.sectionListView.adapter = SectionListAdapter(sectionList, context, this)
     }
 
@@ -61,20 +64,23 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
 
     }
 
-    //TODO think about this moment
     override fun showFeedView(section: Section) {
-        activity?.let {
-            it.supportFragmentManager
-                .beginTransaction()
-                .add(FeedFragment(), "TAG")
-                .commitNow()
-            return
-        }
-        showErrorMessage()
-        Log.e("TAG", "Can't start feeds fragment for section: ${section.name}")
+        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
+        initFeedView(context, section)
     }
 
     override fun onSectionClick(section: Section) {
         sectionPresenter.onSectionSelected(section)
+    }
+
+    //TODO where should I init feed component?
+    private fun initFeedView(context: FragmentActivity, section: Section) {
+        val feedFragment = FeedFragment.newInstance(section.name)
+        (context.application as NYTimesRSSFeedsApp).initFeedComponent(feedFragment)
+        (context.application as NYTimesRSSFeedsApp).getFeedComponent().inject(feedFragment)
+        context.supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container, feedFragment)
+            .commitNow()
     }
 }

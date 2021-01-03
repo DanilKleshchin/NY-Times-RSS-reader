@@ -7,10 +7,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class FeedPresenter(
-    private val sectionName: String,
     private val getFeedBySectionUseCase: GetFeedBySectionUseCase,
     private val feedNavigator: FeedNavigator
-): FeedContract.Presenter {
+) : FeedContract.Presenter {
 
     private lateinit var feedView: FeedContract.View
     private var feedList: List<Feed> = emptyList()
@@ -21,19 +20,19 @@ class FeedPresenter(
 
     override fun onAttach() {
         feedView.showLoadingView()
+    }
 
+    override fun initialize(sectionName: String) {
         val params = GetFeedBySectionUseCase.Params(sectionName)
         getFeedBySectionUseCase.execute(params)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {
-                    feeds ->
+                { feeds ->
                     feedList = feeds
                     feedView.showFeedList(feedList)
                 },
-                {
-                    th ->
+                { th ->
                     th.printStackTrace()
                     feedView.showErrorMessage()
                 },
