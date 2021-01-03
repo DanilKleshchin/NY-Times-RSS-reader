@@ -23,16 +23,6 @@
             android:background="@color/colorPrimary"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="fitCenter"
-                android:background="@color/colorOtherItemBackground"
-                android:contentDescription="@null"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_launcher" />
-
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
@@ -44,12 +34,24 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:layout_marginStart="@dimen/margin_primary"
-                android:layout_marginTop="@dimen/margin_primary"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginBottom="@dimen/margin_primary"
-                app:layout_constraintTop_toBottomOf="@id/icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="David Fincher, the Unhappiest Auteur" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:background="@color/colorOtherItemBackground"
+                android:layout_marginTop="@dimen/margin_primary"
+                android:contentDescription="@null"
+                app:layout_constraintTop_toBottomOf="@id/title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/description"
-                tools:text="David Fincher, the Unhappiest Auteur" />
+                tools:src="@drawable/ic_launcher" />
 
             <TextView
                 android:id="@+id/description"
@@ -64,7 +66,7 @@
                 android:layout_marginStart="@dimen/margin_primary"
                 android:layout_marginTop="@dimen/margin_primary"
                 android:layout_marginBottom="@dimen/margin_primary"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/icon"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="The director makes beautiful bummers in an industry that prefers happy endings. Perhaps that’s why his movies seem like an endangered species." />
 
