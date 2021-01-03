@@ -1,10 +1,12 @@
 package com.danil.kleshchin.rss.screens.feeds
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.danil.kleshchin.rss.databinding.FragmentFeedsBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
@@ -50,6 +52,13 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         feedPresenter.setView(this)
         feedPresenter.onAttach()
         loadFeedList()
+
+        binding.backButton.setOnClickListener { finish() }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        setBackPressedCallback()
     }
 
     override fun onDestroyView() {
@@ -90,6 +99,15 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         super.onSaveInstanceState(outState)
     }
 
+    private fun setBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     private fun initializeFragment(savedInstanceState: Bundle?) {
         sectionName = if (savedInstanceState == null) {
             getSectionName()
@@ -101,10 +119,17 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     private fun loadFeedList() {
         val sectionName = getSectionName()
-        feedPresenter.initialize(sectionName?: throw NullPointerException("Section is null"))
+        feedPresenter.initialize(sectionName ?: throw NullPointerException("Section is null"))
     }
 
     private fun getSectionName(): String? {
         return arguments?.getString(KEY_SECTION_NAME)
+    }
+
+    private fun finish() {
+        activity?.supportFragmentManager
+            ?.beginTransaction()
+            ?.remove(this)
+            ?.commitNow()
     }
 }
