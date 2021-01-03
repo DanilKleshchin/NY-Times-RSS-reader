@@ -7,7 +7,7 @@ import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.entity.Section
 import javax.inject.Inject
 
-class FeedFragment: Fragment(), FeedContract.View {
+class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     @Inject
     lateinit var feedPresenter: FeedContract.Presenter

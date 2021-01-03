@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 class FeedPresenter(
     private val sectionName: String,
     private val getFeedBySectionUseCase: GetFeedBySectionUseCase,
-    private val navigator: Navigator
+    private val feedNavigator: FeedNavigator
 ): FeedContract.Presenter {
 
     private lateinit var feedView: FeedContract.View
@@ -48,6 +48,6 @@ class FeedPresenter(
     }
 
     override fun onFeedSelected(feedModel: FeedModel) {
-        navigator.showWebPage(feedModel.pageUrl)
+        feedNavigator.showWebPage(feedModel.pageUrl)
     }
 }

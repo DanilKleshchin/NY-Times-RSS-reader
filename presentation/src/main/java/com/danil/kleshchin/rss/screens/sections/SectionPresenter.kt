@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SectionPresenter(
     private val getSectionListUseCase: GetSectionListUseCase,
-    private val navigator: Navigator
+    private val sectionNavigator: SectionNavigator
 ): SectionContract.Presenter {
 
     private lateinit var sectionView: SectionContract.View
@@ -49,6 +49,6 @@ class SectionPresenter(
     }
 
     override fun onSectionSelected(section: Section) {
-        navigator.showFeedView(section)
+        sectionNavigator.showFeedView(section)
     }
 }

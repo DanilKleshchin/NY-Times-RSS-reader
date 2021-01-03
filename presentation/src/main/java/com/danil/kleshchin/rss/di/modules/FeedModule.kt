@@ -5,17 +5,17 @@ import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
 import com.danil.kleshchin.rss.domain.repository.FeedRepository
 import com.danil.kleshchin.rss.screens.feeds.FeedContract
 import com.danil.kleshchin.rss.screens.feeds.FeedPresenter
-import com.danil.kleshchin.rss.screens.feeds.Navigator
+import com.danil.kleshchin.rss.screens.feeds.FeedNavigator
 import dagger.Module
 import dagger.Provides
 
 @Module
-class FeedModule(private val navigator: Navigator) {
+class FeedModule(private val feedNavigator: FeedNavigator) {
 
     @Provides
     fun provideFeedPresenter(
         getFeedBySectionUseCase: GetFeedBySectionUseCase
-    ): FeedContract.Presenter = FeedPresenter(getFeedBySectionUseCase, navigator)
+    ): FeedContract.Presenter = FeedPresenter(getFeedBySectionUseCase, feedNavigator)
 
     @Provides
     fun provideFeedRepository(): FeedRepository = FeedDataRepository()

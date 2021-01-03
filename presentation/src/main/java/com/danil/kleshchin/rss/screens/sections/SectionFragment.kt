@@ -14,7 +14,7 @@ import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class SectionFragment : Fragment(), SectionContract.View, Navigator,
+class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     SectionListAdapter.OnSectionClickListener {
 
     @Inject
