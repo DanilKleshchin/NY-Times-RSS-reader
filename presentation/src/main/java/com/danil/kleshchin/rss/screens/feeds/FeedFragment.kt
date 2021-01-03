@@ -86,6 +86,10 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     }
 
+    override fun showSectionName(sectionName: String) {
+        binding.sectionName.text = sectionName
+    }
+
     override fun showFeedList(feedList: List<Feed>) {
 
     }

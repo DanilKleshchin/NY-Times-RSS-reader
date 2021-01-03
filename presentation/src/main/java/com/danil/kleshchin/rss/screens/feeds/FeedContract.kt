@@ -6,6 +6,7 @@ import com.danil.kleshchin.rss.domain.entity.Feed
 interface FeedContract {
 
     interface View {
+        fun showSectionName(sectionName: String)
         fun showFeedList(feedList: List<Feed>)
         fun showLoadingView()
         fun hideLoadingView()

@@ -2,7 +2,6 @@ package com.danil.kleshchin.rss.screens.feeds
 
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
-import com.danil.kleshchin.rss.screens.feeds.model.FeedModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -23,6 +22,8 @@ class FeedPresenter(
     }
 
     override fun initialize(sectionName: String) {
+        feedView.showSectionName(sectionName)
+
         val params = GetFeedBySectionUseCase.Params(sectionName)
         getFeedBySectionUseCase.execute(params)
             .subscribeOn(Schedulers.io())
