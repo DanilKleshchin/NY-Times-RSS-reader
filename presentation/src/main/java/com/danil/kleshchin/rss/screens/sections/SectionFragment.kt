@@ -75,7 +75,7 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
 
     //TODO where should I init feed component?
     private fun initFeedView(context: FragmentActivity, section: Section) {
-        val feedFragment = FeedFragment.newInstance(section.name)
+        val feedFragment = FeedFragment.newInstance(section)
         (context.application as NYTimesRSSFeedsApp).initFeedComponent(feedFragment)
         (context.application as NYTimesRSSFeedsApp).getFeedComponent().inject(feedFragment)
         context.supportFragmentManager

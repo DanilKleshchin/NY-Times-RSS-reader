@@ -2,6 +2,7 @@ package com.danil.kleshchin.rss.screens.feeds
 
 import com.danil.kleshchin.rss.BasePresenter
 import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.domain.entity.Section
 
 interface FeedContract {
 
@@ -16,7 +17,7 @@ interface FeedContract {
     }
 
     interface Presenter:BasePresenter<View> {
-        fun initialize(sectionName: String)
+        fun initialize(section: Section)
         fun onFeedSelected(feed: Feed)
     }
 }

@@ -2,7 +2,6 @@ package com.danil.kleshchin.rss.screens.feeds
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.danil.kleshchin.rss.databinding.FragmentFeedsBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.screens.feeds.adapters.FeedListAdapter
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
@@ -22,19 +21,19 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
     @Inject
     lateinit var feedPresenter: FeedContract.Presenter
 
-    private var sectionName: String? = null
+    private var section: Section? = null
 
     private var _binding: FragmentFeedsBinding? = null
     private val binding get() = _binding!!
 
     companion object {
-        private val KEY_SECTION_NAME = "KEY_SECTION_NAME"
-        private val INSTANCE_STATE_PARAM_SECTION_NAME = "STATE_PARAM_SECTION_NAME"
+        private val KEY_SECTION = "KEY_SECTION"
+        private val INSTANCE_STATE_PARAM_SECTION = "STATE_PARAM_SECTION"
 
-        fun newInstance(sectionName: String): FeedFragment {
+        fun newInstance(section: Section): FeedFragment {
             val feedFragment = FeedFragment()
             val args = Bundle()
-            args.putString(KEY_SECTION_NAME, sectionName)
+            args.putSerializable(KEY_SECTION, section)
             feedFragment.arguments = args
             return feedFragment
         }
@@ -108,7 +107,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(INSTANCE_STATE_PARAM_SECTION_NAME, sectionName)
+        outState.putSerializable(INSTANCE_STATE_PARAM_SECTION, section)
         super.onSaveInstanceState(outState)
     }
 
@@ -122,21 +121,20 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
     }
 
     private fun initializeFragment(savedInstanceState: Bundle?) {
-        sectionName = if (savedInstanceState == null) {
-            getSectionName()
-        } else {
-            savedInstanceState.getString(INSTANCE_STATE_PARAM_SECTION_NAME)
-        }
-        Log.d("TAG", "initializeFragment: $sectionName")
+        section = if (savedInstanceState == null) {
+            getSection()
+        } else ({
+            savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
+        }) as Section?
     }
 
     private fun initPresenterForSection() {
-        val sectionName = getSectionName()
-        feedPresenter.initialize(sectionName ?: throw NullPointerException("Section is null"))
+        val section = getSection()
+        feedPresenter.initialize(section ?: throw NullPointerException("Section is null"))
     }
 
-    private fun getSectionName(): String? {
-        return arguments?.getString(KEY_SECTION_NAME)
+    private fun getSection(): Section? {
+        return arguments?.getSerializable(KEY_SECTION) as Section?
     }
 
     private fun finish() {
