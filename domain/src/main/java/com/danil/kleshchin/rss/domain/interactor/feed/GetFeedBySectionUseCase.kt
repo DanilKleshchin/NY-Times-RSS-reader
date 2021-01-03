@@ -5,8 +5,9 @@ import com.danil.kleshchin.rss.domain.interactor.UseCase
 import com.danil.kleshchin.rss.domain.repository.FeedRepository
 import com.sun.crypto.provider.Preconditions
 import io.reactivex.Observable
+import javax.inject.Inject
 
-class GetFeedBySectionUseCase(
+class GetFeedBySectionUseCase @Inject constructor(
     private val repository: FeedRepository
 ) : UseCase<List<Feed>, GetFeedBySectionUseCase.Params> {
 

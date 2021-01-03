@@ -5,9 +5,12 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.entity.Section
+import javax.inject.Inject
 
 class FeedFragment: Fragment(), FeedContract.View {
 
+    @Inject
+    lateinit var feedPresenter: FeedContract.Presenter
     companion object {
         fun newInstance(section: Section): FeedFragment {
             //todo save section and show feed by section on create

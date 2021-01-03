@@ -4,9 +4,8 @@ import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.domain.interactor.section.GetSectionListUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
 
-class SectionPresenter @Inject constructor(
+class SectionPresenter(
     private val getSectionListUseCase: GetSectionListUseCase,
     private val navigator: Navigator
 ): SectionContract.Presenter {
