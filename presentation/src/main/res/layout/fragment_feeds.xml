@@ -12,16 +12,16 @@
         android:id="@+id/feeds_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorToolBar"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/toolbar_padding"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/image_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:id="@+id/back_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:scaleType="fitXY"
             android:layout_gravity="center"
             android:src="@drawable/back_arrow"/>
