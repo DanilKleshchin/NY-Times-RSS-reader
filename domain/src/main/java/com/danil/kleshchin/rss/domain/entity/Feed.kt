@@ -5,5 +5,6 @@ data class Feed(
     val description: String,
     val fulFeedPageUrl: String,
     val date: String,
-    val iconUrl: String
+    val iconUrl: String,
+    val author: String
 )
