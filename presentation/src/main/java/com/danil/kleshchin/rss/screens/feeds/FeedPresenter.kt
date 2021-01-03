@@ -46,7 +46,7 @@ class FeedPresenter(
         //TODO think about setting view null value here
     }
 
-    override fun onFeedSelected(feedModel: FeedModel) {
-        feedNavigator.showWebPage(feedModel.pageUrl)
+    override fun onFeedSelected(feed: Feed) {
+        feedNavigator.showWebPage(feed.fulFeedPageUrl)
     }
 }
