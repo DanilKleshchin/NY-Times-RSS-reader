@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.danil.kleshchin.rss">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".NYTimesRSSFeedsApp"
         android:allowBackup="true"
