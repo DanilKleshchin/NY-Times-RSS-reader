@@ -50,6 +50,9 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$gson_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logger_version"
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
     implementation "com.squareup.picasso:picasso:$picasso_version"
 
     kapt "androidx.room:room-compiler:$room_version"

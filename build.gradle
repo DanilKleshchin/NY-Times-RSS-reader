@@ -32,6 +32,7 @@ ext {
     min_sdk_version = 23
     target_sdk_version = 25
 
+    coroutines_version = '1.4.2'
     material_design_version = '1.2.1'
     cardview_version = '1.0.0'
     javax_annotation_version = '1.0'
