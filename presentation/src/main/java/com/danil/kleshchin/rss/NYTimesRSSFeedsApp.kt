@@ -1,19 +1,21 @@
 package com.danil.kleshchin.rss
 
 import android.app.Application
-import com.danil.kleshchin.rss.di.components.DaggerFeedComponent
+import com.danil.kleshchin.rss.di.components.DaggerFeedsListComponent
 import com.danil.kleshchin.rss.di.components.DaggerSectionComponent
-import com.danil.kleshchin.rss.di.components.FeedComponent
+import com.danil.kleshchin.rss.di.components.FeedsListComponent
 import com.danil.kleshchin.rss.di.components.SectionComponent
-import com.danil.kleshchin.rss.di.modules.FeedModule
+import com.danil.kleshchin.rss.di.modules.AppModule
+import com.danil.kleshchin.rss.di.modules.FeedsListModule
 import com.danil.kleshchin.rss.di.modules.SectionModule
-import com.danil.kleshchin.rss.screens.feeds.FeedNavigator
+import com.danil.kleshchin.rss.screens.feedslist.FeedsListNavigator
 import com.danil.kleshchin.rss.screens.sections.SectionNavigator
+import kotlinx.coroutines.Dispatchers
 
 class NYTimesRSSFeedsApp : Application() {
 
     private lateinit var sectionComponent: SectionComponent
-    private lateinit var feedComponent: FeedComponent
+    private lateinit var feedsListComponent: FeedsListComponent
 
     fun initSectionComponent(sectionNavigator: SectionNavigator) {
         sectionComponent = DaggerSectionComponent.builder()
@@ -21,13 +23,16 @@ class NYTimesRSSFeedsApp : Application() {
             .build()
     }
 
-    fun initFeedComponent(feedNavigator: FeedNavigator) {
-        feedComponent = DaggerFeedComponent.builder()
-            .feedModule(FeedModule(feedNavigator))
+    fun initFeedComponent(feedsListNavigator: FeedsListNavigator) {
+        feedsListComponent = DaggerFeedsListComponent.builder()
+            .appModule(AppModule(Dispatchers))
+            .feedModule(FeedsListModule(feedsListNavigator))
             .build()
     }
 
     fun getSectionComponent() = sectionComponent
 
-    fun getFeedComponent() = feedComponent
+    fun getFeedComponent() = feedsListComponent
+
+    //check this for date and time displaying https://www.rockandnull.com/java-time-android/
 }

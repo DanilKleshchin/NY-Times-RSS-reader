@@ -11,7 +11,7 @@ import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.domain.entity.Section
-import com.danil.kleshchin.rss.screens.feeds.FeedFragment
+import com.danil.kleshchin.rss.screens.feedslist.FeedsListFragment
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
 import javax.inject.Inject
 
@@ -75,7 +75,7 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
 
     //TODO where should I init feed component?
     private fun initFeedView(context: FragmentActivity, section: Section) {
-        val feedFragment = FeedFragment.newInstance(section)
+        val feedFragment = FeedsListFragment.newInstance(section)
         (context.application as NYTimesRSSFeedsApp).initFeedComponent(feedFragment)
         (context.application as NYTimesRSSFeedsApp).getFeedComponent().inject(feedFragment)
         context.supportFragmentManager

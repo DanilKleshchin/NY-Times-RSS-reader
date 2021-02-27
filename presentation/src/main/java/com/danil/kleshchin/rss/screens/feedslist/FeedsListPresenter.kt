@@ -1,32 +1,42 @@
-package com.danil.kleshchin.rss.screens.feeds
+package com.danil.kleshchin.rss.screens.feedslist
 
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
 
-class FeedPresenter(
+class FeedsListPresenter(
     private val getFeedBySectionUseCase: GetFeedBySectionUseCase,
-    private val feedNavigator: FeedNavigator
-) : FeedContract.Presenter {
+    private val feedsListNavigator: FeedsListNavigator
+) : FeedsListContract.Presenter {
 
-    private lateinit var feedView: FeedContract.View
+    private lateinit var feedsListView: FeedsListContract.View
     private var feedList: List<Feed> = emptyList()
 
-    override fun setView(view: FeedContract.View) {
-        feedView = view
+    override fun setView(view: FeedsListContract.View) {
+        feedsListView = view
     }
 
     override fun onAttach() {
-        feedView.showLoadingView()
+        feedsListView.showLoadingView()
     }
 
     override fun initialize(section: Section) {
-        feedView.showSectionName(section.displayName)
+        feedsListView.showSectionName(section.displayName)
+
+        val uiScope = CoroutineScope(Dispatchers.Main)
 
         val params = GetFeedBySectionUseCase.Params(section.name)
-        getFeedBySectionUseCase.execute(params)
+        uiScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.IO) {
+                feedList = getFeedBySectionUseCase.execute(params)
+                withContext(Dispatchers.Main) {
+                    feedsListView.showFeedList(feedList)
+                }
+            }
+        }
+
+        /*getFeedBySectionUseCase.execute(params)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -41,7 +51,7 @@ class FeedPresenter(
                 {
                     feedView.hideLoadingView()
                 }
-            )
+            )*/
     }
 
     override fun onDetach() {
@@ -49,6 +59,6 @@ class FeedPresenter(
     }
 
     override fun onFeedSelected(feed: Feed) {
-        feedNavigator.showWebPage(feed.fulFeedPageUrl)
+        //feedNavigator.showWebPage(feed.fulFeedPageUrl)
     }
 }

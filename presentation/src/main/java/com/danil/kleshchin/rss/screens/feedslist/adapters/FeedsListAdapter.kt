@@ -1,17 +1,19 @@
-package com.danil.kleshchin.rss.screens.feeds.adapters
+package com.danil.kleshchin.rss.screens.feedslist.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.ItemFeedListBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
+import com.squareup.picasso.Picasso
 
-class FeedListAdapter(
+class FeedsListAdapter(
     private val feedList: List<Feed>,
     private val context: Context,
     private val feedClickListener: OnFeedClickListener
-) : RecyclerView.Adapter<FeedListAdapter.FeedListViewHolder>() {
+) : RecyclerView.Adapter<FeedsListAdapter.FeedListViewHolder>() {
 
     interface OnFeedClickListener {
         fun onFeedClick(feed: Feed)
@@ -44,8 +46,14 @@ class FeedListAdapter(
                 title.text = feed.title
                 description.text = feed.description
                 author.text = feed.author
-                datetime.text = feed.date
-                //TODO load feed icon
+                datetime.text = feed.dateCreated
+
+                if (feed.thumbUrl.isEmpty()) {
+                    thumb.setImageResource(R.drawable.ic_empty_feed_icon)
+                } else {
+                    Picasso.get().load(feed.thumbUrl).into(thumb)
+                }
+
                 root.setOnClickListener { clickListener.onFeedClick(feed) }
             }
         }

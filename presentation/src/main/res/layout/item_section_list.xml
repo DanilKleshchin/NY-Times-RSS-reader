@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:layout_marginBottom="@dimen/margin_primary">
+    android:layout_marginBottom="@dimen/margin_primary"
+    android:background="@color/colorPrimary">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/section_cardview_height"
-        android:padding="@dimen/padding_small"
         android:layout_margin="@dimen/margin_small"
-        card_view:cardCornerRadius="@dimen/cardview_radius"
-        card_view:cardBackgroundColor="@color/colorItemBackground">
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="@dimen/padding_small"
+        card_view:cardBackgroundColor="@color/colorItemBackground"
+        card_view:cardCornerRadius="@dimen/cardview_radius">
 
         <TextView
             android:id="@+id/section_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/ubuntu_light"
             android:textColor="@color/colorTextPrimary"
             android:textSize="@dimen/text_size_big"
-            android:fontFamily="@font/ubuntu_light"
-            tools:text="Section name"/>
+            tools:text="Section name" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>

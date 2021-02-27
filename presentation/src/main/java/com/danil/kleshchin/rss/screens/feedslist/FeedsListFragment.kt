@@ -1,4 +1,4 @@
-package com.danil.kleshchin.rss.screens.feeds
+package com.danil.kleshchin.rss.screens.feedslist
 
 import android.content.Context
 import android.os.Bundle
@@ -7,31 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.danil.kleshchin.rss.databinding.FragmentFeedsBinding
+import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.entity.Section
-import com.danil.kleshchin.rss.screens.feeds.adapters.FeedListAdapter
+import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
 import javax.inject.Inject
 
-class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
-    FeedListAdapter.OnFeedClickListener {
+class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator,
+    FeedsListAdapter.OnFeedClickListener {
 
     private val ERROR_LOG_MESSAGE = "Section fragment wasn't attached."
 
     @Inject
-    lateinit var feedPresenter: FeedContract.Presenter
+    lateinit var feedsListPresenter: FeedsListContract.Presenter
 
     private var section: Section? = null
 
-    private var _binding: FragmentFeedsBinding? = null
+    private var _binding: FragmentFeedsListBinding? = null
     private val binding get() = _binding!!
 
     companion object {
         private val KEY_SECTION = "KEY_SECTION"
         private val INSTANCE_STATE_PARAM_SECTION = "STATE_PARAM_SECTION"
 
-        fun newInstance(section: Section): FeedFragment {
-            val feedFragment = FeedFragment()
+        fun newInstance(section: Section): FeedsListFragment {
+            val feedFragment = FeedsListFragment()
             val args = Bundle()
             args.putSerializable(KEY_SECTION, section)
             feedFragment.arguments = args
@@ -46,14 +46,14 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
     ): View {
         initializeFragment(savedInstanceState)
 
-        _binding = FragmentFeedsBinding.inflate(inflater, container, false)
+        _binding = FragmentFeedsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        feedPresenter.setView(this)
-        feedPresenter.onAttach()
+        feedsListPresenter.setView(this)
+        feedsListPresenter.onAttach()
         initPresenterForSection()
 
         binding.backButton.setOnClickListener { finish() }
@@ -95,11 +95,11 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
 
     override fun showFeedList(feedList: List<Feed>) {
         val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
-        binding.feedListView.adapter = FeedListAdapter(feedList, context, this)
+        binding.feedListView.adapter = FeedsListAdapter(feedList, context, this)
     }
 
     override fun onFeedClick(feed: Feed) {
-        feedPresenter.onFeedSelected(feed)
+        feedsListPresenter.onFeedSelected(feed)
     }
 
     override fun showWebPage(url: String) {
@@ -130,7 +130,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator,
 
     private fun initPresenterForSection() {
         val section = getSection()
-        feedPresenter.initialize(section ?: throw NullPointerException("Section is null"))
+        feedsListPresenter.initialize(section ?: throw NullPointerException("Section is null"))
     }
 
     private fun getSection(): Section? {

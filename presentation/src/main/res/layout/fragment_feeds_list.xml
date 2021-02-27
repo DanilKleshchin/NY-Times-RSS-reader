@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorItemBackground"
     android:orientation="vertical">
 
     <LinearLayout
@@ -24,7 +24,10 @@
             android:layout_height="24dp"
             android:scaleType="fitXY"
             android:layout_gravity="center"
-            android:src="@drawable/back_arrow"/>
+            android:src="@drawable/back_arrow"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"/>
 
         <TextView
             android:id="@+id/section_name"
@@ -46,9 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_marginStart="@dimen/margin_primary"
-        android:layout_marginEnd="@dimen/margin_primary"
-        android:layout_marginTop="@dimen/margin_primary"
+        android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/feeds_toolbar"
         app:layout_constraintBottom_toBottomOf="parent"

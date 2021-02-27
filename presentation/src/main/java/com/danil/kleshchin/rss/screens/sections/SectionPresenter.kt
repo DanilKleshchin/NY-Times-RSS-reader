@@ -2,8 +2,10 @@ package com.danil.kleshchin.rss.screens.sections
 
 import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.domain.interactor.section.GetSectionListUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SectionPresenter(
     private val getSectionListUseCase: GetSectionListUseCase,
@@ -23,7 +25,12 @@ class SectionPresenter(
     }
 
     private fun executeGetSectionListUseCase() {
-        getSectionListUseCase.execute(Unit)
+        GlobalScope.launch(Dispatchers.Main) {
+            sectionList = getSectionListUseCase.execute(Unit)
+            sectionView.showSectionList(sectionList)
+            sectionView.hideLoadingView()
+        }
+        /*getSectionListUseCase.execute(Unit)
             .subscribeOn(Schedulers.io()) // TODO try here observerOn(Schedulers.io()). Will it crash or not?
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -41,7 +48,7 @@ class SectionPresenter(
                 {
                     sectionView.hideLoadingView()
                 }
-            )
+            )*/
     }
 
     override fun onDetach() {

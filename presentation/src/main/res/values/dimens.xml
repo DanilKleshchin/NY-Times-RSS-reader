@@ -2,12 +2,18 @@
 <resources>
     <dimen name="text_size_big">22sp</dimen>
     <dimen name="text_size_primary">18sp</dimen>
-    <dimen name="text_size_secondary">12sp</dimen>
+    <dimen name="text_size_secondary">17sp</dimen>
+    <dimen name="text_size_small">15sp</dimen>
+    <dimen name="text_size_small_x">13sp</dimen>
     <dimen name="toolbar_padding">8dp</dimen>
     <dimen name="margin_primary">8dp</dimen>
+    <dimen name="margin_primary_x">12dp</dimen>
+    <dimen name="margin_primary_xx">15dp</dimen>
     <dimen name="margin_big">20dp</dimen>
     <dimen name="margin_small">4dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="cardview_radius">4dp</dimen>
     <dimen name="section_cardview_height">75dp</dimen>
+
+    <dimen name="feed_list_item_margin">20dp</dimen>
 </resources>

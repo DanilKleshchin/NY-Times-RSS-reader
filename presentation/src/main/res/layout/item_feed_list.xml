@@ -1,111 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_big"
-    android:background="@color/colorPrimary">
+    android:layout_marginBottom="@dimen/feed_list_item_margin"
+    android:background="@color/colorPrimary"
+    android:clickable="true"
+    android:elevation="3dp"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
-        android:padding="@dimen/padding_small"
-        card_view:cardBackgroundColor="@color/colorItemBackground"
-        card_view:cardCornerRadius="@dimen/cardview_radius">
+        android:layout_marginTop="@dimen/margin_big"
+        android:ellipsize="end"
+        android:fontFamily="@font/ubuntu_bold"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:paddingStart="@dimen/margin_primary_x"
+        android:paddingEnd="@dimen/margin_primary_x"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="@dimen/text_size_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Cuomo Is Accused of Sexual Harassment by a 2nd Former Aide" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical">
+    <ImageView
+        android:id="@+id/thumb"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/margin_big"
+        android:background="@color/colorOtherItemBackground"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/test_image"
+        app:layout_constraintBottom_toTopOf="@id/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_bold"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="@dimen/text_size_primary"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:layout_marginStart="@dimen/margin_primary"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_primary"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="David Fincher, the Unhappiest Auteur" />
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_big"
+        android:ellipsize="end"
+        android:fontFamily="@font/ubuntu_light"
+        android:includeFontPadding="false"
+        android:maxLines="5"
+        android:paddingStart="@dimen/margin_primary_xx"
+        android:paddingEnd="@dimen/margin_primary_xx"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="@dimen/text_size_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/thumb"
+        tools:text="The director makes beautiful bummers in an industry that prefers happy endings. Perhaps that’s why his movies seem like an endangered species." />
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="fitCenter"
-                android:background="@color/colorOtherItemBackground"
-                android:layout_marginTop="@dimen/margin_primary"
-                android:contentDescription="@null"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/description"
-                tools:src="@drawable/ic_launcher" />
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_primary_xx"
+        android:layout_marginTop="@dimen/margin_primary"
+        android:ellipsize="end"
+        android:fontFamily="@font/ubuntu_light"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:paddingBottom="@dimen/margin_small"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        tools:text="By Jesse McKinley and Luis Ferré-Sadurní" />
 
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_light"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="@dimen/text_size_secondary"
-                android:maxLines="5"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:layout_marginStart="@dimen/margin_primary"
-                android:layout_marginTop="@dimen/margin_primary"
-                android:layout_marginBottom="@dimen/margin_primary"
-                app:layout_constraintTop_toBottomOf="@id/icon"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="The director makes beautiful bummers in an industry that prefers happy endings. Perhaps that’s why his movies seem like an endangered species." />
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_primary"
+        android:layout_marginEnd="@dimen/margin_primary_xx"
+        android:ellipsize="end"
+        android:fontFamily="@font/ubuntu_light"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:paddingBottom="@dimen/margin_small"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        tools:text="Fri, 01 Jan 2021 10:00:15" />
 
-            <TextView
-                android:id="@+id/author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_light"
-                android:textColor="@color/colorTextSecondary"
-                android:textSize="@dimen/text_size_secondary"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:layout_marginStart="@dimen/margin_primary"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@id/description"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="Manohla Dargis" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin_primary_x"
+        android:layout_marginTop="@dimen/margin_primary"
+        android:layout_marginEnd="@dimen/margin_primary_x"
+        android:background="@color/colorAccentDark"
+        app:layout_constraintBottom_toTopOf="@id/icon_star"
+        app:layout_constraintTop_toBottomOf="@id/datetime" />
 
-            <TextView
-                android:id="@+id/datetime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_light"
-                android:textColor="@color/colorTextSecondary"
-                android:textSize="@dimen/text_size_secondary"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:layout_marginStart="@dimen/margin_primary"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginBottom="@dimen/margin_small"
-                app:layout_constraintTop_toBottomOf="@id/description"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Fri, 01 Jan 2021 10:00:15" />
+    <ImageView
+        android:id="@+id/icon_star"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_star_unchecked"
+        android:scaleType="center"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/icon_share"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/icon_share"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true"
+        android:src="@drawable/ic_share"
+        android:scaleType="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon_star"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintVertical_bias="0.466" />
 
-    </androidx.cardview.widget.CardView>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

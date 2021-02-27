@@ -1,10 +1,10 @@
-package com.danil.kleshchin.rss.screens.feeds
+package com.danil.kleshchin.rss.screens.feedslist
 
 import com.danil.kleshchin.rss.BasePresenter
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.entity.Section
 
-interface FeedContract {
+interface FeedsListContract {
 
     interface View {
         fun showSectionName(sectionName: String)

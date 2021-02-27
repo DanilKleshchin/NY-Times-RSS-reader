@@ -42,7 +42,7 @@ class SectionListAdapter(
         fun bind(section: Section) {
             binding.apply {
                 sectionName.text = section.displayName
-                root.setOnClickListener { clickListener.onSectionClick(section) }
+                container.setOnClickListener { clickListener.onSectionClick(section) }
             }
         }
     }
