@@ -3,8 +3,13 @@ plugins {
     id 'kotlin-android'
 }
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion compile_sdk_version
+    defaultConfig.buildConfigField("String", "API_KEY", apikeyProperties['API_KEY'])
 }
 
 dependencies {
