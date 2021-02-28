@@ -12,7 +12,7 @@ class SectionPresenter(
     private val sectionNavigator: SectionNavigator
 ): SectionContract.Presenter {
 
-    private lateinit var sectionView: SectionContract.View
+    private var sectionView: SectionContract.View? = null
     private var sectionList: List<Section> = emptyList()
 
     override fun setView(view: SectionContract.View) {
@@ -20,39 +20,20 @@ class SectionPresenter(
     }
 
     override fun onAttach() {
-        sectionView.showLoadingView()
+        sectionView?.showLoadingView()
         executeGetSectionListUseCase()
     }
 
     private fun executeGetSectionListUseCase() {
         GlobalScope.launch(Dispatchers.Main) {
             sectionList = getSectionListUseCase.execute(Unit)
-            sectionView.showSectionList(sectionList)
-            sectionView.hideLoadingView()
+            sectionView?.showSectionList(sectionList)
+            sectionView?.hideLoadingView()
         }
-        /*getSectionListUseCase.execute(Unit)
-            .subscribeOn(Schedulers.io()) // TODO try here observerOn(Schedulers.io()). Will it crash or not?
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                        sections ->
-                    sectionList = sections
-                    sectionView.showSectionList(sectionList)
-                    sectionView.hideLoadingView()
-                },
-                {
-                        th ->
-                    th.printStackTrace()
-                    sectionView.showErrorMessage()
-                },
-                {
-                    sectionView.hideLoadingView()
-                }
-            )*/
     }
 
     override fun onDetach() {
-
+        sectionView = null
     }
 
     override fun onSectionSelected(section: Section) {

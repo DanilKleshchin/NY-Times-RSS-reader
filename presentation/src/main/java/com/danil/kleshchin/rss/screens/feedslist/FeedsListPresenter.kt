@@ -10,7 +10,7 @@ class FeedsListPresenter(
     private val feedsListNavigator: FeedsListNavigator
 ) : FeedsListContract.Presenter {
 
-    private lateinit var feedsListView: FeedsListContract.View
+    private var feedsListView: FeedsListContract.View? = null
     private var feedList: List<Feed> = emptyList()
 
     override fun setView(view: FeedsListContract.View) {
@@ -18,11 +18,11 @@ class FeedsListPresenter(
     }
 
     override fun onAttach() {
-        feedsListView.showLoadingView()
+        feedsListView?.showLoadingView()
     }
 
     override fun initialize(section: Section) {
-        feedsListView.showSectionName(section.displayName)
+        feedsListView?.showSectionName(section.displayName)
 
         val uiScope = CoroutineScope(Dispatchers.Main)
 
@@ -31,34 +31,17 @@ class FeedsListPresenter(
             withContext(Dispatchers.IO) {
                 feedList = getFeedBySectionUseCase.execute(params)
                 withContext(Dispatchers.Main) {
-                    feedsListView.showFeedList(feedList)
+                    feedsListView?.showFeedList(feedList)
                 }
             }
         }
-
-        /*getFeedBySectionUseCase.execute(params)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { feeds ->
-                    feedList = feeds
-                    feedView.showFeedList(feedList)
-                },
-                { th ->
-                    th.printStackTrace()
-                    feedView.showErrorMessage()
-                },
-                {
-                    feedView.hideLoadingView()
-                }
-            )*/
     }
 
     override fun onDetach() {
-        //TODO think about setting view null value here
+        feedsListView = null
     }
 
     override fun onFeedSelected(feed: Feed) {
-        //feedNavigator.showWebPage(feed.fulFeedPageUrl)
+        feedsListNavigator.navigateToFeedView(feed)
     }
 }

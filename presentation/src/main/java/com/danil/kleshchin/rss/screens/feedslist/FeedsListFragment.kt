@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
+import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.entity.Section
+import com.danil.kleshchin.rss.screens.feed.FeedFragment
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
 import javax.inject.Inject
 
@@ -67,6 +71,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        feedsListPresenter.onDetach()
     }
 
     override fun showLoadingView() {
@@ -102,8 +107,9 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         feedsListPresenter.onFeedSelected(feed)
     }
 
-    override fun showWebPage(url: String) {
-
+    override fun navigateToFeedView(feed: Feed) {
+        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
+        initFeedView(context, feed)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -135,6 +141,16 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
 
     private fun getSection(): Section? {
         return arguments?.getSerializable(KEY_SECTION) as Section?
+    }
+
+    private fun initFeedView(context: FragmentActivity, feed: Feed) {
+        val feedFragment = FeedFragment.newInstance(feed)
+        (context.application as NYTimesRSSFeedsApp).initFeedComponent(feedFragment)
+        (context.application as NYTimesRSSFeedsApp).getFeedComponent().inject(feedFragment)
+        context.supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container, feedFragment)
+            .commitNow()
     }
 
     private fun finish() {

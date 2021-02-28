@@ -36,10 +36,19 @@ class FeedsListAdapter(
         holder.bind(feedList[position])
     }
 
+    override fun onViewRecycled(holder: FeedListViewHolder) {
+        holder.getBinding().thumb.let {
+            Picasso.get().cancelRequest(it)
+        }
+        super.onViewRecycled(holder)
+    }
+
     class FeedListViewHolder(
         private val binding: ItemFeedListBinding,
         private val clickListener: OnFeedClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun getBinding() = binding
 
         fun bind(feed: Feed) {
             binding.apply {

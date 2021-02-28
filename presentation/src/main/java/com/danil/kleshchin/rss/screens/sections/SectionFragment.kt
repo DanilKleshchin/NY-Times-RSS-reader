@@ -45,6 +45,7 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        sectionPresenter.onDetach()
     }
 
     override fun showSectionList(sectionList: List<Section>) {
@@ -66,7 +67,7 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
 
     override fun showFeedView(section: Section) {
         val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
-        initFeedView(context, section)
+        initFeedsListView(context, section)
     }
 
     override fun onSectionClick(section: Section) {
@@ -74,13 +75,13 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     }
 
     //TODO where should I init feed component?
-    private fun initFeedView(context: FragmentActivity, section: Section) {
-        val feedFragment = FeedsListFragment.newInstance(section)
-        (context.application as NYTimesRSSFeedsApp).initFeedComponent(feedFragment)
-        (context.application as NYTimesRSSFeedsApp).getFeedComponent().inject(feedFragment)
+    private fun initFeedsListView(context: FragmentActivity, section: Section) {
+        val feedsListFragment = FeedsListFragment.newInstance(section)
+        (context.application as NYTimesRSSFeedsApp).initFeedsListComponent(feedsListFragment)
+        (context.application as NYTimesRSSFeedsApp).getFeedsListComponent().inject(feedsListFragment)
         context.supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, feedFragment)
+            .add(R.id.fragment_container, feedsListFragment)
             .commitNow()
     }
 }

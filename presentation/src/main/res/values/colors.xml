@@ -9,4 +9,5 @@
     <color name="colorOtherItemBackground">#CEDBE6</color>
     <color name="colorTextPrimary">#000000</color>
     <color name="colorTextSecondary">#4A4A4A</color>
+    <color name="colorTextLink">#1191F8</color>
 </resources>

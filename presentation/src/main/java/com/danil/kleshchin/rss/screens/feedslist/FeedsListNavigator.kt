@@ -1,7 +1,8 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
-//TODO replace with Cicerone https://habr.com/ru/company/mobileup/blog/314838/
+import com.danil.kleshchin.rss.domain.entity.Feed
+
 interface FeedsListNavigator {
 
-    fun showWebPage(url: String)
+    fun navigateToFeedView(feed: Feed)
 }

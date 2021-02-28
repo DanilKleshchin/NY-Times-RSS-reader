@@ -1,5 +1,7 @@
 package com.danil.kleshchin.rss.domain.entity
 
+import java.io.Serializable
+
 data class Feed(
     val title: String,
     val description: String,
@@ -12,4 +14,4 @@ data class Feed(
     val iconUrl: String,
     val iconCaption: String,
     val iconCopyright: String
-)
+) : Serializable
