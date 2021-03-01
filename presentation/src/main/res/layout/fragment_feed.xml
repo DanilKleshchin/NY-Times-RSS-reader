@@ -11,6 +11,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:id="@+id/feed_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorToolBar"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/toolbar_padding"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:src="@drawable/back_arrow"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:id="@+id/section_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:text="@string/article"
+                android:layout_marginStart="@dimen/margin_primary"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_primary"
+                android:fontFamily="@font/ubuntu_bold"/>
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -24,7 +60,7 @@
             android:textSize="@dimen/text_size_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feed_toolbar"
             tools:text="Cuomo Is Accused of Sexual Harassment by a 2nd Former Aide" />
 
         <View

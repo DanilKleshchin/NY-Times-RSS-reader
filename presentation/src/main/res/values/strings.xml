@@ -5,4 +5,5 @@
     <string name="read_full_article"><u>Read full article</u></string>
     <string name="date_created">Published %s</string>
     <string name="date_updated">Updated %s</string>
+    <string name="article">Article</string>
 </resources>

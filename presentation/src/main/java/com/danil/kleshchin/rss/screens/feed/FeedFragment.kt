@@ -76,8 +76,8 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
                     .setText(feed!!.feedPageUrl)
                     .startChooser()
             }
+            binding.backButton.setOnClickListener { finish() }
         }
-
     }
 
     override fun onAttach(context: Context) {
