@@ -18,6 +18,7 @@ interface FeedsListContract {
 
     interface Presenter:BasePresenter<View> {
         fun initialize(section: Section)
+        fun onRefreshSelected()
         fun onFeedSelected(feed: Feed)
     }
 }

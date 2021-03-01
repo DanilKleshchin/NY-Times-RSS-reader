@@ -13,6 +13,8 @@ class FeedsListPresenter(
     private var feedsListView: FeedsListContract.View? = null
     private var feedList: List<Feed> = emptyList()
 
+    private lateinit var section: Section
+
     override fun setView(view: FeedsListContract.View) {
         feedsListView = view
     }
@@ -22,19 +24,9 @@ class FeedsListPresenter(
     }
 
     override fun initialize(section: Section) {
+        this.section = section
         feedsListView?.showSectionName(section.displayName)
-
-        val uiScope = CoroutineScope(Dispatchers.Main)
-
-        val params = GetFeedBySectionUseCase.Params(section.name)
-        uiScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                feedList = getFeedBySectionUseCase.execute(params)
-                withContext(Dispatchers.Main) {
-                    feedsListView?.showFeedList(feedList)
-                }
-            }
-        }
+        loadFeedsList()
     }
 
     override fun onDetach() {
@@ -43,5 +35,26 @@ class FeedsListPresenter(
 
     override fun onFeedSelected(feed: Feed) {
         feedsListNavigator.navigateToFeedView(feed)
+    }
+
+    override fun onRefreshSelected() {
+        loadFeedsList()
+    }
+
+    private fun loadFeedsList() {
+        val uiScope = CoroutineScope(Dispatchers.Main)
+
+        val params = GetFeedBySectionUseCase.Params(section.name)
+        uiScope.launch(Dispatchers.Main) {
+            withContext(Dispatchers.IO) {
+                feedList = getFeedBySectionUseCase.execute(params)
+                withContext(Dispatchers.Main) {
+                    feedsListView?.let {
+                        it.showFeedList(feedList)
+                        it.hideLoadingView()
+                    }
+                }
+            }
+        }
     }
 }

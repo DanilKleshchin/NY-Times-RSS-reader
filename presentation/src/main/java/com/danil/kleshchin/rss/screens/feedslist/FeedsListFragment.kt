@@ -61,6 +61,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         initPresenterForSection()
 
         binding.backButton.setOnClickListener { finish() }
+        binding.refreshView.setOnRefreshListener { feedsListPresenter.onRefreshSelected() }
     }
 
     override fun onAttach(context: Context) {
@@ -75,11 +76,11 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     }
 
     override fun showLoadingView() {
-
+        binding.refreshView.isRefreshing = true
     }
 
     override fun hideLoadingView() {
-
+        binding.refreshView.isRefreshing = false
     }
 
     override fun showRetry() {
