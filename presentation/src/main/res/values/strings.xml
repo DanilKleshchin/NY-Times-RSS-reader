@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_title">The New York Times RSS</string>
+    <string name="app_title">The New York Times Top Stories</string>
     <string name="app_name">NY Times RSS Feeds</string>
-    <string name="choose_news_section">Choose news section</string>
+    <string name="choose_news_section">Choose category</string>
     <string name="read_full_article"><u>Read full article</u></string>
     <string name="date_created">Published %s</string>
     <string name="date_updated">Updated %s</string>

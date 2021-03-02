@@ -12,9 +12,9 @@ import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
-import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.screens.feed.FeedFragment
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
+import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
 import javax.inject.Inject
 
 class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator,
@@ -25,7 +25,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     @Inject
     lateinit var feedsListPresenter: FeedsListContract.Presenter
 
-    private var section: Section? = null
+    private var section: SectionEntity? = null
 
     private var _binding: FragmentFeedsListBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +34,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         private val KEY_SECTION = "KEY_SECTION"
         private val INSTANCE_STATE_PARAM_SECTION = "STATE_PARAM_SECTION"
 
-        fun newInstance(section: Section): FeedsListFragment {
+        fun newInstance(section: SectionEntity): FeedsListFragment {
             val feedFragment = FeedsListFragment()
             val args = Bundle()
             args.putSerializable(KEY_SECTION, section)
@@ -132,7 +132,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
             getSection()
         } else ({
             savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
-        }) as Section?
+        }) as SectionEntity?
     }
 
     private fun initPresenterForSection() {
@@ -140,8 +140,8 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         feedsListPresenter.initialize(section ?: throw NullPointerException("Section is null"))
     }
 
-    private fun getSection(): Section? {
-        return arguments?.getSerializable(KEY_SECTION) as Section?
+    private fun getSection(): SectionEntity? {
+        return arguments?.getSerializable(KEY_SECTION) as SectionEntity?
     }
 
     private fun initFeedView(context: FragmentActivity, feed: Feed) {

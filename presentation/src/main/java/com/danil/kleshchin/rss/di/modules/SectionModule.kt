@@ -4,6 +4,7 @@ import com.danil.kleshchin.rss.domain.interactor.section.GetSectionListUseCase
 import com.danil.kleshchin.rss.screens.sections.SectionNavigator
 import com.danil.kleshchin.rss.screens.sections.SectionContract
 import com.danil.kleshchin.rss.screens.sections.SectionPresenter
+import com.danil.kleshchin.rss.screens.sections.entities.SectionMapper
 import dagger.Module
 import dagger.Provides
 
@@ -12,6 +13,8 @@ class SectionModule(private val sectionNavigator: SectionNavigator) {
 
     @Provides
     fun provideSectionPresenter(
-        getSectionListUseCase: GetSectionListUseCase
-    ): SectionContract.Presenter = SectionPresenter(getSectionListUseCase, sectionNavigator)
+        getSectionListUseCase: GetSectionListUseCase,
+        sectionMapper: SectionMapper
+    ): SectionContract.Presenter =
+        SectionPresenter(getSectionListUseCase, sectionNavigator, sectionMapper)
 }

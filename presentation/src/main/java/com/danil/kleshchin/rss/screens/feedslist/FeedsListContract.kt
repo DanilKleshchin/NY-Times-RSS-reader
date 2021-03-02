@@ -2,7 +2,7 @@ package com.danil.kleshchin.rss.screens.feedslist
 
 import com.danil.kleshchin.rss.BasePresenter
 import com.danil.kleshchin.rss.domain.entity.Feed
-import com.danil.kleshchin.rss.domain.entity.Section
+import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
 
 interface FeedsListContract {
 
@@ -17,7 +17,7 @@ interface FeedsListContract {
     }
 
     interface Presenter:BasePresenter<View> {
-        fun initialize(section: Section)
+        fun initialize(section: SectionEntity)
         fun onRefreshSelected()
         fun onFeedSelected(feed: Feed)
     }

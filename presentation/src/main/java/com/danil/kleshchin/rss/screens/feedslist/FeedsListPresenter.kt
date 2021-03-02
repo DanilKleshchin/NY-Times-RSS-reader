@@ -1,8 +1,8 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
 import com.danil.kleshchin.rss.domain.entity.Feed
-import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
+import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
 import kotlinx.coroutines.*
 
 class FeedsListPresenter(
@@ -13,7 +13,7 @@ class FeedsListPresenter(
     private var feedsListView: FeedsListContract.View? = null
     private var feedList: List<Feed> = emptyList()
 
-    private lateinit var section: Section
+    private lateinit var section: SectionEntity
 
     override fun setView(view: FeedsListContract.View) {
         feedsListView = view
@@ -23,7 +23,7 @@ class FeedsListPresenter(
         feedsListView?.showLoadingView()
     }
 
-    override fun initialize(section: Section) {
+    override fun initialize(section: SectionEntity) {
         this.section = section
         feedsListView?.showSectionName(section.displayName)
         loadFeedsList()
@@ -44,7 +44,7 @@ class FeedsListPresenter(
     private fun loadFeedsList() {
         val uiScope = CoroutineScope(Dispatchers.Main)
 
-        val params = GetFeedBySectionUseCase.Params(section.name)
+        val params = GetFeedBySectionUseCase.Params(section.toSection().name)
         uiScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
                 feedList = getFeedBySectionUseCase.execute(params)

@@ -10,9 +10,9 @@ import androidx.fragment.app.FragmentActivity
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
-import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.screens.feedslist.FeedsListFragment
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
+import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
 import javax.inject.Inject
 
 class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
@@ -48,7 +48,7 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
         sectionPresenter.onDetach()
     }
 
-    override fun showSectionList(sectionList: List<Section>) {
+    override fun showSectionList(sectionList: List<SectionEntity>) {
         val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
         binding.sectionListView.adapter = SectionListAdapter(sectionList, context, this)
     }
@@ -65,17 +65,17 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
 
     }
 
-    override fun showFeedView(section: Section) {
+    override fun showFeedView(section: SectionEntity) {
         val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
         initFeedsListView(context, section)
     }
 
-    override fun onSectionClick(section: Section) {
+    override fun onSectionClick(section: SectionEntity) {
         sectionPresenter.onSectionSelected(section)
     }
 
     //TODO where should I init feed component?
-    private fun initFeedsListView(context: FragmentActivity, section: Section) {
+    private fun initFeedsListView(context: FragmentActivity, section: SectionEntity) {
         val feedsListFragment = FeedsListFragment.newInstance(section)
         (context.application as NYTimesRSSFeedsApp).initFeedsListComponent(feedsListFragment)
         (context.application as NYTimesRSSFeedsApp).getFeedsListComponent().inject(feedsListFragment)

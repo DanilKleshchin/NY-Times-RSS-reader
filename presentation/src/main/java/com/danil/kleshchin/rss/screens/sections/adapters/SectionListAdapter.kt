@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danil.kleshchin.rss.databinding.ItemSectionListBinding
-import com.danil.kleshchin.rss.domain.entity.Section
+import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
 
 class SectionListAdapter(
-    private val sectionList: List<Section>,
+    private val sectionList: List<SectionEntity>,
     private val context: Context,
     private val sectionClickListener: OnSectionClickListener
 ) : RecyclerView.Adapter<SectionListAdapter.SectionListViewHolder>() {
 
     interface OnSectionClickListener {
-        fun onSectionClick(section: Section)
+        fun onSectionClick(section: SectionEntity)
     }
 
     override fun getItemCount(): Int = sectionList.size
@@ -39,9 +39,10 @@ class SectionListAdapter(
         private val clickListener: OnSectionClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(section: Section) {
+        fun bind(section: SectionEntity) {
             binding.apply {
                 sectionName.text = section.displayName
+                sectionIcon.setImageResource(section.iconId)
                 container.setOnClickListener { clickListener.onSectionClick(section) }
             }
         }
