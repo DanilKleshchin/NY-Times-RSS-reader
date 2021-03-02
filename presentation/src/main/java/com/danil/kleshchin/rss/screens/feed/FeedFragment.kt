@@ -10,9 +10,11 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.screens.imagezoom.FeedImageZoomFragment
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -77,6 +79,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
                     .startChooser()
             }
             binding.backButton.setOnClickListener { finish() }
+            image.setOnClickListener { initZoomImageView(activity!!, feed!!.iconUrl, feed!!.title) }
         }
     }
 
@@ -163,6 +166,18 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     private fun getFeed(): Feed {
         return arguments?.getSerializable(KEY_FEED) as Feed
+    }
+
+    private fun initZoomImageView(
+        context: FragmentActivity,
+        imageUrl: String,
+        toolbarTitle: String
+    ) {
+        val zoomFragment = FeedImageZoomFragment.newInstance(imageUrl, toolbarTitle)
+        context.supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container, zoomFragment)
+            .commitNow()
     }
 
     private fun finish() {
