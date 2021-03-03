@@ -1,7 +1,6 @@
 package com.danil.kleshchin.rss.screens.sections.entities
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.IntegerRes
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.domain.entity.Section
 

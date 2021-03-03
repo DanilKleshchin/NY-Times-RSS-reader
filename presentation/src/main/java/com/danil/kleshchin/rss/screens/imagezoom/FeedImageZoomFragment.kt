@@ -2,7 +2,9 @@ package com.danil.kleshchin.rss.screens.imagezoom
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.danil.kleshchin.rss.databinding.FragmentImageZoomBinding
@@ -10,9 +12,6 @@ import com.danil.kleshchin.rss.widgets.ZoomableImageView
 import com.squareup.picasso.Picasso
 
 class FeedImageZoomFragment : Fragment() {
-
-    private val HIDE_TOOLBAR_DELAY_MILIS = 120
-    private var lastTouchTime = 0L
 
     private var _binding: FragmentImageZoomBinding? = null
     private val binding get() = _binding!!
@@ -46,7 +45,8 @@ class FeedImageZoomFragment : Fragment() {
 
         binding.feedTitle.text = arguments?.getString(KEY_TOOLBAR_TITLE)
 
-        binding.image.setOnSingleTapConfirmedListener(object : ZoomableImageView.OnSingleTapConfirmedListener {
+        binding.image.setOnSingleTapConfirmedListener(object :
+            ZoomableImageView.OnSingleTapConfirmedListener {
             override fun onSingleTapConfirmed() {
                 setToolbarVisibility()
             }
