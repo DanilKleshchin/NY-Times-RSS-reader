@@ -1,6 +1,6 @@
 package com.danil.kleshchin.rss.screens.feed
 
-import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.entities.feed.FeedEntity
 
 class FeedPresenter(
     private val feedNavigator: FeedNavigator
@@ -16,7 +16,7 @@ class FeedPresenter(
         feedView?.showLoadingView()
     }
 
-    override fun initialize(feed: Feed) {
+    override fun initialize(feed: FeedEntity) {
         feedView?.showFeed(feed)
     }
 
@@ -24,7 +24,7 @@ class FeedPresenter(
         feedView = null
     }
 
-    override fun onReadFullArticleSelected(feed: Feed) {
+    override fun onReadFullArticleSelected(feed: FeedEntity) {
         feedNavigator.showWebPage(feed.feedPageUrl)
     }
 }

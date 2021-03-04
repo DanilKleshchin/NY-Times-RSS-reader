@@ -2,6 +2,7 @@ package com.danil.kleshchin.rss.data.feeds.datasource.network
 
 import com.danil.kleshchin.rss.data.feeds.entity.FeedObjectApiEntity
 import com.danil.kleshchin.rss.data.feeds.entity.FeedResultApiEntity
+import com.danil.kleshchin.rss.data.feeds.getTimeStampFromDateTime
 import com.danil.kleshchin.rss.domain.entity.Feed
 import javax.inject.Inject
 
@@ -21,8 +22,8 @@ class FeedApiToDomainMapper @Inject constructor() {
                     description = result.abstract,
                     feedPageUrl = result.url,
                     author = result.byline,
-                    dateCreated = result.dateCreated,
-                    dateUpdated = result.dateUpdated,
+                    dateCreated = getTimeStampFromDateTime(result.dateCreated),
+                    dateUpdated = getTimeStampFromDateTime(result.dateUpdated),
                     kicker = result.kicker?: UNKNOWN_DATA,
                     thumbUrl = getThumbUrlObject(result),
                     iconUrl = getIconUrlObject(result),

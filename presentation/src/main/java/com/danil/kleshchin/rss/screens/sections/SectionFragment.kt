@@ -12,7 +12,7 @@ import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.screens.feedslist.FeedsListFragment
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
-import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
+import com.danil.kleshchin.rss.entities.section.SectionEntity
 import javax.inject.Inject
 
 class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,

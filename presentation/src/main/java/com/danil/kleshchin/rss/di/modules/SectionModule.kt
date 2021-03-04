@@ -4,7 +4,7 @@ import com.danil.kleshchin.rss.domain.interactor.section.GetSectionListUseCase
 import com.danil.kleshchin.rss.screens.sections.SectionNavigator
 import com.danil.kleshchin.rss.screens.sections.SectionContract
 import com.danil.kleshchin.rss.screens.sections.SectionPresenter
-import com.danil.kleshchin.rss.screens.sections.entities.SectionMapper
+import com.danil.kleshchin.rss.entities.section.SectionMapper
 import dagger.Module
 import dagger.Provides
 

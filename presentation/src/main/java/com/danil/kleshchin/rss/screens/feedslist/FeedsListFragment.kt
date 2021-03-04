@@ -11,10 +11,10 @@ import androidx.fragment.app.FragmentActivity
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
-import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.entities.feed.FeedEntity
+import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feed.FeedFragment
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
-import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
 import javax.inject.Inject
 
 class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator,
@@ -99,16 +99,16 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         binding.sectionName.text = sectionName
     }
 
-    override fun showFeedList(feedList: List<Feed>) {
+    override fun showFeedList(feedList: List<FeedEntity>) {
         val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
         binding.feedListView.adapter = FeedsListAdapter(feedList, context, this)
     }
 
-    override fun onFeedClick(feed: Feed) {
+    override fun onFeedClick(feed: FeedEntity) {
         feedsListPresenter.onFeedSelected(feed)
     }
 
-    override fun navigateToFeedView(feed: Feed) {
+    override fun navigateToFeedView(feed: FeedEntity) {
         val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
         initFeedView(context, feed)
     }
@@ -144,7 +144,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         return arguments?.getSerializable(KEY_SECTION) as SectionEntity?
     }
 
-    private fun initFeedView(context: FragmentActivity, feed: Feed) {
+    private fun initFeedView(context: FragmentActivity, feed: FeedEntity) {
         val feedFragment = FeedFragment.newInstance(feed)
         (context.application as NYTimesRSSFeedsApp).initFeedComponent(feedFragment)
         (context.application as NYTimesRSSFeedsApp).getFeedComponent().inject(feedFragment)

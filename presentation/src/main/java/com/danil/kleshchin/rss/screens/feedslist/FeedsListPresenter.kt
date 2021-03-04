@@ -1,17 +1,22 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
-import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
-import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
-import kotlinx.coroutines.*
+import com.danil.kleshchin.rss.entities.feed.FeedEntity
+import com.danil.kleshchin.rss.entities.feed.FeedMapper
+import com.danil.kleshchin.rss.entities.section.SectionEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FeedsListPresenter(
     private val getFeedBySectionUseCase: GetFeedBySectionUseCase,
+    private val feedMapper: FeedMapper,
     private val feedsListNavigator: FeedsListNavigator
 ) : FeedsListContract.Presenter {
 
     private var feedsListView: FeedsListContract.View? = null
-    private var feedList: List<Feed> = emptyList()
+    private var feedList: List<FeedEntity> = emptyList()
 
     private lateinit var section: SectionEntity
 
@@ -33,7 +38,7 @@ class FeedsListPresenter(
         feedsListView = null
     }
 
-    override fun onFeedSelected(feed: Feed) {
+    override fun onFeedSelected(feed: FeedEntity) {
         feedsListNavigator.navigateToFeedView(feed)
     }
 
@@ -47,7 +52,9 @@ class FeedsListPresenter(
         val params = GetFeedBySectionUseCase.Params(section.toSection().name)
         uiScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
-                feedList = getFeedBySectionUseCase.execute(params)
+                val currentTime = System.currentTimeMillis()
+                feedList =
+                    feedMapper.transform(getFeedBySectionUseCase.execute(params), currentTime)
                 withContext(Dispatchers.Main) {
                     feedsListView?.let {
                         it.showFeedList(feedList)

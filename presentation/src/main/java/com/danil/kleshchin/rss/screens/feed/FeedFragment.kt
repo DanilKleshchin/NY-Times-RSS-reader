@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
-import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.screens.imagezoom.FeedImageZoomFragment
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
@@ -21,12 +21,10 @@ import javax.inject.Inject
 
 class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
-    private val ERROR_LOG_MESSAGE = "Section fragment wasn't attached."
-
     @Inject
     lateinit var feedPresenter: FeedContract.Presenter
 
-    private var feed: Feed? = null
+    private var feed: FeedEntity? = null
 
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
@@ -35,7 +33,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         private val KEY_FEED = "KEY_FEED"
         private val INSTANCE_STATE_PARAM_FEED = "STATE_PARAM_FEED"
 
-        fun newInstance(feed: Feed): FeedFragment {
+        fun newInstance(feed: FeedEntity): FeedFragment {
             val feedFragment = FeedFragment()
             val args = Bundle()
             args.putSerializable(KEY_FEED, feed)
@@ -114,7 +112,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     }
 
-    override fun showFeed(feed: Feed) {
+    override fun showFeed(feed: FeedEntity) {
         binding.apply {
             title.text = feed.title
             kicker.text = feed.kicker
@@ -155,7 +153,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         feed = if (savedInstanceState == null) {
             getFeed()
         } else {
-            savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_FEED) as Feed
+            savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_FEED) as FeedEntity
         }
     }
 
@@ -164,8 +162,8 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         feedPresenter.initialize(feed)
     }
 
-    private fun getFeed(): Feed {
-        return arguments?.getSerializable(KEY_FEED) as Feed
+    private fun getFeed(): FeedEntity {
+        return arguments?.getSerializable(KEY_FEED) as FeedEntity
     }
 
     private fun initZoomImageView(

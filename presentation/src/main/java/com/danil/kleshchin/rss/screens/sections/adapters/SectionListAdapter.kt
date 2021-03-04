@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danil.kleshchin.rss.databinding.ItemSectionListBinding
-import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
+import com.danil.kleshchin.rss.entities.section.SectionEntity
 
 class SectionListAdapter(
     private val sectionList: List<SectionEntity>,

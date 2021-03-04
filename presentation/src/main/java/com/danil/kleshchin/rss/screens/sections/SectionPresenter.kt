@@ -1,8 +1,8 @@
 package com.danil.kleshchin.rss.screens.sections
 
 import com.danil.kleshchin.rss.domain.interactor.section.GetSectionListUseCase
-import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
-import com.danil.kleshchin.rss.screens.sections.entities.SectionMapper
+import com.danil.kleshchin.rss.entities.section.SectionEntity
+import com.danil.kleshchin.rss.entities.section.SectionMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

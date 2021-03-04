@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-const val UNKNOWN_TIME = -1L
 const val UNKNOWN_TIME_STRING = "error"
 
 const val oneHourSeconds = 3600L
@@ -18,11 +17,6 @@ const val secondsInAlmost24Hours = 86_399L
 const val secondsInAlmost7Days = 604_799L
 const val secondsInAlmost4Weeks = 2_419_199L
 const val secondsInAlmost12Months = 31_103_999L
-
-fun getTimeStampFromDateTime(time: String): Long {
-    val timeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-    return timeFormat.parse(time)?.time ?: UNKNOWN_TIME
-}
 
 fun getDateTimeFromTimeStamp(timeStamp: Long): String {
     val timeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())

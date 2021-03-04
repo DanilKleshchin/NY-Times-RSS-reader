@@ -1,4 +1,4 @@
-package com.danil.kleshchin.rss.screens.sections.entities
+package com.danil.kleshchin.rss.entities.section
 
 import com.danil.kleshchin.rss.domain.entity.Section
 import javax.inject.Inject

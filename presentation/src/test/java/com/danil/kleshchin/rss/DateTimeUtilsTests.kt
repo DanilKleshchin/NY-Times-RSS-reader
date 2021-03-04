@@ -1,11 +1,11 @@
 package com.danil.kleshchin.rss
 
+import com.danil.kleshchin.rss.data.feeds.getTimeStampFromDateTime
 import com.danil.kleshchin.rss.utils.getDailyElapsedTime
 import com.danil.kleshchin.rss.utils.getDateTimeFromTimeStamp
 import com.danil.kleshchin.rss.utils.getElapsedTimeFromCurrentTime
 import com.danil.kleshchin.rss.utils.getHourlyElapsedTime
 import com.danil.kleshchin.rss.utils.getMonthlyElapsedTime
-import com.danil.kleshchin.rss.utils.getTimeStampFromDateTime
 import com.danil.kleshchin.rss.utils.getWeeklyElapsedTime
 import com.danil.kleshchin.rss.utils.getYearlyElapsedTime
 import org.junit.Assert.assertEquals

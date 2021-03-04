@@ -1,7 +1,7 @@
 package com.danil.kleshchin.rss.screens.sections
 
 import com.danil.kleshchin.rss.BasePresenter
-import com.danil.kleshchin.rss.screens.sections.entities.SectionEntity
+import com.danil.kleshchin.rss.entities.section.SectionEntity
 
 interface SectionContract {
 
