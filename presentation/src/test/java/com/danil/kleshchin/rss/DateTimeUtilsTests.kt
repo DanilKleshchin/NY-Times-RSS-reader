@@ -14,19 +14,26 @@ import org.junit.Test
 class DateTimeUtilsTests {
 
     @Test
-    fun addition_isCorrect() {
+    fun time_stamp_converting_test() {
         val time = "2021-02-25T06:00:08-05:00"
+        val expectTime = "25/02/2021 06:00:08"
         val timeStamp = getTimeStampFromDateTime(time)
-        println(time)
-        println(timeStamp)
-        println(getDateTimeFromTimeStamp(timeStamp))
+        assertEquals(expectTime, getDateTimeFromTimeStamp(timeStamp))
     }
 
     @Test
     fun elapsed_time_test() {
         val time = "2021-03-03T22:13:08"
         val timeStamp = getTimeStampFromDateTime(time)
-        println(getElapsedTimeFromCurrentTime(timeStamp))
+
+        val currentTime = getTimeStampFromDateTime("2021-03-04T22:13:08")
+        val expect = "Day ago"
+
+        val currentTime23 = getTimeStampFromDateTime("2021-03-04T22:13:05")
+        val expect23 = "23 hours ago"
+
+        assertEquals(expect, getElapsedTimeFromCurrentTime(timeStamp, currentTime))
+        assertEquals(expect23, getElapsedTimeFromCurrentTime(timeStamp, currentTime23))
     }
 
     @Test

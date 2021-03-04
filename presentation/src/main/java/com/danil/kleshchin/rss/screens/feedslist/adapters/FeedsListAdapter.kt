@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.ItemFeedListBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
-import com.danil.kleshchin.rss.utils.getElapsedTimeFromCurrentTime
-import com.danil.kleshchin.rss.utils.getTimeStampFromDateTime
 import com.squareup.picasso.Picasso
 
 class FeedsListAdapter(
@@ -58,8 +56,7 @@ class FeedsListAdapter(
                 description.text = feed.description
                 author.text = feed.author
 
-                val timeStamp = getTimeStampFromDateTime(feed.dateCreated)
-                datetime.text = getElapsedTimeFromCurrentTime(timeStamp)
+                datetime.text = feed.dateCreated
 
                 if (feed.thumbUrl.isEmpty()) {
                     thumb.setImageResource(R.drawable.ic_empty_feed_icon)

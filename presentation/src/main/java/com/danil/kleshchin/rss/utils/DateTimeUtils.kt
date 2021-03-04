@@ -30,11 +30,10 @@ fun getDateTimeFromTimeStamp(timeStamp: Long): String {
 }
 
 /**
- * Returns a string with the elapsed time like: 1 hour ago, 2 days ago etc.
+ * Returns a string with the elapsed time like: Hour ago, 2 days ago etc.
  */
-fun getElapsedTimeFromCurrentTime(timeStamp: Long): String {
-    val currentTimeStamp = System.currentTimeMillis()
-    val differenceSeconds = (currentTimeStamp - timeStamp) / 1000
+fun getElapsedTimeFromCurrentTime(timeStamp: Long, currentTimeMillis: Long): String {
+    val differenceSeconds = (currentTimeMillis - timeStamp) / 1000
     if (differenceSeconds < 0) {
         return UNKNOWN_TIME_STRING
     }
@@ -43,16 +42,16 @@ fun getElapsedTimeFromCurrentTime(timeStamp: Long): String {
         in 0..secondsInAlmostOneHours -> {
             return getMinutesElapsedTime(differenceSeconds)
         }
-        in secondsInAlmostOneHours..secondsInAlmost24Hours -> {
+        in oneHourSeconds..secondsInAlmost24Hours -> {
             return getHourlyElapsedTime(differenceSeconds)
         }
-        in secondsInAlmost24Hours..secondsInAlmost7Days -> {
+        in oneDaySeconds..secondsInAlmost7Days -> {
             return getDailyElapsedTime(differenceSeconds)
         }
-        in secondsInAlmost7Days..secondsInAlmost4Weeks -> {
+        in oneWeekSeconds..secondsInAlmost4Weeks -> {
             return getWeeklyElapsedTime(differenceSeconds)
         }
-        in secondsInAlmost4Weeks..secondsInAlmost12Months -> {
+        in oneMonthSeconds..secondsInAlmost12Months -> {
             return getMonthlyElapsedTime(differenceSeconds)
         }
         else -> {
@@ -114,7 +113,7 @@ fun getElapsedTimeString(
 ): String {
     val oneItem = 1L // count of one hour, day, week, month
     val item = timeSeconds / oneItemSeconds
-    if (item == oneItem) {
+    if (item == oneItem) { //TODO replace with plurals
         return elapsedOne
     }
     return "$item $elapsedPlural"
