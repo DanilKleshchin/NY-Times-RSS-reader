@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:maxLines="1"
-            android:layout_marginStart="@dimen/margin_primary"
+            android:layout_marginStart="@dimen/margin_big"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_primary"
             android:fontFamily="@font/ubuntu_bold"
