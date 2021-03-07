@@ -30,7 +30,7 @@ class ZoomableImageView : AppCompatImageView, View.OnTouchListener,
     // Scales
     private var mSaveScale = 1f
     private var mMinScale = 1f
-    private var mMaxScale = 4f
+    private var mMaxScale = 25f
 
     // view dimensions
     private var origWidth = 0f
