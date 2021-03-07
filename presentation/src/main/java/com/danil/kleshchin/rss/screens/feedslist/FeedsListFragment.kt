@@ -106,7 +106,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         val currentTime = System.currentTimeMillis()
         val feedEntityList = mapper.transform(feedList, currentTime, resources)
         binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
-        binding.feedListView.adapter = FeedsListAdapter(feedEntityList, activity!!, this)
+        binding.feedListView.adapter = FeedsListAdapter(feedEntityList, requireActivity(), this)
     }
 
     override fun onFeedClick(feed: FeedEntity) {
@@ -114,7 +114,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     }
 
     override fun navigateToFeedView(feed: FeedEntity) {
-        initFeedView(activity!!, feed)
+        initFeedView(requireActivity(), feed)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

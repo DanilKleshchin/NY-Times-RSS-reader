@@ -26,10 +26,10 @@ class FeedMapper @Inject constructor() {
         )
     }
 
-    fun transform(feedList: List<Feed>, currentTime: Long): List<FeedEntity> {
+    fun transform(feedList: List<Feed>, currentTime: Long, resources: Resources): List<FeedEntity> {
         val feedEntityList = arrayListOf<FeedEntity>()
         for (feed in feedList) {
-            feedEntityList.add(transform(feed, currentTime))
+            feedEntityList.add(transform(feed, currentTime, resources))
         }
         return feedEntityList
     }
