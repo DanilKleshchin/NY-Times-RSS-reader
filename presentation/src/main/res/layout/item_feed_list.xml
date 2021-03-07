@@ -40,11 +40,11 @@
         android:background="@color/colorOtherItemBackground"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@drawable/test_image"
         app:layout_constraintBottom_toTopOf="@id/description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:src="@drawable/test_image"/>
 
     <TextView
         android:id="@+id/description"

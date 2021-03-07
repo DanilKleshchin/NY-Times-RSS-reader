@@ -141,6 +141,9 @@
             android:background="@color/black"
             android:contentDescription="@null"
             android:scaleType="fitCenter"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintTop_toBottomOf="@id/date_updated"
             tools:src="@drawable/test_image"/>
 
