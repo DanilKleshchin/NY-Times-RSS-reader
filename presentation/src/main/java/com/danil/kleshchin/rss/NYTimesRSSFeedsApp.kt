@@ -1,7 +1,12 @@
 package com.danil.kleshchin.rss
 
 import android.app.Application
-import com.danil.kleshchin.rss.di.components.*
+import com.danil.kleshchin.rss.di.components.DaggerFeedComponent
+import com.danil.kleshchin.rss.di.components.DaggerFeedsListComponent
+import com.danil.kleshchin.rss.di.components.DaggerSectionComponent
+import com.danil.kleshchin.rss.di.components.FeedComponent
+import com.danil.kleshchin.rss.di.components.FeedsListComponent
+import com.danil.kleshchin.rss.di.components.SectionComponent
 import com.danil.kleshchin.rss.di.modules.AppModule
 import com.danil.kleshchin.rss.di.modules.FeedModule
 import com.danil.kleshchin.rss.di.modules.FeedsListModule
@@ -16,6 +21,16 @@ class NYTimesRSSFeedsApp : Application() {
     private lateinit var sectionComponent: SectionComponent
     private lateinit var feedsListComponent: FeedsListComponent
     private lateinit var feedComponent: FeedComponent
+
+    companion object {
+        internal lateinit var INSTANCE: NYTimesRSSFeedsApp
+            private set
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        INSTANCE = this
+    }
 
     fun initSectionComponent(sectionNavigator: SectionNavigator) {
         sectionComponent = DaggerSectionComponent.builder()

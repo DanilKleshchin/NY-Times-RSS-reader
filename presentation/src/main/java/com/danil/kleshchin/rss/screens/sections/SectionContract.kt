@@ -12,7 +12,8 @@ interface SectionContract {
         fun showErrorMessage()
     }
 
-    interface Presenter: BasePresenter<View> {
+    interface Presenter : BasePresenter<View> {
+        fun initialize()
         fun onSectionSelected(section: SectionEntity)
     }
 }

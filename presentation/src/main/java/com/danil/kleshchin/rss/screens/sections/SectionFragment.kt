@@ -6,19 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
-import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.entities.section.SectionEntity
-import com.danil.kleshchin.rss.screens.feedslist.FeedsListFragment
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
 import javax.inject.Inject
 
 class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     SectionListAdapter.OnSectionClickListener {
-
-    private val ERROR_LOG_MESSAGE = "Section fragment wasn't attached."
 
     @Inject
     lateinit var sectionPresenter: SectionContract.Presenter
@@ -26,20 +22,22 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     private var _binding: FragmentSectionsBinding? = null
     private val binding get() = _binding!!
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        NYTimesRSSFeedsApp.INSTANCE.initSectionComponent(this)
+        NYTimesRSSFeedsApp.INSTANCE.getSectionComponent().inject(this)
+        sectionPresenter.onAttach()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSectionsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
         sectionPresenter.setView(this)
-        sectionPresenter.onAttach()
+        sectionPresenter.initialize()
+        return binding.root
     }
 
     override fun onDestroyView() {
@@ -49,8 +47,7 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     }
 
     override fun showSectionList(sectionList: List<SectionEntity>) {
-        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
-        binding.sectionListView.adapter = SectionListAdapter(sectionList, context, this)
+        binding.sectionListView.adapter = SectionListAdapter(sectionList, requireContext(), this)
     }
 
     override fun showLoadingView() {
@@ -66,22 +63,11 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
     }
 
     override fun showFeedView(section: SectionEntity) {
-        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
-        initFeedsListView(context, section)
+        val action = SectionFragmentDirections.actionSectionFragmentToFeedsListFragment(section)
+        findNavController().navigate(action)
     }
 
     override fun onSectionClick(section: SectionEntity) {
         sectionPresenter.onSectionSelected(section)
-    }
-
-    //TODO where should I init feed component?
-    private fun initFeedsListView(context: FragmentActivity, section: SectionEntity) {
-        val feedsListFragment = FeedsListFragment.newInstance(section)
-        (context.application as NYTimesRSSFeedsApp).initFeedsListComponent(feedsListFragment)
-        (context.application as NYTimesRSSFeedsApp).getFeedsListComponent().inject(feedsListFragment)
-        context.supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, feedsListFragment)
-            .commitNow()
     }
 }

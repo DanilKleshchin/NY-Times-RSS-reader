@@ -1,21 +1,19 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
-import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.feed.FeedMapper
 import com.danil.kleshchin.rss.entities.section.SectionEntity
-import com.danil.kleshchin.rss.screens.feed.FeedFragment
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
 import com.danil.kleshchin.rss.widgets.VerticalSpaceItemDecoration
 import javax.inject.Inject
@@ -23,6 +21,7 @@ import javax.inject.Inject
 class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator,
     FeedsListAdapter.OnFeedClickListener {
 
+    private val INSTANCE_STATE_PARAM_SECTION = "STATE_PARAM_SECTION"
     private val LIST_ITEMS_MARGIN = 40
 
     @Inject
@@ -32,18 +31,12 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
 
     private var _binding: FragmentFeedsListBinding? = null
     private val binding get() = _binding!!
+    private val args: FeedsListFragmentArgs by navArgs()
 
-    companion object {
-        private val KEY_SECTION = "KEY_SECTION"
-        private val INSTANCE_STATE_PARAM_SECTION = "STATE_PARAM_SECTION"
-
-        fun newInstance(section: SectionEntity): FeedsListFragment {
-            val feedFragment = FeedsListFragment()
-            val args = Bundle()
-            args.putSerializable(KEY_SECTION, section)
-            feedFragment.arguments = args
-            return feedFragment
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        NYTimesRSSFeedsApp.INSTANCE.initFeedsListComponent(this)
+        NYTimesRSSFeedsApp.INSTANCE.getFeedsListComponent().inject(this)
     }
 
     override fun onCreateView(
@@ -54,6 +47,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         initializeFragment(savedInstanceState)
 
         _binding = FragmentFeedsListBinding.inflate(inflater, container, false)
+        binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
         return binding.root
     }
 
@@ -62,14 +56,10 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         feedsListPresenter.setView(this)
         feedsListPresenter.onAttach()
         initPresenterForSection()
+        setBackPressedCallback()
 
         binding.backButton.setOnClickListener { finish() }
         binding.refreshView.setOnRefreshListener { feedsListPresenter.onRefreshSelected() }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        setBackPressedCallback()
     }
 
     override fun onDestroyView() {
@@ -105,8 +95,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     override fun showFeedList(feedList: List<Feed>, mapper: FeedMapper) {
         val currentTime = System.currentTimeMillis()
         val feedEntityList = mapper.transform(feedList, currentTime, resources)
-        binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
-        binding.feedListView.adapter = FeedsListAdapter(feedEntityList, requireActivity(), this)
+        binding.feedListView.adapter = FeedsListAdapter(feedEntityList, requireContext(), this)
     }
 
     override fun onFeedClick(feed: FeedEntity) {
@@ -114,7 +103,8 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     }
 
     override fun navigateToFeedView(feed: FeedEntity) {
-        initFeedView(requireActivity(), feed)
+        val action = FeedsListFragmentDirections.actionFeedsListFragmentToFeedFragment(feed)
+        findNavController().navigate(action)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -128,7 +118,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
                 finish()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun initializeFragment(savedInstanceState: Bundle?) {
@@ -136,32 +126,19 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
             getSection()
         } else ({
             savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
-        }) as SectionEntity?
+        }) as SectionEntity
     }
 
     private fun initPresenterForSection() {
         val section = getSection()
-        feedsListPresenter.initialize(section ?: throw NullPointerException("Section is null"))
+        feedsListPresenter.initialize(section)
     }
 
-    private fun getSection(): SectionEntity? {
-        return arguments?.getSerializable(KEY_SECTION) as SectionEntity?
-    }
-
-    private fun initFeedView(context: FragmentActivity, feed: FeedEntity) {
-        val feedFragment = FeedFragment.newInstance(feed)
-        (context.application as NYTimesRSSFeedsApp).initFeedComponent(feedFragment)
-        (context.application as NYTimesRSSFeedsApp).getFeedComponent().inject(feedFragment)
-        context.supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, feedFragment)
-            .commitNow()
+    private fun getSection(): SectionEntity {
+        return args.sectionArg
     }
 
     private fun finish() {
-        activity?.supportFragmentManager
-            ?.beginTransaction()
-            ?.remove(this)
-            ?.commitNow()
+        findNavController().popBackStack()
     }
 }

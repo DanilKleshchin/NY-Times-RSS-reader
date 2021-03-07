@@ -10,11 +10,12 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
-import com.danil.kleshchin.rss.screens.imagezoom.FeedImageZoomFragment
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
@@ -28,18 +29,10 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
+    private val args: FeedFragmentArgs by navArgs()
 
     companion object {
-        private val KEY_FEED = "KEY_FEED"
         private val INSTANCE_STATE_PARAM_FEED = "STATE_PARAM_FEED"
-
-        fun newInstance(feed: FeedEntity): FeedFragment {
-            val feedFragment = FeedFragment()
-            val args = Bundle()
-            args.putSerializable(KEY_FEED, feed)
-            feedFragment.arguments = args
-            return feedFragment
-        }
     }
 
     override fun onCreateView(
@@ -58,6 +51,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         feedPresenter.setView(this)
         feedPresenter.onAttach()
         initPresenterForSection()
+        setBackPressedCallback()
 
         binding.apply {
             pageUrl.setOnClickListener { feedPresenter.onReadFullArticleSelected(feed!!) }
@@ -70,7 +64,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
             }
             iconShare.setOnClickListener {
                 //todo
-                ShareCompat.IntentBuilder.from(activity!!)
+                ShareCompat.IntentBuilder.from(requireActivity())
                     .setType("text/plain")
                     .setChooserTitle(getString(R.string.read_full_article))
                     .setText(feed!!.feedPageUrl)
@@ -78,9 +72,13 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
             }
             binding.backButton.setOnClickListener { finish() }
             image.setOnClickListener {
-                //TODO send this action to presenter
                 if (feed?.thumbUrl?.isEmpty() == false) {
-                    initZoomImageView(activity!!, feed!!.iconUrl, feed!!.title)
+                    //TODO send this action to presenter
+                    val action = FeedFragmentDirections.actionFeedFragmentToFeedImageZoomFragment(
+                        feed!!.iconUrl,
+                        feed!!.title
+                    )
+                    findNavController().navigate(action)
                 }
             }
         }
@@ -88,7 +86,8 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        setBackPressedCallback()
+        NYTimesRSSFeedsApp.INSTANCE.initFeedComponent(this)
+        NYTimesRSSFeedsApp.INSTANCE.getFeedComponent().inject(this)
     }
 
     override fun onDestroyView() {
@@ -153,7 +152,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
                 finish()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun initializeFragment(savedInstanceState: Bundle?) {
@@ -170,25 +169,10 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
     }
 
     private fun getFeed(): FeedEntity {
-        return arguments?.getSerializable(KEY_FEED) as FeedEntity
-    }
-
-    private fun initZoomImageView(
-        context: FragmentActivity,
-        imageUrl: String,
-        toolbarTitle: String
-    ) {
-        val zoomFragment = FeedImageZoomFragment.newInstance(imageUrl, toolbarTitle)
-        context.supportFragmentManager
-            .beginTransaction()
-            .add(R.id.fragment_container, zoomFragment)
-            .commitNow()
+        return args.feedArg
     }
 
     private fun finish() {
-        activity?.supportFragmentManager
-            ?.beginTransaction()
-            ?.remove(this)
-            ?.commitNow()
+        findNavController().popBackStack()
     }
 }

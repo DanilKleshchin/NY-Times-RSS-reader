@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.databinding.FragmentImageZoomBinding
 import com.danil.kleshchin.rss.widgets.ZoomableImageView
 import com.squareup.picasso.Picasso
@@ -15,20 +17,7 @@ class FeedImageZoomFragment : Fragment() {
 
     private var _binding: FragmentImageZoomBinding? = null
     private val binding get() = _binding!!
-
-    companion object {
-        private val KEY_IMAGE_URL = "KEY_IMAGE_URL"
-        private val KEY_TOOLBAR_TITLE = "KEY_TOOLBAR_TITLE"
-
-        fun newInstance(imageUrl: String, toolbarTitle: String): FeedImageZoomFragment {
-            val feedFragment = FeedImageZoomFragment()
-            val args = Bundle()
-            args.putString(KEY_IMAGE_URL, imageUrl)
-            args.putString(KEY_TOOLBAR_TITLE, toolbarTitle)
-            feedFragment.arguments = args
-            return feedFragment
-        }
-    }
+    private val args: FeedImageZoomFragmentArgs by navArgs()
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -37,13 +26,12 @@ class FeedImageZoomFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentImageZoomBinding.inflate(inflater, container, false)
-
         setBackPressedCallback()
 
-        val imageUrl = arguments?.getString(KEY_IMAGE_URL)
+        val imageUrl = args.imageUrlArg
         Picasso.get().load(imageUrl).into(binding.image)
 
-        binding.feedTitle.text = arguments?.getString(KEY_TOOLBAR_TITLE)
+        binding.feedTitle.text = args.toolbarTitleArg
 
         binding.image.setOnSingleTapConfirmedListener(object :
             ZoomableImageView.OnSingleTapConfirmedListener {
@@ -69,13 +57,10 @@ class FeedImageZoomFragment : Fragment() {
                 finish()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun finish() {
-        activity?.supportFragmentManager
-            ?.beginTransaction()
-            ?.remove(this)
-            ?.commitNow()
+        findNavController().popBackStack()
     }
 }

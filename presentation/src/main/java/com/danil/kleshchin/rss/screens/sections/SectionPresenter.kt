@@ -11,7 +11,7 @@ class SectionPresenter(
     private val getSectionListUseCase: GetSectionListUseCase,
     private val sectionNavigator: SectionNavigator,
     private val sectionMapper: SectionMapper
-): SectionContract.Presenter {
+) : SectionContract.Presenter {
 
     private var sectionView: SectionContract.View? = null
     private var sectionList: List<SectionEntity> = emptyList()
@@ -22,6 +22,9 @@ class SectionPresenter(
 
     override fun onAttach() {
         sectionView?.showLoadingView()
+    }
+
+    override fun initialize() {
         executeGetSectionListUseCase()
     }
 

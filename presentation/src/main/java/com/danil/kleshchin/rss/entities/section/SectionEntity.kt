@@ -3,6 +3,7 @@ package com.danil.kleshchin.rss.entities.section
 import androidx.annotation.DrawableRes
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.domain.entity.Section
+import java.io.Serializable
 
 /**
  * Entity of [Section] modified for UI needs: added icon and display name
@@ -11,7 +12,7 @@ enum class SectionEntity(
     val id: Int,
     val displayName: String,
     @DrawableRes val iconId: Int
-) {
+) : Serializable {
     Arts(0, "Arts", R.drawable.ic_section_arts),
     Automobiles(1, "Automobiles", R.drawable.ic_section_automobiles),
     Books(2, "Books", R.drawable.ic_section_books),

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/section_fragment">
+
+    <fragment
+        android:id="@+id/section_fragment"
+        android:name="com.danil.kleshchin.rss.screens.sections.SectionFragment"
+        android:label="SectionFragment"
+        tools:layout="@layout/fragment_sections">
+        <action
+            android:id="@+id/action_section_fragment_to_feeds_list_fragment"
+            app:destination="@id/feeds_list_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feeds_list_fragment"
+        android:name="com.danil.kleshchin.rss.screens.feedslist.FeedsListFragment"
+        android:label="FeedsListFragment"
+        tools:layout="@layout/fragment_feeds_list" >
+        <argument
+            android:name="section_arg"
+            app:argType="com.danil.kleshchin.rss.entities.section.SectionEntity"/>
+        <action
+            android:id="@+id/action_feeds_list_fragment_to_feed_fragment"
+            app:destination="@id/feed_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/feed_fragment"
+        android:name="com.danil.kleshchin.rss.screens.feed.FeedFragment"
+        android:label="FeedFragment"
+        tools:layout="@layout/fragment_feed">
+        <argument
+            android:name="feed_arg"
+            app:argType="com.danil.kleshchin.rss.entities.feed.FeedEntity" />
+
+        <action
+            android:id="@+id/action_feed_fragment_to_feedImageZoomFragment"
+            app:destination="@id/feedImageZoomFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/feedImageZoomFragment"
+        android:name="com.danil.kleshchin.rss.screens.imagezoom.FeedImageZoomFragment"
+        android:label="FeedImageZoomFragment"
+        tools:layout="@layout/fragment_image_zoom">
+        <argument
+            android:name="image_url_arg"
+            app:argType="string" />
+        <argument
+            android:name="toolbar_title_arg"
+            app:argType="string" />
+    </fragment>
+
+</navigation>
