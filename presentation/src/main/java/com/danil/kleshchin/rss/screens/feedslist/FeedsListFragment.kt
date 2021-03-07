@@ -17,12 +17,13 @@ import com.danil.kleshchin.rss.entities.feed.FeedMapper
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feed.FeedFragment
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
+import com.danil.kleshchin.rss.widgets.VerticalSpaceItemDecoration
 import javax.inject.Inject
 
 class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator,
     FeedsListAdapter.OnFeedClickListener {
 
-    private val ERROR_LOG_MESSAGE = "Section fragment wasn't attached."
+    private val LIST_ITEMS_MARGIN = 40
 
     @Inject
     lateinit var feedsListPresenter: FeedsListContract.Presenter
@@ -104,6 +105,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     override fun showFeedList(feedList: List<Feed>, mapper: FeedMapper) {
         val currentTime = System.currentTimeMillis()
         val feedEntityList = mapper.transform(feedList, currentTime, resources)
+        binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
         binding.feedListView.adapter = FeedsListAdapter(feedEntityList, activity!!, this)
     }
 
@@ -112,8 +114,7 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
     }
 
     override fun navigateToFeedView(feed: FeedEntity) {
-        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
-        initFeedView(context, feed)
+        initFeedView(activity!!, feed)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
