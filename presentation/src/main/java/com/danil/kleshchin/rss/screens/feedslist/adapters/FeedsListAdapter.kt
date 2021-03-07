@@ -2,9 +2,9 @@ package com.danil.kleshchin.rss.screens.feedslist.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.ItemFeedListBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.squareup.picasso.Picasso
@@ -59,9 +59,10 @@ class FeedsListAdapter(
                 datetime.text = feed.timeElapsed
 
                 if (feed.thumbUrl.isEmpty()) {
-                    thumb.setImageResource(R.drawable.ic_empty_feed_icon)
+                    thumb.visibility = View.GONE
                 } else {
-                    Picasso.get().load(feed.thumbUrl).into(thumb)
+                    thumb.visibility = View.VISIBLE
+                    Picasso.get().load(feed.iconUrl).into(thumb)
                 }
 
                 root.setOnClickListener { clickListener.onFeedClick(feed) }

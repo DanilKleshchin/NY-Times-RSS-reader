@@ -77,7 +77,12 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
                     .startChooser()
             }
             binding.backButton.setOnClickListener { finish() }
-            image.setOnClickListener { initZoomImageView(activity!!, feed!!.iconUrl, feed!!.title) }
+            image.setOnClickListener {
+                //TODO send this action to presenter
+                if (feed?.thumbUrl?.isEmpty() == false) {
+                    initZoomImageView(activity!!, feed!!.iconUrl, feed!!.title)
+                }
+            }
         }
     }
 
@@ -124,7 +129,9 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
             description.text = feed.description
 
             if (feed.thumbUrl.isEmpty()) {
-                image.setImageResource(R.drawable.ic_empty_feed_icon)
+                image.visibility = View.GONE
+                imageCaption.visibility = View.GONE
+                imageCopyright.visibility = View.GONE
             } else {
                 Picasso.get().load(feed.iconUrl).into(image)
             }
