@@ -1,14 +1,16 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
 import com.danil.kleshchin.rss.BasePresenter
+import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
+import com.danil.kleshchin.rss.entities.feed.FeedMapper
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 
 interface FeedsListContract {
 
     interface View {
         fun showSectionName(sectionName: String)
-        fun showFeedList(feedList: List<FeedEntity>)
+        fun showFeedList(feedList: List<Feed>, mapper: FeedMapper)
         fun showLoadingView()
         fun hideLoadingView()
         fun showErrorMessage()

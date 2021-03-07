@@ -36,6 +36,7 @@ dependencies {
     implementation project(':domain')
     implementation project(':data')
 
+    implementation 'com.github.DanilKleshchin:android-elapsed-time:1.1.1'
     //Material design
     implementation "com.google.android.material:material:$material_design_version"
     implementation "androidx.cardview:cardview:$cardview_version"

@@ -1,5 +1,6 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
+import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.feed.FeedMapper
@@ -16,7 +17,7 @@ class FeedsListPresenter(
 ) : FeedsListContract.Presenter {
 
     private var feedsListView: FeedsListContract.View? = null
-    private var feedList: List<FeedEntity> = emptyList()
+    private var feedList: List<Feed> = emptyList()
 
     private lateinit var section: SectionEntity
 
@@ -52,12 +53,10 @@ class FeedsListPresenter(
         val params = GetFeedBySectionUseCase.Params(section.toSection().name)
         uiScope.launch(Dispatchers.Main) {
             withContext(Dispatchers.IO) {
-                val currentTime = System.currentTimeMillis()
-                feedList =
-                    feedMapper.transform(getFeedBySectionUseCase.execute(params), currentTime)
+                feedList = getFeedBySectionUseCase.execute(params)
                 withContext(Dispatchers.Main) {
                     feedsListView?.let {
-                        it.showFeedList(feedList)
+                        it.showFeedList(feedList, feedMapper)
                         it.hideLoadingView()
                     }
                 }

@@ -11,7 +11,9 @@ import androidx.fragment.app.FragmentActivity
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
+import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
+import com.danil.kleshchin.rss.entities.feed.FeedMapper
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feed.FeedFragment
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
@@ -99,9 +101,10 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         binding.sectionName.text = sectionName
     }
 
-    override fun showFeedList(feedList: List<FeedEntity>) {
-        val context = activity ?: throw  IllegalStateException(ERROR_LOG_MESSAGE)
-        binding.feedListView.adapter = FeedsListAdapter(feedList, context, this)
+    override fun showFeedList(feedList: List<Feed>, mapper: FeedMapper) {
+        val currentTime = System.currentTimeMillis()
+        val feedEntityList = mapper.transform(feedList, currentTime, resources)
+        binding.feedListView.adapter = FeedsListAdapter(feedEntityList, activity!!, this)
     }
 
     override fun onFeedClick(feed: FeedEntity) {

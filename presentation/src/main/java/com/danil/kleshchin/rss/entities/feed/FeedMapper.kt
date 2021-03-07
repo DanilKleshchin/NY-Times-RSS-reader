@@ -1,21 +1,23 @@
 package com.danil.kleshchin.rss.entities.feed
 
+import android.content.res.Resources
+import com.danil.kleshchin.elapsed_time.getDateTimeFromTimestamp
+import com.danil.kleshchin.elapsed_time.getElapsedTimeString
+import com.danil.kleshchin.elapsed_time.pattern_1
 import com.danil.kleshchin.rss.domain.entity.Feed
-import com.danil.kleshchin.rss.utils.getDateTimeFromTimeStamp
-import com.danil.kleshchin.rss.utils.getElapsedTimeFromCurrentTime
 import javax.inject.Inject
 
 class FeedMapper @Inject constructor() {
 
-    fun transform(feed: Feed, currentTime: Long): FeedEntity {
+    fun transform(feed: Feed, currentTime: Long, resources: Resources): FeedEntity {
         return FeedEntity(
             title = feed.title,
             description = feed.description,
             feedPageUrl = feed.feedPageUrl,
             author = feed.author,
-            timeElapsed = getElapsedTimeFromCurrentTime(feed.dateCreated, currentTime),
-            dateCreated = getDateTimeFromTimeStamp(feed.dateCreated),
-            dateUpdated = getDateTimeFromTimeStamp(feed.dateUpdated),
+            timeElapsed = getElapsedTimeString(feed.dateCreated, currentTime, resources),
+            dateCreated = getDateTimeFromTimestamp(feed.dateCreated, pattern_1),
+            dateUpdated = getDateTimeFromTimestamp(feed.dateUpdated, pattern_1),
             kicker = feed.kicker,
             thumbUrl = feed.thumbUrl,
             iconUrl = feed.iconUrl,
