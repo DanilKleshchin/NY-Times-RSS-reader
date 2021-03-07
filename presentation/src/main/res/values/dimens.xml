@@ -19,4 +19,12 @@
     <dimen name="feed_list_item_margin">20dp</dimen>
     <dimen name="section_icon_size">60dp</dimen>
     <dimen name="back_button_size">30dp</dimen>
+    <dimen name="divider_size">1dp</dimen>
+    <dimen name="feed_image_height">300dp</dimen>
+    <dimen name="star_icon_size">50dp</dimen>
+    <dimen name="share_icon_size">50dp</dimen>
+    <dimen name="elevation_value">3dp</dimen>
+    <dimen name="feed_thumb_width">300dp</dimen>
+    <dimen name="feed_thumb_height">200dp</dimen>
+    <dimen name="author_width">150dp</dimen>
 </resources>
