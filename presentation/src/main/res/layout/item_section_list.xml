@@ -16,7 +16,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         card_view:cardBackgroundColor="@color/colorItemBackground"
         app:cardUseCompatPadding="true"
-        app:elevation="0dp"
+        app:elevation="2dp"
         card_view:cardCornerRadius="@dimen/cardview_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_light"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="@dimen/text_size_secondary"
+                android:textSize="@dimen/text_size_primary"
                 android:layout_marginTop="@dimen/margin_primary_x"
                 android:gravity="center"
                 app:layout_constraintStart_toStartOf="parent"

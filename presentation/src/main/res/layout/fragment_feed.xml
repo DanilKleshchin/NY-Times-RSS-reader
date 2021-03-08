@@ -5,47 +5,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/feed_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/colorToolBar"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/toolbar_padding"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/back_button"
-                android:layout_width="@dimen/back_button_size"
-                android:layout_height="@dimen/back_button_size"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"
-                android:src="@drawable/back_arrow"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="@null"/>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorToolBar"
+                app:contentInsetStart="0dp">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:maxLines="1"
-                android:text="@string/article"
-                android:layout_marginStart="@dimen/margin_big"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_primary"
-                android:fontFamily="@font/ubuntu_bold"/>
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="@dimen/back_button_size"
+                    android:layout_height="@dimen/back_button_size"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="@dimen/margin_primary_x"
+                    android:src="@drawable/back_arrow"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="@null"/>
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:text="@string/article"
+                    android:layout_marginStart="@dimen/margin_big"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_primary"
+                    android:fontFamily="@font/ubuntu_bold"/>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
             android:id="@+id/title"
