@@ -1,11 +1,10 @@
 package com.danil.kleshchin.rss.di.components
 
-import com.danil.kleshchin.rss.di.modules.SectionModule
-import com.danil.kleshchin.rss.screens.sections.SectionFragment
+import com.danil.kleshchin.rss.screens.sections.SectionViewModel
 import dagger.Component
 
-@Component(modules = [SectionModule::class])
+@Component
 interface SectionComponent {
 
-    fun inject(sectionFragment: SectionFragment)
+    fun inject(sectionViewModel: SectionViewModel)
 }

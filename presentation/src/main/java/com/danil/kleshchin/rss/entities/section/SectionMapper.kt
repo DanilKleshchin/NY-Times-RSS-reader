@@ -3,6 +3,7 @@ package com.danil.kleshchin.rss.entities.section
 import com.danil.kleshchin.rss.domain.entity.Section
 import javax.inject.Inject
 
+
 class SectionMapper @Inject constructor() {
 
     fun transform(sectionList: List<Section>): List<SectionEntity> {

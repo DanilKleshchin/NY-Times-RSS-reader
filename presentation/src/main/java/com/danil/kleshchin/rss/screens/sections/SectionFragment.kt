@@ -1,32 +1,27 @@
 package com.danil.kleshchin.rss.screens.sections
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
-import javax.inject.Inject
 
-class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
-    SectionListAdapter.OnSectionClickListener {
+class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
 
-    @Inject
-    lateinit var sectionPresenter: SectionContract.Presenter
+    private val viewModel: SectionViewModel by viewModels()
 
     private var _binding: FragmentSectionsBinding? = null
     private val binding get() = _binding!!
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        NYTimesRSSFeedsApp.INSTANCE.initSectionComponent(this)
-        NYTimesRSSFeedsApp.INSTANCE.getSectionComponent().inject(this)
-        sectionPresenter.onAttach()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initViewModel()
     }
 
     override fun onCreateView(
@@ -35,39 +30,31 @@ class SectionFragment : Fragment(), SectionContract.View, SectionNavigator,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSectionsBinding.inflate(inflater, container, false)
-        sectionPresenter.setView(this)
-        sectionPresenter.initialize()
+        subscribeUi()
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        sectionPresenter.onDetach()
     }
 
-    override fun showSectionList(sectionList: List<SectionEntity>) {
-        binding.sectionListView.adapter = SectionListAdapter(sectionList, requireContext(), this)
+    override fun onSectionClick(section: SectionEntity) {
+        navigateToFeedScreen(section)
     }
 
-    override fun showLoadingView() {
-
+    private fun subscribeUi() {
+        viewModel.sections.observe(viewLifecycleOwner) { sections ->
+            binding.sectionListView.adapter = SectionListAdapter(sections, requireContext(), this)
+        }
     }
 
-    override fun hideLoadingView() {
-
-    }
-
-    override fun showErrorMessage() {
-
-    }
-
-    override fun showFeedView(section: SectionEntity) {
+    private fun navigateToFeedScreen(section: SectionEntity) {
         val action = SectionFragmentDirections.actionSectionFragmentToFeedsListFragment(section)
         findNavController().navigate(action)
     }
 
-    override fun onSectionClick(section: SectionEntity) {
-        sectionPresenter.onSectionSelected(section)
+    private fun initViewModel() {
+        NYTimesRSSFeedsApp.INSTANCE.sectionComponent.inject(viewModel)
     }
 }

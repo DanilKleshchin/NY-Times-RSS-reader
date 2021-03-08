@@ -10,17 +10,17 @@ import com.danil.kleshchin.rss.di.components.SectionComponent
 import com.danil.kleshchin.rss.di.modules.AppModule
 import com.danil.kleshchin.rss.di.modules.FeedModule
 import com.danil.kleshchin.rss.di.modules.FeedsListModule
-import com.danil.kleshchin.rss.di.modules.SectionModule
 import com.danil.kleshchin.rss.screens.feed.FeedNavigator
 import com.danil.kleshchin.rss.screens.feedslist.FeedsListNavigator
-import com.danil.kleshchin.rss.screens.sections.SectionNavigator
 import kotlinx.coroutines.Dispatchers
 
 class NYTimesRSSFeedsApp : Application() {
 
-    private lateinit var sectionComponent: SectionComponent
     private lateinit var feedsListComponent: FeedsListComponent
     private lateinit var feedComponent: FeedComponent
+
+    val sectionComponent: SectionComponent
+        get() = DaggerSectionComponent.builder().build()
 
     companion object {
         internal lateinit var INSTANCE: NYTimesRSSFeedsApp
@@ -30,12 +30,6 @@ class NYTimesRSSFeedsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         INSTANCE = this
-    }
-
-    fun initSectionComponent(sectionNavigator: SectionNavigator) {
-        sectionComponent = DaggerSectionComponent.builder()
-            .sectionModule(SectionModule(sectionNavigator))
-            .build()
     }
 
     fun initFeedsListComponent(feedsListNavigator: FeedsListNavigator) {
@@ -51,11 +45,7 @@ class NYTimesRSSFeedsApp : Application() {
             .build()
     }
 
-    fun getSectionComponent() = sectionComponent
-
     fun getFeedsListComponent() = feedsListComponent
 
     fun getFeedComponent() = feedComponent
-
-    //check this for date and time displaying https://www.rockandnull.com/java-time-android/
 }
