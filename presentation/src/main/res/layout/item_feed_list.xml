@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/margin_big"
         android:background="@color/colorOtherItemBackground"
         android:contentDescription="@null"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@id/description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
