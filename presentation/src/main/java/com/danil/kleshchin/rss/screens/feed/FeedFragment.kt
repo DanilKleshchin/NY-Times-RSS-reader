@@ -1,8 +1,5 @@
 package com.danil.kleshchin.rss.screens.feed
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,26 +7,22 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.squareup.picasso.Picasso
-import javax.inject.Inject
 
 
-class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
+class FeedFragment : Fragment() {
 
-    @Inject
-    lateinit var feedPresenter: FeedContract.Presenter
-
-    private var feed: FeedEntity? = null
+    private val viewModel: FeedViewModel by viewModels()
+    private val args: FeedFragmentArgs by navArgs()
 
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
-    private val args: FeedFragmentArgs by navArgs()
 
     companion object {
         private val INSTANCE_STATE_PARAM_FEED = "STATE_PARAM_FEED"
@@ -40,7 +33,7 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initializeFragment(savedInstanceState)
+        init(savedInstanceState)
 
         _binding = FragmentFeedBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,75 +41,24 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        feedPresenter.setView(this)
-        feedPresenter.onAttach()
-        initPresenterForSection()
         setBackPressedCallback()
+        showFeed(args.feedArg)
 
         binding.apply {
-            pageUrl.setOnClickListener { feedPresenter.onReadFullArticleSelected(feed!!) }
-            iconStar.setOnClickListener {
-                //todo
-                val url = feed!!.feedPageUrl
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(url)
-                startActivity(i)
-            }
-            iconShare.setOnClickListener {
-                //todo
-                ShareCompat.IntentBuilder.from(requireActivity())
-                    .setType("text/plain")
-                    .setChooserTitle(getString(R.string.read_full_article))
-                    .setText(feed!!.feedPageUrl)
-                    .startChooser()
-            }
-            binding.backButton.setOnClickListener { finish() }
-            image.setOnClickListener {
-                if (feed?.thumbUrl?.isEmpty() == false) {
-                    //TODO send this action to presenter
-                    val action = FeedFragmentDirections.actionFeedFragmentToFeedImageZoomFragment(
-                        feed!!.iconUrl,
-                        feed!!.title
-                    )
-                    findNavController().navigate(action)
-                }
-            }
+            pageUrl.setOnClickListener { showWebPage() }
+            iconStar.setOnClickListener { viewModel.addFeedToFavourites() }
+            iconShare.setOnClickListener { createShareIntent() }
+            backButton.setOnClickListener { finish() }
+            image.setOnClickListener { navigateToZoomImageScreen() }
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        NYTimesRSSFeedsApp.INSTANCE.initFeedComponent(this)
-        NYTimesRSSFeedsApp.INSTANCE.getFeedComponent().inject(this)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        feedPresenter.onDetach()
     }
 
-    override fun showLoadingView() {
-
-    }
-
-    override fun hideLoadingView() {
-
-    }
-
-    override fun showRetry() {
-
-    }
-
-    override fun hideRetry() {
-
-    }
-
-    override fun showErrorMessage() {
-
-    }
-
-    override fun showFeed(feed: FeedEntity) {
+    private fun showFeed(feed: FeedEntity) {
         binding.apply {
             title.text = feed.title
             kicker.text = feed.kicker
@@ -137,12 +79,32 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         }
     }
 
-    override fun showWebPage(url: String) {
+    private fun createShareIntent() {
+        ShareCompat.IntentBuilder.from(requireActivity())
+            .setType("text/plain")
+            .setChooserTitle(getString(R.string.read_full_article))
+            .setText(viewModel.feed.feedPageUrl)
+            .startChooser()
+    }
 
+    private fun showWebPage() {
+        //Todo use custom tabs for this
+    }
+
+    private fun navigateToZoomImageScreen() {
+        viewModel.feed.apply {
+            if (thumbUrl.isNotEmpty()) {
+                val action = FeedFragmentDirections.actionFeedFragmentToFeedImageZoomFragment(
+                    iconUrl,
+                    title
+                )
+                findNavController().navigate(action)
+            }
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putSerializable(INSTANCE_STATE_PARAM_FEED, feed)
+        outState.putSerializable(INSTANCE_STATE_PARAM_FEED, viewModel.feed)
         super.onSaveInstanceState(outState)
     }
 
@@ -155,21 +117,12 @@ class FeedFragment : Fragment(), FeedContract.View, FeedNavigator {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
-    private fun initializeFragment(savedInstanceState: Bundle?) {
-        feed = if (savedInstanceState == null) {
-            getFeed()
+    private fun init(savedInstanceState: Bundle?) {
+        viewModel.feed = if (savedInstanceState == null) {
+            args.feedArg
         } else {
             savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_FEED) as FeedEntity
         }
-    }
-
-    private fun initPresenterForSection() {
-        val feed = getFeed()
-        feedPresenter.initialize(feed)
-    }
-
-    private fun getFeed(): FeedEntity {
-        return args.feedArg
     }
 
     private fun finish() {
