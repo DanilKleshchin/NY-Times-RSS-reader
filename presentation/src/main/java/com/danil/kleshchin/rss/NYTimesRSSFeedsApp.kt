@@ -7,15 +7,18 @@ import com.danil.kleshchin.rss.di.components.FeedsListComponent
 import com.danil.kleshchin.rss.di.components.SectionComponent
 import com.danil.kleshchin.rss.di.modules.AppModule
 import com.danil.kleshchin.rss.di.modules.FeedsListModule
-import com.danil.kleshchin.rss.screens.feedslist.FeedsListNavigator
 import kotlinx.coroutines.Dispatchers
 
 class NYTimesRSSFeedsApp : Application() {
 
-    private lateinit var feedsListComponent: FeedsListComponent
-
     val sectionComponent: SectionComponent
         get() = DaggerSectionComponent.builder().build()
+
+    val feedsListComponent: FeedsListComponent
+        get() = DaggerFeedsListComponent.builder()
+            .appModule(AppModule(Dispatchers))
+            .feedsListModule(FeedsListModule())
+            .build()
 
     companion object {
         internal lateinit var INSTANCE: NYTimesRSSFeedsApp
@@ -26,13 +29,4 @@ class NYTimesRSSFeedsApp : Application() {
         super.onCreate()
         INSTANCE = this
     }
-
-    fun initFeedsListComponent(feedsListNavigator: FeedsListNavigator) {
-        feedsListComponent = DaggerFeedsListComponent.builder()
-            .appModule(AppModule(Dispatchers))
-            .feedsListModule(FeedsListModule(feedsListNavigator))
-            .build()
-    }
-
-    fun getFeedsListComponent() = feedsListComponent
 }

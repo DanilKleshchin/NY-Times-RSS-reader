@@ -6,12 +6,7 @@ import com.danil.kleshchin.rss.data.feeds.datasource.network.FeedApiToDomainMapp
 import com.danil.kleshchin.rss.data.feeds.datasource.network.FeedRemoteDataSource
 import com.danil.kleshchin.rss.data.feeds.datasource.network.baseUrl
 import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
-import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
 import com.danil.kleshchin.rss.domain.repository.FeedRepository
-import com.danil.kleshchin.rss.entities.feed.FeedMapper
-import com.danil.kleshchin.rss.screens.feedslist.FeedsListContract
-import com.danil.kleshchin.rss.screens.feedslist.FeedsListNavigator
-import com.danil.kleshchin.rss.screens.feedslist.FeedsListPresenter
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -19,14 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-class FeedsListModule(private val feedsListNavigator: FeedsListNavigator) {
-
-    @Provides
-    fun provideFeedPresenter(
-        getFeedBySectionUseCase: GetFeedBySectionUseCase,
-        feedMapper: FeedMapper
-    ): FeedsListContract.Presenter =
-        FeedsListPresenter(getFeedBySectionUseCase, feedMapper, feedsListNavigator)
+class FeedsListModule {
 
     @Provides
     fun provideFeedRepository(
