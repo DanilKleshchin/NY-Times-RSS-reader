@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.databinding.FragmentImageZoomBinding
 import com.danil.kleshchin.rss.widgets.ZoomableImageView
-import com.squareup.picasso.Picasso
 
 class FeedImageZoomFragment : Fragment() {
 
@@ -25,24 +24,22 @@ class FeedImageZoomFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentImageZoomBinding.inflate(inflater, container, false)
+        _binding = FragmentImageZoomBinding.inflate(inflater, container, false).also {
+            it.imageUrl = args.imageUrlArg
+            it.toolbarTitle = args.toolbarTitleArg
+            it.setClickListener { finish() }
+            it.image.setOnSingleTapConfirmedListener(object :
+                ZoomableImageView.OnSingleTapConfirmedListener {
+                override fun onSingleTapConfirmed() {
+                    setToolbarVisibility()
+                }
+            })
+        }
         setBackPressedCallback()
-
-        val imageUrl = args.imageUrlArg
-        Picasso.get().load(imageUrl).into(binding.image)
-
-        binding.feedTitle.text = args.toolbarTitleArg
-
-        binding.image.setOnSingleTapConfirmedListener(object :
-            ZoomableImageView.OnSingleTapConfirmedListener {
-            override fun onSingleTapConfirmed() {
-                setToolbarVisibility()
-            }
-        })
-        binding.backButton.setOnClickListener { finish() }
         return binding.root
     }
 
+    //TODO do this with animation
     private fun setToolbarVisibility() {
         binding.feedToolbar.visibility = if (binding.feedToolbar.visibility == View.VISIBLE) {
             View.INVISIBLE

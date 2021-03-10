@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
-import com.squareup.picasso.Picasso
 
 
 class FeedFragment : Fragment() {
@@ -45,8 +44,8 @@ class FeedFragment : Fragment() {
         showFeed(args.feedArg)
 
         binding.apply {
+            feedViewModel = viewModel
             pageUrl.setOnClickListener { showWebPage() }
-            iconStar.setOnClickListener { viewModel.addFeedToFavourites() }
             iconShare.setOnClickListener { createShareIntent() }
             backButton.setOnClickListener { finish() }
             image.setOnClickListener { navigateToZoomImageScreen() }
@@ -60,22 +59,9 @@ class FeedFragment : Fragment() {
 
     private fun showFeed(feed: FeedEntity) {
         binding.apply {
-            title.text = feed.title
-            kicker.text = feed.kicker
-            author.text = feed.author
-            dateCreated.text = getString(R.string.date_created, feed.dateCreated)
+            this.feed = feed
+            dateCreated.text = getString(R.string.date_created, feed.dateCreated) //TODO check this - how to move to xml
             dateUpdated.text = getString(R.string.date_updated, feed.dateUpdated)
-            imageCaption.text = feed.iconCaption
-            imageCopyright.text = feed.iconCopyright
-            description.text = feed.description
-
-            if (feed.thumbUrl.isEmpty()) {
-                image.visibility = View.GONE
-                imageCaption.visibility = View.GONE
-                imageCopyright.visibility = View.GONE
-            } else {
-                Picasso.get().load(feed.iconUrl).into(image)
-            }
         }
     }
 

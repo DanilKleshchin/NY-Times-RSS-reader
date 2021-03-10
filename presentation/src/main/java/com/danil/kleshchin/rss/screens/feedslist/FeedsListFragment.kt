@@ -46,7 +46,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         _binding = FragmentFeedsListBinding.inflate(inflater, container, false)
 
         init(savedInstanceState)
-        showLoadingView()
+        changeLoadingViewVisibility(true)
         loadFeedsList()
 
         binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
@@ -58,9 +58,9 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         setBackPressedCallback()
 
         binding.apply {
-            backButton.setOnClickListener { finish() }
+            section = viewModel.section
+            setClickListener { finish() }
             refreshView.setOnRefreshListener { loadFeedsList() }
-            sectionName.text = viewModel.section.displayName
         }
     }
 
@@ -73,32 +73,20 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         navigateToFeedScreen(feed)
     }
 
-    fun showLoadingView() {
-        binding.refreshView.isRefreshing = true
-    }
-
-    fun hideLoadingView() {
-        binding.refreshView.isRefreshing = false
-    }
-
-    fun showRetry() {
+    private fun changeRetryViewVisibility(isVisible: Boolean) {
         //TODO do it XML
     }
 
-    fun hideRetry() {
-        //TODO do it XML
-    }
-
-    fun showErrorMessage() {
-        //TODO do it XML
+    private fun changeLoadingViewVisibility(isVisible: Boolean) {
+        binding.refreshView.isRefreshing = isVisible
     }
 
     private fun loadFeedsList() {
         loadFeedsListJob?.cancel()
         loadFeedsListJob = lifecycleScope.launch {
             viewModel.loadFeedsList().observe(viewLifecycleOwner) { feeds ->
-                hideLoadingView()
-                showFeedList(feeds, FeedMapper())
+                changeLoadingViewVisibility(false)
+                showFeedList(feeds, FeedMapper()) //TODO mapper
             }
         }
     }
@@ -123,8 +111,8 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         viewModel.section = if (savedInstanceState == null) {
             args.sectionArg
         } else (
-            savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
-        ) as SectionEntity
+                savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
+                ) as SectionEntity
     }
 
     private fun setBackPressedCallback() {

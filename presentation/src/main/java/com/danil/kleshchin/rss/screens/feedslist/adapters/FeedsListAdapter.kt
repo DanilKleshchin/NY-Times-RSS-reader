@@ -2,7 +2,6 @@ package com.danil.kleshchin.rss.screens.feedslist.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.danil.kleshchin.rss.databinding.ItemFeedListBinding
@@ -45,27 +44,16 @@ class FeedsListAdapter(
 
     class FeedListViewHolder(
         private val binding: ItemFeedListBinding,
-        private val clickListener: OnFeedClickListener
+        private val feedClickListener: OnFeedClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun getBinding() = binding
 
         fun bind(feed: FeedEntity) {
             binding.apply {
-                title.text = feed.title
-                description.text = feed.description
-                author.text = feed.author
-
-                datetime.text = feed.timeElapsed
-
-                if (feed.thumbUrl.isEmpty()) {
-                    thumb.visibility = View.GONE
-                } else {
-                    thumb.visibility = View.VISIBLE
-                    Picasso.get().load(feed.iconUrl).into(thumb)
-                }
-
-                root.setOnClickListener { clickListener.onFeedClick(feed) }
+                this.feed = feed
+                setClickListener { feedClickListener.onFeedClick(feed) }
+                //TODO share and star click listeners android:onClick="@{stateViewModel::onItemClick}"  android:onClick="@{() -> viewModel.testLoginModuleClicked()}"
             }
         }
     }

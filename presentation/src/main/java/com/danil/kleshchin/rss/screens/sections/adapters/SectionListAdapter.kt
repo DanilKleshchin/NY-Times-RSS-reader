@@ -36,14 +36,13 @@ class SectionListAdapter(
 
     class SectionListViewHolder(
         private val binding: ItemSectionListBinding,
-        private val clickListener: OnSectionClickListener
+        private val sectionClickListener: OnSectionClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(section: SectionEntity) {
             binding.apply {
-                sectionName.text = section.displayName
-                sectionIcon.setImageResource(section.iconId)
-                container.setOnClickListener { clickListener.onSectionClick(section) }
+                this.section = section
+                setClickListener { sectionClickListener.onSectionClick(section) }
             }
         }
     }
