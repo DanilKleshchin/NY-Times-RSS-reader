@@ -1,5 +1,6 @@
 package com.danil.kleshchin.rss.screens.sections
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
 
 class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
+
+    private val SPANS_COUNT_PORTRAIT = 3
+    private val SPANS_COUNT_LANDSCAPE = 5
 
     private val viewModel: SectionViewModel by viewModels()
 
@@ -30,6 +36,7 @@ class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSectionsBinding.inflate(inflater, container, false)
+        setUpSectionRecyclerView()
         subscribeUi()
         return binding.root
     }
@@ -47,6 +54,17 @@ class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
         viewModel.sections.observe(viewLifecycleOwner) { sections ->
             binding.sectionListView.adapter = SectionListAdapter(sections, requireContext(), this)
         }
+    }
+
+    private fun setUpSectionRecyclerView() {
+        val orientation = this.resources.configuration.orientation
+        val spansCount = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            SPANS_COUNT_PORTRAIT
+        } else {
+            SPANS_COUNT_LANDSCAPE
+        }
+        binding.sectionListView.layoutManager =
+            GridLayoutManager(requireContext(), spansCount, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun navigateToFeedScreen(section: SectionEntity) {

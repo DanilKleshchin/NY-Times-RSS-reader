@@ -18,5 +18,5 @@ fun bindLoadImage(view: View, imageUrl: String) {
 
 @BindingAdapter("load_image")
 fun bindLoadImage(view: View, @DrawableRes imageId: Int) {
-    Picasso.get().load(imageId).into(view as ImageView)
+    (view as ImageView).setImageResource(imageId)
 }
