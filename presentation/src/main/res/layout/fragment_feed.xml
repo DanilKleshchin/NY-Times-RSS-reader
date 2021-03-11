@@ -218,6 +218,7 @@
                 android:paddingEnd="@dimen/margin_primary_xx"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="@dimen/text_size_secondary"
+                android:text="@{feed.description}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_copyright"
