@@ -59,7 +59,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
 
         binding.apply {
             section = viewModel.section
-            setClickListener { finish() }
+            setClickListener { navigateBack() }
             refreshView.setOnRefreshListener { loadFeedsList() }
         }
     }
@@ -118,13 +118,13 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     private fun setBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                finish()
+                navigateBack()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
-    private fun finish() {
+    private fun navigateBack() {
         findNavController().popBackStack()
     }
 }

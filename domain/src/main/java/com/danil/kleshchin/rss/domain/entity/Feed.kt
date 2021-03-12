@@ -3,7 +3,7 @@ package com.danil.kleshchin.rss.domain.entity
 data class Feed(
     val title: String,
     val description: String,
-    val feedPageUrl: String,
+    val pageUrl: String,
     val author: String,
     val dateCreated: Long,
     val dateUpdated: Long,

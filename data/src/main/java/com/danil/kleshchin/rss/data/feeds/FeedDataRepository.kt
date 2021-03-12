@@ -19,7 +19,7 @@ class FeedDataRepository(
             val apiKey = BuildConfig.API_KEY
             mapper.transform(
                 remoteDataSource.getTopStoriesBySection(
-                    sectionName.toLowerCase(), //TODO remove this when section be moved to DB
+                    sectionName.toLowerCase(),
                     apiKey
                 )
             )

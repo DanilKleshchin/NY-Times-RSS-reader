@@ -7,6 +7,5 @@ import dagger.Component
 
 @Component(modules = [AppModule::class, FeedsListModule::class])
 interface FeedsListComponent {
-
     fun inject(feedsListViewModel: FeedsListViewModel)
 }

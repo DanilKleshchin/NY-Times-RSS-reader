@@ -20,7 +20,7 @@ class FeedApiToDomainMapper @Inject constructor() {
                 Feed(
                     title = result.title,
                     description = result.abstract,
-                    feedPageUrl = result.url,
+                    pageUrl = result.url,
                     author = result.byline,
                     dateCreated = getTimeStampFromDateTime(result.dateCreated),
                     dateUpdated = getTimeStampFromDateTime(result.dateUpdated),

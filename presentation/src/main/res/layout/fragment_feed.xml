@@ -11,11 +11,7 @@
             type="android.view.View.OnClickListener"/>
 
         <variable
-            name="feed"
-            type="com.danil.kleshchin.rss.entities.feed.FeedEntity" />
-
-        <variable
-            name="feedViewModel"
+            name="viewModel"
             type="com.danil.kleshchin.rss.screens.feed.FeedViewModel" />
     </data>
 
@@ -82,7 +78,7 @@
                 android:includeFontPadding="false"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="@dimen/text_size_primary"
-                android:text="@{feed.title}"
+                android:text="@{viewModel.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/feed_toolbar"
@@ -109,8 +105,8 @@
                 android:includeFontPadding="false"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="@dimen/text_size_small"
-                android:text="@{feed.kicker}"
-                android:visibility="@{feed.kicker.isEmpty() ? View.GONE : View.VISIBLE }"
+                android:text="@{viewModel.kicker}"
+                android:visibility="@{viewModel.kicker.isEmpty() ? View.GONE : View.VISIBLE }"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/top_divider"
                 tools:text="Best Sellers"
@@ -127,7 +123,7 @@
                 android:paddingBottom="@dimen/margin_small"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="@dimen/text_size_secondary"
-                android:text="@{feed.author}"
+                android:text="@{viewModel.author}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/kicker"
                 tools:text="By Jesse McKinley and Luis Ferré-Sadurní" />
@@ -142,6 +138,7 @@
                 android:paddingBottom="@dimen/margin_small"
                 android:textColor="@color/colorTextSecondary"
                 android:textSize="@dimen/text_size_small"
+                android:text="@{viewModel.dateCreated}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/author"
                 tools:text="Published Fri, 01 Jan 2021 10:00:15" />
@@ -156,6 +153,7 @@
                 android:paddingBottom="@dimen/margin_small"
                 android:textColor="@color/colorTextSecondary"
                 android:textSize="@dimen/text_size_small"
+                android:text="@{viewModel.dateUpdated}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/date_created"
                 tools:text="Updated Fri, 01 Jan 2021 10:00:15" />
@@ -171,7 +169,7 @@
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                app:load_image="@{feed.iconUrl}"
+                app:load_image="@{viewModel.iconUrl}"
                 app:layout_constraintTop_toBottomOf="@id/date_updated"
                 tools:src="@drawable/test_image"/>
 
@@ -184,8 +182,8 @@
                 android:layout_marginEnd="@dimen/margin_primary_xx"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="@dimen/text_size_small"
-                android:text="@{feed.iconCaption}"
-                android:visibility="@{feed.iconCaption.isEmpty() ? View.GONE : View.VISIBLE}"
+                android:html_text="@{viewModel.iconCaption}"
+                android:visibility="@{viewModel.iconCaption.isEmpty() ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image"
@@ -199,8 +197,8 @@
                 android:layout_marginEnd="@dimen/margin_primary_xx"
                 android:textColor="@color/colorTextSecondary"
                 android:textSize="@dimen/text_size_small"
-                android:text="@{feed.iconCopyright}"
-                android:visibility="@{feed.iconCopyright.isEmpty() ? View.GONE : View.VISIBLE}"
+                android:text="@{viewModel.iconCopyright}"
+                android:visibility="@{viewModel.iconCopyright.isEmpty() ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_caption"
                 tools:text="Matthew Abbott for The New York Times" />
@@ -218,7 +216,7 @@
                 android:paddingEnd="@dimen/margin_primary_xx"
                 android:textColor="@color/colorTextPrimary"
                 android:textSize="@dimen/text_size_secondary"
-                android:text="@{feed.description}"
+                android:html_text="@{viewModel.description}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_copyright"
@@ -257,7 +255,7 @@
                 android:focusable="true"
                 android:scaleType="center"
                 android:src="@drawable/ic_star_unchecked"
-                android:onClick="@{() -> feedViewModel.addFeedToFavourites()}"
+                android:onClick="@{() -> viewModel.addFeedToFavourites()}"
                 app:layout_constraintEnd_toStartOf="@id/icon_share"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider" />

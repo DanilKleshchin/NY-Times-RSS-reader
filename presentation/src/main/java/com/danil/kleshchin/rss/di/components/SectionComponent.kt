@@ -5,6 +5,5 @@ import dagger.Component
 
 @Component
 interface SectionComponent {
-
     fun inject(sectionViewModel: SectionViewModel)
 }

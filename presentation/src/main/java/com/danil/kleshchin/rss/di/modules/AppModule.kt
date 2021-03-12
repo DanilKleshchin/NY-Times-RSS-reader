@@ -1,5 +1,6 @@
 package com.danil.kleshchin.rss.di.modules
 
+import android.content.Context
 import com.danil.kleshchin.rss.data.feeds.datasource.network.API_TIMEOUT_SECONDS
 import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import dagger.Module
@@ -10,7 +11,13 @@ import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
 @Module
-class AppModule(private val dispatcher: Dispatchers) {
+class AppModule(
+    private val context: Context,
+    private val dispatcher: Dispatchers
+) {
+
+    @Provides
+    fun provideAppContext() = context
 
     @Provides
     fun provideDispatchers() = DispatcherProvider(
