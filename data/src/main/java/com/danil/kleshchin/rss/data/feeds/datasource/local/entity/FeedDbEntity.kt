@@ -8,6 +8,7 @@ import com.danil.kleshchin.rss.data.feeds.datasource.local.TABLE_NAME
 data class FeedDbEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
+    val sectionName: String,
     val title: String,
     val description: String,
     val pageUrl: String,
@@ -18,5 +19,5 @@ data class FeedDbEntity(
     val thumbUrl: String,
     val iconUrl: String,
     val iconCaption: String,
-    val iconCopyright: String
+    val iconCopyright: String,
 )

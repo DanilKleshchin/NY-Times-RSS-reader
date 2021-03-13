@@ -8,7 +8,7 @@ class FeedDbMapper @Inject constructor() {
 
     fun transformToDomain(list: List<FeedDbEntity>): List<Feed> {
         val feedList = ArrayList<Feed>()
-        for (feed in feedList) {
+        list.forEach { feed ->
             feedList.add(
                 Feed(
                     title = feed.title,
@@ -28,11 +28,12 @@ class FeedDbMapper @Inject constructor() {
         return feedList
     }
 
-    fun transformToDb(list: List<Feed>): List<FeedDbEntity> {
+    fun transformToDb(sectionName: String, list: List<Feed>): List<FeedDbEntity> {
         val feedList = ArrayList<FeedDbEntity>()
-        for (feed in feedList) {
+        list.forEach { feed ->
             feedList.add(
                 FeedDbEntity(
+                    sectionName = sectionName,
                     title = feed.title,
                     description = feed.description,
                     pageUrl = feed.pageUrl,

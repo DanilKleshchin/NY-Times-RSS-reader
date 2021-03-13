@@ -6,6 +6,8 @@ interface FeedLocalDataSource {
 
     suspend fun setFeedList(feedList: List<FeedDbEntity>)
 
+    suspend fun removeFeedBySection(sectionName: String)
+
     suspend fun getFeedListBySection(sectionName: String): List<FeedDbEntity>
 
     suspend fun removeAll()
