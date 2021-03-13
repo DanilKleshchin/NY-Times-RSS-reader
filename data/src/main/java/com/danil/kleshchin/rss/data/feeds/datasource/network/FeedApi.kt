@@ -12,9 +12,9 @@ import retrofit2.http.Query
  */
 interface FeedApi {
 
-    @GET("{section_name}.json")
+    @GET(GET_SECTION_PARAM)
     suspend fun getTopStories(
-        @Path("section_name") sectionName: String,
-        @Query("api-key") apiKey: String
+        @Path(SECTION_NAME_PARAM) sectionName: String,
+        @Query(API_KEY_PARAM) apiKey: String
     ): FeedObjectApiEntity
 }

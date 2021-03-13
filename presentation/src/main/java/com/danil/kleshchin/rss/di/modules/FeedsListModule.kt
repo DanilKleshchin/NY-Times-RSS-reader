@@ -1,10 +1,10 @@
 package com.danil.kleshchin.rss.di.modules
 
 import com.danil.kleshchin.rss.data.feeds.FeedDataRepository
+import com.danil.kleshchin.rss.data.feeds.datasource.network.BASE_URL
 import com.danil.kleshchin.rss.data.feeds.datasource.network.FeedApi
 import com.danil.kleshchin.rss.data.feeds.datasource.network.FeedApiToDomainMapper
 import com.danil.kleshchin.rss.data.feeds.datasource.network.FeedRemoteDataSource
-import com.danil.kleshchin.rss.data.feeds.datasource.network.baseUrl
 import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import com.danil.kleshchin.rss.domain.repository.FeedRepository
 import dagger.Module
@@ -32,7 +32,7 @@ class FeedsListModule {
     fun provideFeedApi(okHttpClient: OkHttpClient): FeedApi =
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(baseUrl)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(FeedApi::class.java)
