@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
@@ -16,27 +18,24 @@ import com.danil.kleshchin.rss.entities.feed.FeedMapper
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
 import com.danil.kleshchin.rss.widgets.VerticalSpaceItemDecoration
-import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator,
-    FeedsListAdapter.OnFeedClickListener {
+class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
 
     private val INSTANCE_STATE_PARAM_SECTION = "STATE_PARAM_SECTION"
     private val LIST_ITEMS_MARGIN = 40
 
-    @Inject
-    lateinit var feedsListPresenter: FeedsListContract.Presenter
-
-    private var section: SectionEntity? = null
+    private val viewModel: FeedsListViewModel by viewModels()
+    private val args: FeedsListFragmentArgs by navArgs()
+    private var loadFeedsListJob: Job? = null
 
     private var _binding: FragmentFeedsListBinding? = null
     private val binding get() = _binding!!
-    private val args: FeedsListFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        NYTimesRSSFeedsApp.INSTANCE.initFeedsListComponent(this)
-        NYTimesRSSFeedsApp.INSTANCE.getFeedsListComponent().inject(this)
+        NYTimesRSSFeedsApp.INSTANCE.feedsListComponent.inject(viewModel)
     }
 
     override fun onCreateView(
@@ -44,101 +43,88 @@ class FeedsListFragment : Fragment(), FeedsListContract.View, FeedsListNavigator
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initializeFragment(savedInstanceState)
-
         _binding = FragmentFeedsListBinding.inflate(inflater, container, false)
+
+        init(savedInstanceState)
+        changeLoadingViewVisibility(true)
+        loadFeedsList()
+
         binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        feedsListPresenter.setView(this)
-        feedsListPresenter.onAttach()
-        initPresenterForSection()
         setBackPressedCallback()
 
-        binding.backButton.setOnClickListener { finish() }
-        binding.refreshView.setOnRefreshListener { feedsListPresenter.onRefreshSelected() }
+        binding.apply {
+            section = viewModel.section
+            setClickListener { navigateBack() }
+            refreshView.setOnRefreshListener { loadFeedsList() }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        feedsListPresenter.onDetach()
     }
 
-    override fun showLoadingView() {
-        binding.refreshView.isRefreshing = true
+    override fun onFeedClick(feed: FeedEntity) {
+        navigateToFeedScreen(feed)
     }
 
-    override fun hideLoadingView() {
-        binding.refreshView.isRefreshing = false
+    private fun changeRetryViewVisibility(isVisible: Boolean) {
+        //TODO do it XML
     }
 
-    override fun showRetry() {
-
+    private fun changeLoadingViewVisibility(isVisible: Boolean) {
+        binding.refreshView.isRefreshing = isVisible
     }
 
-    override fun hideRetry() {
-
+    private fun loadFeedsList() {
+        loadFeedsListJob?.cancel()
+        loadFeedsListJob = lifecycleScope.launch {
+            viewModel.loadFeedsList().observe(viewLifecycleOwner) { feeds ->
+                changeLoadingViewVisibility(false)
+                showFeedList(feeds, FeedMapper()) //TODO mapper
+            }
+        }
     }
 
-    override fun showErrorMessage() {
-
-    }
-
-    override fun showSectionName(sectionName: String) {
-        binding.sectionName.text = sectionName
-    }
-
-    override fun showFeedList(feedList: List<Feed>, mapper: FeedMapper) {
+    private fun showFeedList(feedList: List<Feed>, mapper: FeedMapper) {
         val currentTime = System.currentTimeMillis()
         val feedEntityList = mapper.transform(feedList, currentTime, resources)
         binding.feedListView.adapter = FeedsListAdapter(feedEntityList, requireContext(), this)
     }
 
-    override fun onFeedClick(feed: FeedEntity) {
-        feedsListPresenter.onFeedSelected(feed)
-    }
-
-    override fun navigateToFeedView(feed: FeedEntity) {
+    private fun navigateToFeedScreen(feed: FeedEntity) {
         val action = FeedsListFragmentDirections.actionFeedsListFragmentToFeedFragment(feed)
         findNavController().navigate(action)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putSerializable(INSTANCE_STATE_PARAM_SECTION, section)
+        outState.putSerializable(INSTANCE_STATE_PARAM_SECTION, viewModel.section)
         super.onSaveInstanceState(outState)
+    }
+
+    private fun init(savedInstanceState: Bundle?) {
+        viewModel.section = if (savedInstanceState == null) {
+            args.sectionArg
+        } else (
+                savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
+                ) as SectionEntity
     }
 
     private fun setBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                finish()
+                navigateBack()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
-    private fun initializeFragment(savedInstanceState: Bundle?) {
-        section = if (savedInstanceState == null) {
-            getSection()
-        } else ({
-            savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
-        }) as SectionEntity
-    }
-
-    private fun initPresenterForSection() {
-        val section = getSection()
-        feedsListPresenter.initialize(section)
-    }
-
-    private fun getSection(): SectionEntity {
-        return args.sectionArg
-    }
-
-    private fun finish() {
+    private fun navigateBack() {
         findNavController().popBackStack()
     }
 }

@@ -1,11 +1,10 @@
 package com.danil.kleshchin.rss.di.components
 
-import com.danil.kleshchin.rss.di.modules.FeedModule
-import com.danil.kleshchin.rss.screens.feed.FeedFragment
+import com.danil.kleshchin.rss.di.modules.AppModule
+import com.danil.kleshchin.rss.screens.feed.FeedViewModel
 import dagger.Component
 
-@Component(modules = [FeedModule::class])
+@Component(modules = [AppModule::class])
 interface FeedComponent {
-
-    fun inject(feedsListFragment: FeedFragment)
+    fun inject(viewModel: FeedViewModel)
 }

@@ -10,7 +10,7 @@ class GetSectionListUseCase @Inject constructor(): UseCase<List<Section>, Unit> 
         return getSectionList()
     }
 
-    fun getSectionList(): List<Section> {
+    private fun getSectionList(): List<Section> {
         return Section.values().toList()
     }
 }

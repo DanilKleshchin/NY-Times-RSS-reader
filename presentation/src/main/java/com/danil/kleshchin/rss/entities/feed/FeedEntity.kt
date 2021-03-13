@@ -5,7 +5,7 @@ import java.io.Serializable
 data class FeedEntity(
     val title: String,
     val description: String,
-    val feedPageUrl: String,
+    val pageUrl: String,
     val author: String,
     val timeElapsed: String,
     val dateCreated: String,

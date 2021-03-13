@@ -1,57 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.danil.kleshchin.rss.widgets.ZoomableImageView
-        android:id="@+id/image"
+    <data>
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="toolbarTitle"
+            type="String" />
+
+        <variable
+            name="imageUrl"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:scaleType="fitCenter"
-        android:contentDescription="@null"
-        tools:src="@drawable/test_image"/>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/feed_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorToolBar"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="@dimen/toolbar_padding"
-        app:layout_constraintTop_toTopOf="parent">
+        <com.danil.kleshchin.rss.widgets.ZoomableImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:scaleType="fitCenter"
+            android:contentDescription="@null"
+            app:load_image="@{imageUrl}"
+            tools:src="@drawable/test_image"/>
 
-        <ImageView
-            android:id="@+id/back_button"
-            android:layout_width="@dimen/back_button_size"
-            android:layout_height="@dimen/back_button_size"
-            android:scaleType="fitXY"
-            android:layout_gravity="center"
-            android:src="@drawable/back_arrow"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:contentDescription="@null"/>
+        <LinearLayout
+            android:id="@+id/feed_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorToolBar"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/toolbar_padding"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/feed_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_marginStart="@dimen/margin_big"
-            android:layout_marginEnd="@dimen/margin_primary"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_primary"
-            android:fontFamily="@font/ubuntu_bold"
-            tools:text="Cuomo Is Accused of Sexual Harassment by a 2nd Former Aide"/>
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="@dimen/back_button_size"
+                android:layout_height="@dimen/back_button_size"
+                android:scaleType="fitXY"
+                android:layout_gravity="center"
+                android:src="@drawable/back_arrow"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="@{clickListener}"
+                android:contentDescription="@null"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/feed_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginStart="@dimen/margin_big"
+                android:layout_marginEnd="@dimen/margin_primary"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size_primary"
+                android:text="@{toolbarTitle}"
+                android:fontFamily="@font/ubuntu_bold"
+                tools:text="Cuomo Is Accused of Sexual Harassment by a 2nd Former Aide"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

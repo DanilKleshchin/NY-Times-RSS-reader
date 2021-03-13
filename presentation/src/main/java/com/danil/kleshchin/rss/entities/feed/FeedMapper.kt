@@ -9,11 +9,19 @@ import javax.inject.Inject
 
 class FeedMapper @Inject constructor() {
 
-    fun transform(feed: Feed, currentTime: Long, resources: Resources): FeedEntity {
+    fun transform(feedList: List<Feed>, currentTime: Long, resources: Resources): List<FeedEntity> {
+        val feedEntityList = arrayListOf<FeedEntity>()
+        for (feed in feedList) {
+            feedEntityList.add(transform(feed, currentTime, resources))
+        }
+        return feedEntityList
+    }
+
+    private fun transform(feed: Feed, currentTime: Long, resources: Resources): FeedEntity {
         return FeedEntity(
             title = feed.title,
             description = feed.description,
-            feedPageUrl = feed.feedPageUrl,
+            pageUrl = feed.pageUrl,
             author = feed.author,
             timeElapsed = getElapsedTimeString(feed.dateCreated, currentTime, resources),
             dateCreated = getDateTimeFromTimestamp(feed.dateCreated, pattern_1),
@@ -24,13 +32,5 @@ class FeedMapper @Inject constructor() {
             iconCaption = feed.iconCaption,
             iconCopyright = feed.iconCopyright
         )
-    }
-
-    fun transform(feedList: List<Feed>, currentTime: Long, resources: Resources): List<FeedEntity> {
-        val feedEntityList = arrayListOf<FeedEntity>()
-        for (feed in feedList) {
-            feedEntityList.add(transform(feed, currentTime, resources))
-        }
-        return feedEntityList
     }
 }
