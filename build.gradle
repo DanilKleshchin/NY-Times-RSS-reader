@@ -23,7 +23,7 @@ buildscript {
         retrofit_version = '2.9.0'
         gson_version = '2.9.0'
         logger_version = '3.12.2'
-        gson_version = '2.7.2'
+        room_version = '2.2.6'
         picasso_version = '2.71828'
         junit_version = '4.13.1'
         mockito_version = '2.25.0'
