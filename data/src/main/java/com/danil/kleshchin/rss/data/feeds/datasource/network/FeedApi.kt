@@ -1,6 +1,6 @@
 package com.danil.kleshchin.rss.data.feeds.datasource.network
 
-import com.danil.kleshchin.rss.data.feeds.entity.FeedObjectApiEntity
+import com.danil.kleshchin.rss.data.feeds.datasource.network.entity.FeedObjectApiEntity
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

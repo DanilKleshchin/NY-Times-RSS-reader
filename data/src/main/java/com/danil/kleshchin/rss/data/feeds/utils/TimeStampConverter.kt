@@ -1,4 +1,4 @@
-package com.danil.kleshchin.rss.data.feeds
+package com.danil.kleshchin.rss.data.feeds.utils
 
 import java.text.SimpleDateFormat
 import java.util.Locale
