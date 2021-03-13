@@ -57,9 +57,9 @@
 
     <fragment
         android:id="@+id/feedImageZoomFragment"
-        android:name="com.danil.kleshchin.rss.screens.imagezoom.FeedImageZoomFragment"
+        android:name="com.danil.kleshchin.rss.screens.feedimage.FeedImageFragment"
         android:label="FeedImageZoomFragment"
-        tools:layout="@layout/fragment_image_zoom">
+        tools:layout="@layout/fragment_feed_image">
         <argument
             android:name="image_url_arg"
             app:argType="string" />

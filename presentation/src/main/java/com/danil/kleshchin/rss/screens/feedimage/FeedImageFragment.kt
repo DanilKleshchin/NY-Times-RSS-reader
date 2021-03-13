@@ -1,4 +1,4 @@
-package com.danil.kleshchin.rss.screens.imagezoom
+package com.danil.kleshchin.rss.screens.feedimage
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,21 +9,21 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.danil.kleshchin.rss.databinding.FragmentImageZoomBinding
+import com.danil.kleshchin.rss.databinding.FragmentFeedImageBinding
 import com.danil.kleshchin.rss.widgets.ZoomableImageView
 
-class FeedImageZoomFragment : Fragment() {
+class FeedImageFragment : Fragment() {
 
-    private var _binding: FragmentImageZoomBinding? = null
+    private var _binding: FragmentFeedImageBinding? = null
     private val binding get() = _binding!!
-    private val args: FeedImageZoomFragmentArgs by navArgs()
+    private val args: FeedImageFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentImageZoomBinding.inflate(inflater, container, false).also {
+        _binding = FragmentFeedImageBinding.inflate(inflater, container, false).also {
             it.imageUrl = args.imageUrlArg
             it.toolbarTitle = args.toolbarTitleArg
             it.setClickListener { navigateBack() }
