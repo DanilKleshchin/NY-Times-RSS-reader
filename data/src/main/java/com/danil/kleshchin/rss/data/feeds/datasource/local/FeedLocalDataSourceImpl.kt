@@ -2,7 +2,7 @@ package com.danil.kleshchin.rss.data.feeds.datasource.local
 
 import com.danil.kleshchin.rss.data.feeds.datasource.local.entity.FeedDbEntity
 
-class FeedLocalDataSourceImpl(
+class FeedLocalDataSourceImpl (
     private val database: FeedDatabase
 ) : FeedLocalDataSource {
 

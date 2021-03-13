@@ -6,7 +6,7 @@ import com.danil.kleshchin.rss.data.feeds.utils.getTimeStampFromDateTime
 import com.danil.kleshchin.rss.domain.entity.Feed
 import javax.inject.Inject
 
-class FeedApiToDomainMapper @Inject constructor() {
+class FeedApiMapper @Inject constructor() {
 
     fun transform(feedObject: FeedObjectApiEntity): List<Feed> {
         return transform(feedObject.results)

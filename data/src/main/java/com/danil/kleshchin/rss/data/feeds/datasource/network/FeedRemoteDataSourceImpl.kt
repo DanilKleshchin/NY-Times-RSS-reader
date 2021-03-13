@@ -1,9 +1,8 @@
 package com.danil.kleshchin.rss.data.feeds.datasource.network
 
 import com.danil.kleshchin.rss.data.feeds.datasource.network.entity.FeedObjectApiEntity
-import javax.inject.Inject
 
-class FeedRemoteDataSourceImpl @Inject constructor(
+class FeedRemoteDataSourceImpl(
     private val feedApi: FeedApi
 ) : FeedRemoteDataSource {
 

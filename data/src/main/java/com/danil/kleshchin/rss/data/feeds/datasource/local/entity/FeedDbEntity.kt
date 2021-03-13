@@ -7,7 +7,7 @@ import com.danil.kleshchin.rss.data.feeds.datasource.local.TABLE_NAME
 @Entity(tableName = TABLE_NAME)
 data class FeedDbEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
+    val id: Long = 0,
     val title: String,
     val description: String,
     val pageUrl: String,
