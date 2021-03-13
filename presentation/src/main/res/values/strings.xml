@@ -5,4 +5,5 @@
     <string name="date_created">Published %s</string>
     <string name="date_updated">Updated %s</string>
     <string name="article">Article</string>
+    <string name="copy_right_nyt">© The New York Times Company. All Rights Reserved.</string>
 </resources>
