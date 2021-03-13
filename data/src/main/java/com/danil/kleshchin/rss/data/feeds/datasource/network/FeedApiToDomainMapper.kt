@@ -1,7 +1,7 @@
 package com.danil.kleshchin.rss.data.feeds.datasource.network
 
-import com.danil.kleshchin.rss.data.feeds.entity.FeedObjectApiEntity
-import com.danil.kleshchin.rss.data.feeds.entity.FeedResultApiEntity
+import com.danil.kleshchin.rss.data.feeds.datasource.network.entity.FeedObjectApiEntity
+import com.danil.kleshchin.rss.data.feeds.datasource.network.entity.FeedResultApiEntity
 import com.danil.kleshchin.rss.data.feeds.getTimeStampFromDateTime
 import com.danil.kleshchin.rss.domain.entity.Feed
 import javax.inject.Inject

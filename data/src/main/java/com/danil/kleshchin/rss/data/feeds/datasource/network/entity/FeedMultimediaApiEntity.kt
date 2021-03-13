@@ -1,4 +1,4 @@
-package com.danil.kleshchin.rss.data.feeds.entity
+package com.danil.kleshchin.rss.data.feeds.datasource.network.entity
 
 data class FeedMultimediaApiEntity(
     val url: String,
