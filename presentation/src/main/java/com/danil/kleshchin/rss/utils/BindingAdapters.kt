@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
+import com.danil.kleshchin.rss.R
 import com.squareup.picasso.Picasso
 
 
@@ -27,4 +28,13 @@ fun bindLoadImage(view: ImageView, @DrawableRes imageId: Int) {
 @BindingAdapter("android:html_text")
 fun bindHtmlText(textView: TextView, text: String) {
     textView.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY)
+}
+
+@BindingAdapter("android:src")
+fun bindFavorite(imageView: ImageView, isFavorite: Boolean) {
+    imageView.setImageResource(if (isFavorite) {
+        R.drawable.ic_star_checked
+    } else {
+        R.drawable.ic_star_unchecked
+    })
 }

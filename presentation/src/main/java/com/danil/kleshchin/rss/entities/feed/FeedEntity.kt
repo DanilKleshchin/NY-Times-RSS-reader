@@ -3,6 +3,7 @@ package com.danil.kleshchin.rss.entities.feed
 import java.io.Serializable
 
 data class FeedEntity(
+    val id: Int,
     val title: String,
     val description: String,
     val pageUrl: String,
@@ -14,5 +15,6 @@ data class FeedEntity(
     val thumbUrl: String,
     val iconUrl: String,
     val iconCaption: String,
-    val iconCopyright: String
+    val iconCopyright: String,
+    var isFavorite: Boolean = false
 ) : Serializable

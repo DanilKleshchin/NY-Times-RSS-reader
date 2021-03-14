@@ -1,7 +1,7 @@
 package com.danil.kleshchin.rss.domain.interactor
 
-import com.danil.kleshchin.rss.domain.interactor.feed.GetFeedBySectionUseCase
-import com.danil.kleshchin.rss.domain.repository.FeedRepository
+import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetFeedListBySectionUseCase
+import com.danil.kleshchin.rss.domain.interactor.features.feedslist.FeedRepository
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -15,19 +15,19 @@ class GetFeedBySectionUseCaseTest {
 
     private val SECTION_ID = 5
 
-    private lateinit var getFeedBySection: GetFeedBySectionUseCase
+    private lateinit var getFeedBySection: GetFeedListBySectionUseCase
 
     @Mock
     private lateinit var mockFeedRepository: FeedRepository
 
     @Before
     fun setUp() {
-        getFeedBySection = GetFeedBySectionUseCase(mockFeedRepository)
+        getFeedBySection = GetFeedListBySectionUseCase(mockFeedRepository)
     }
 
     @Test
     fun testGetFeedBySectionUseCase() {
-        getFeedBySection.execute(GetFeedBySectionUseCase.Params(SECTION_ID))
+        getFeedBySection.execute(GetFeedListBySectionUseCase.Params(SECTION_ID))
 
         verify(mockFeedRepository).getFeedListBySection(SECTION_ID)
         verifyNoMoreInteractions(mockFeedRepository)

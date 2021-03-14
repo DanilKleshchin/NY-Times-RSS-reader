@@ -254,8 +254,8 @@
                 android:contentDescription="@null"
                 android:focusable="true"
                 android:scaleType="center"
-                android:src="@drawable/ic_star_unchecked"
-                android:onClick="@{() -> viewModel.addFeedToFavourites()}"
+                android:src="@{viewModel.isFavorite}"
+                android:onClick="@{() -> viewModel.onStarIconClick()}"
                 app:layout_constraintEnd_toStartOf="@id/icon_share"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider" />

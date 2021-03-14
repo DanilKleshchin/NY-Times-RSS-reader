@@ -54,6 +54,8 @@ class FeedsListAdapter(
                 this.feed = feed
                 setClickListener { feedClickListener.onFeedClick(feed) }
                 //TODO share and star click listeners android:onClick="@{stateViewModel::onItemClick}"  android:onClick="@{() -> viewModel.testLoginModuleClicked()}"
+
+                //Загружать их лениво, не использовать lru cache, юзать bitmap config rgb565, отключить обработку alpha
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.danil.kleshchin.rss.di.modules
 
 import android.content.Context
-import com.danil.kleshchin.rss.data.feeds.datasource.network.API_TIMEOUT_SECONDS
+import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.API_TIMEOUT_SECONDS
 import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides

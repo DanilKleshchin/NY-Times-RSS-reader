@@ -8,6 +8,7 @@ import com.danil.kleshchin.rss.di.components.FeedComponent
 import com.danil.kleshchin.rss.di.components.FeedsListComponent
 import com.danil.kleshchin.rss.di.components.SectionComponent
 import com.danil.kleshchin.rss.di.modules.AppModule
+import com.danil.kleshchin.rss.di.modules.FeedModule
 import com.danil.kleshchin.rss.di.modules.FeedsListModule
 import kotlinx.coroutines.Dispatchers
 
@@ -16,6 +17,7 @@ class NYTimesRSSFeedsApp : Application() {
     private val dispatcher by lazy { Dispatchers }
     private val appModule by lazy { AppModule(this, dispatcher) }
     private val feedsListModule by lazy { FeedsListModule() }
+    private val feedModule by lazy { FeedModule(this) }
 
     val sectionComponent: SectionComponent
         get() = DaggerSectionComponent.builder().build()
@@ -29,6 +31,7 @@ class NYTimesRSSFeedsApp : Application() {
     val feedComponent: FeedComponent
         get() = DaggerFeedComponent.builder()
             .appModule(appModule)
+            .feedModule(feedModule)
             .build()
 
     companion object {
