@@ -16,6 +16,10 @@ class FeedsListAdapter(
 
     interface OnFeedClickListener {
         fun onFeedClick(feed: FeedEntity)
+
+        fun onStarClick(feed: FeedEntity)
+
+        fun onShareClick(feed: FeedEntity)
     }
 
     override fun getItemCount(): Int = feedList.size
@@ -53,9 +57,8 @@ class FeedsListAdapter(
             binding.apply {
                 this.feed = feed
                 setClickListener { feedClickListener.onFeedClick(feed) }
-                //TODO share and star click listeners android:onClick="@{stateViewModel::onItemClick}"  android:onClick="@{() -> viewModel.testLoginModuleClicked()}"
-
-                //Загружать их лениво, не использовать lru cache, юзать bitmap config rgb565, отключить обработку alpha
+                iconStar.setOnClickListener { feedClickListener.onStarClick(feed) }
+                iconShare.setOnClickListener { feedClickListener.onShareClick(feed) }
             }
         }
     }

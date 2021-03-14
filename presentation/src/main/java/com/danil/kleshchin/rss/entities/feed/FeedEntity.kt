@@ -1,5 +1,6 @@
 package com.danil.kleshchin.rss.entities.feed
 
+import androidx.databinding.ObservableBoolean
 import java.io.Serializable
 
 data class FeedEntity(
@@ -16,5 +17,5 @@ data class FeedEntity(
     val iconUrl: String,
     val iconCaption: String,
     val iconCopyright: String,
-    var isFavorite: Boolean = false
+    val isFavorite: ObservableBoolean
 ) : Serializable

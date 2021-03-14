@@ -26,6 +26,7 @@ class NYTimesRSSFeedsApp : Application() {
         get() = DaggerFeedsListComponent.builder()
             .appModule(appModule)
             .feedsListModule(feedsListModule)
+            .feedModule(feedModule)
             .build()
 
     val feedComponent: FeedComponent

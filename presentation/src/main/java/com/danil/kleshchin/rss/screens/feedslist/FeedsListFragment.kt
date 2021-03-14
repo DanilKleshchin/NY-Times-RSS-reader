@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
+import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
-import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
-import com.danil.kleshchin.rss.entities.feed.FeedMapper
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
 import com.danil.kleshchin.rss.widgets.VerticalSpaceItemDecoration
@@ -73,6 +73,14 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         navigateToFeedScreen(feed)
     }
 
+    override fun onStarClick(feed: FeedEntity) {
+        viewModel.onStarClick(feed)
+    }
+
+    override fun onShareClick(feed: FeedEntity) {
+        createShareIntent(feed)
+    }
+
     private fun changeRetryViewVisibility(isVisible: Boolean) {
         //TODO do it XML
     }
@@ -86,15 +94,13 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         loadFeedsListJob = lifecycleScope.launch {
             viewModel.loadFeedsList().observe(viewLifecycleOwner) { feeds ->
                 changeLoadingViewVisibility(false)
-                showFeedList(feeds, FeedMapper()) //TODO mapper
+                showFeedList(feeds)
             }
         }
     }
 
-    private fun showFeedList(feedList: List<Feed>, mapper: FeedMapper) {
-        val currentTime = System.currentTimeMillis()
-        val feedEntityList = mapper.transform(feedList, currentTime, resources)
-        binding.feedListView.adapter = FeedsListAdapter(feedEntityList, requireContext(), this)
+    private fun showFeedList(feedList: List<FeedEntity>) {
+        binding.feedListView.adapter = FeedsListAdapter(feedList, requireContext(), this)
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
@@ -113,6 +119,14 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         } else (
                 savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
                 ) as SectionEntity
+    }
+
+    private fun createShareIntent(feed: FeedEntity) {
+        ShareCompat.IntentBuilder.from(requireActivity())
+            .setType("text/plain")
+            .setChooserTitle(getString(R.string.read_full_article))
+            .setText(feed.pageUrl)
+            .startChooser()
     }
 
     private fun setBackPressedCallback() {

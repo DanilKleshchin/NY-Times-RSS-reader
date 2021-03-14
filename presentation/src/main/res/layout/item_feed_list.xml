@@ -131,7 +131,7 @@
             android:layout_width="@dimen/star_icon_size"
             android:layout_height="@dimen/star_icon_size"
             android:contentDescription="@null"
-            android:src="@drawable/ic_star_unchecked"
+            android:src="@{feed.isFavorite}"
             android:scaleType="center"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"

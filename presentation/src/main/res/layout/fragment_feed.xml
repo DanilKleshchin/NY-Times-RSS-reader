@@ -255,7 +255,7 @@
                 android:focusable="true"
                 android:scaleType="center"
                 android:src="@{viewModel.isFavorite}"
-                android:onClick="@{() -> viewModel.onStarIconClick()}"
+                android:onClick="@{() -> viewModel.onStarClick()}"
                 app:layout_constraintEnd_toStartOf="@id/icon_share"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider" />

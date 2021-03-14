@@ -1,6 +1,7 @@
 package com.danil.kleshchin.rss.entities.feed
 
 import android.content.res.Resources
+import androidx.databinding.ObservableBoolean
 import com.danil.kleshchin.elapsed_time.getDateTimeFromTimestamp
 import com.danil.kleshchin.elapsed_time.getElapsedTimeString
 import com.danil.kleshchin.elapsed_time.getTimestampFromDateTime
@@ -31,7 +32,7 @@ class FeedMapper @Inject constructor() {
             iconUrl = feedEntity.iconUrl,
             iconCaption = feedEntity.iconCaption,
             iconCopyright = feedEntity.iconCopyright,
-            isFavorite = feedEntity.isFavorite
+            isFavorite = feedEntity.isFavorite.get()
         )
     }
 
@@ -50,7 +51,7 @@ class FeedMapper @Inject constructor() {
             iconUrl = feed.iconUrl,
             iconCaption = feed.iconCaption,
             iconCopyright = feed.iconCopyright,
-            isFavorite = feed.isFavorite
+            isFavorite = ObservableBoolean(feed.isFavorite)
         )
     }
 }

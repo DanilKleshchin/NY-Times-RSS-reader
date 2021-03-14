@@ -1,6 +1,5 @@
 package com.danil.kleshchin.rss.screens.feed
 
-import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.AddFeedToFavouritesUseCase
@@ -48,23 +47,19 @@ class FeedViewModel : ViewModel() {
         get() = resourceHelper.getDateCreated(feed.dateCreated)
     val dateUpdated
         get() = resourceHelper.getDateUpdated(feed.dateUpdated)
-    val isFavorite: ObservableBoolean = ObservableBoolean()
-        get() {
-            field.set(feed.isFavorite) //TODO try to refactor this
-            return field
-        }
+    val isFavorite
+        get() = feed.isFavorite
 
-    fun onStarIconClick() {
+    fun onStarClick() {
         addRemoveFavoritesJob?.cancel()
 
         addRemoveFavoritesJob = viewModelScope.launch {
-            feed.isFavorite = feed.isFavorite.not()
-            if (feed.isFavorite) {
-                addFeedToFavouritesUseCase.execute(mapper.transform(feed))
-            } else {
+            if (feed.isFavorite.get()) {
                 removeFeedFromFavoritesUseCase.execute(mapper.transform(feed))
+            } else {
+                addFeedToFavouritesUseCase.execute(mapper.transform(feed))
             }
-            isFavorite.set(feed.isFavorite) // changes the star icon after adding/removing the feed to/from favorites
+            feed.isFavorite.set(feed.isFavorite.get().not()) // changes the star icon after adding/removing the feed to/from favorites
         }
     }
 }
