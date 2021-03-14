@@ -25,6 +25,7 @@ buildscript {
         logger_version = '3.12.2'
         room_version = '2.2.6'
         picasso_version = '2.71828'
+        leak_version = '2.6'
         junit_version = '4.13.1'
         mockito_version = '2.25.0'
         test_runner_version = '1.0.2'
