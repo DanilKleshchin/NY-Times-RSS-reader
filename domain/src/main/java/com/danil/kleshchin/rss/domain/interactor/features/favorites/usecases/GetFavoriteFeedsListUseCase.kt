@@ -5,7 +5,7 @@ import com.danil.kleshchin.rss.domain.interactor.UseCase
 import com.danil.kleshchin.rss.domain.interactor.features.favorites.FavoriteFeedRepository
 import javax.inject.Inject
 
-class GetFavoritesFeedListUseCase @Inject constructor(
+class GetFavoriteFeedsListUseCase @Inject constructor(
     private val repository: FavoriteFeedRepository
 ) : UseCase<List<Feed>, Unit> {
 

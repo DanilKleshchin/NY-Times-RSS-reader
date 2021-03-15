@@ -21,7 +21,8 @@ class FavoriteFeedMapper @Inject constructor() {
                     thumbUrl = feed.thumbUrl,
                     iconUrl = feed.iconUrl,
                     iconCaption = feed.iconCaption,
-                    iconCopyright = feed.iconCopyright
+                    iconCopyright = feed.iconCopyright,
+                    isFavorite = feed.isFavorite
                 )
             )
         }
@@ -41,6 +42,7 @@ class FavoriteFeedMapper @Inject constructor() {
             thumbUrl = feed.thumbUrl,
             iconUrl = feed.iconUrl,
             iconCaption = feed.iconCaption,
-            iconCopyright = feed.iconCopyright
+            iconCopyright = feed.iconCopyright,
+            isFavorite = feed.isFavorite
         )
 }

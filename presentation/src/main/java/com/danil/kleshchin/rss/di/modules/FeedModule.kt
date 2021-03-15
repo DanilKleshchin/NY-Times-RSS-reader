@@ -10,10 +10,8 @@ import com.danil.kleshchin.rss.domain.interactor.features.favorites.FavoriteFeed
 import dagger.Module
 import dagger.Provides
 
-@Module
-class FeedModule(
-    private val context: Context
-) {
+@Module(includes = [AppModule::class])
+class FeedModule {
 
     @Provides
     fun provideFavoriteLocalDataSource(database: FavoriteFeedDatabase): FavoriteFeedLocalDataSource =
@@ -30,5 +28,5 @@ class FeedModule(
         )
 
     @Provides
-    fun provideFavoriteFeedDatabase() = FavoriteFeedDatabase.getInstance(context)
+    fun provideFavoriteFeedDatabase(context: Context) = FavoriteFeedDatabase.getInstance(context)
 }

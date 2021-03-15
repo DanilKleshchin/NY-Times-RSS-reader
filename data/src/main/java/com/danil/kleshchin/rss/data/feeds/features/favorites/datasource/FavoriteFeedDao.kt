@@ -15,6 +15,6 @@ interface FavoriteFeedDao {
     @Query("DELETE FROM FAVORITE_FEED_TABLE WHERE id = :feedId")
     suspend fun removeFeedFromFavorites(feedId: Int)
 
-    @Query("SELECT * FROM FAVORITE_FEED_TABLE")
+    @Query("SELECT * FROM FAVORITE_FEED_TABLE ORDER BY position DESC")
     suspend fun getFavoritesFeedList(): List<FavoriteFeedEntity>
 }

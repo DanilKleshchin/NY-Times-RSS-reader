@@ -3,7 +3,7 @@ package com.danil.kleshchin.rss.screens.feedslist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.danil.kleshchin.rss.domain.entity.Feed
-import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.GetFavoritesFeedListUseCase
+import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.GetFavoriteFeedsListUseCase
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetFeedListBySectionUseCase
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class FeedsListViewModel : BaseFeedViewModel() {
 
     @Inject
-    lateinit var getFavoritesFeedListUseCase: GetFavoritesFeedListUseCase
+    lateinit var getFavoriteFeedsListUseCase: GetFavoriteFeedsListUseCase
 
     @Inject
     lateinit var getFeedBySectionUseCase: GetFeedListBySectionUseCase
@@ -24,7 +24,7 @@ class FeedsListViewModel : BaseFeedViewModel() {
         return liveData {
             val params = GetFeedListBySectionUseCase.Params(section.toSection().name)
             val feedList = getFeedBySectionUseCase.execute(params) //feeds from API or DB
-            val favoritesList = getFavoritesFeedListUseCase.execute(Unit) //feeds from favorites DB
+            val favoritesList = getFavoriteFeedsListUseCase.execute(Unit) //feeds from favorites DB
             setFavoritesFeeds(feedList, favoritesList) //set isFavorite field to feeds from API or DB
             val currentTime = System.currentTimeMillis()
             val feedEntityList =

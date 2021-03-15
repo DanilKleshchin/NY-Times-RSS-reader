@@ -27,7 +27,7 @@ class FeedFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        NYTimesRSSFeedsApp.INSTANCE.feedComponent.inject(viewModel)
+        initViewModel()
     }
 
     override fun onCreateView(
@@ -107,5 +107,9 @@ class FeedFragment : Fragment() {
 
     private fun navigateBack() {
         findNavController().popBackStack()
+    }
+
+    private fun initViewModel() {
+        NYTimesRSSFeedsApp.INSTANCE.feedComponent.inject(viewModel)
     }
 }

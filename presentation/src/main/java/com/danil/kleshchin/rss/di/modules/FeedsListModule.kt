@@ -6,6 +6,7 @@ import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.Fe
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDbMapper
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedLocalDataSource
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedLocalDataSourceImpl
+import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.API_TIMEOUT_SECONDS
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.BASE_URL
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApi
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApiMapper
@@ -15,12 +16,17 @@ import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.FeedRepository
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 @Module(includes = [AppModule::class, FeedModule::class])
-class FeedsListModule {
+class FeedsListModule(
+    private val dispatcher: Dispatchers
+) {
 
     @Provides
     fun provideRemoteDataSource(feedApi: FeedApi): FeedRemoteDataSource =
@@ -57,4 +63,23 @@ class FeedsListModule {
 
     @Provides
     fun provideFeedDatabase(context: Context) = FeedDatabase.getInstance(context)
+
+    @Provides
+    fun provideDispatchers() = DispatcherProvider(
+        database = dispatcher.IO,
+        main = dispatcher.Main,
+        network = dispatcher.Default
+    )
+
+    @Provides
+    fun provideOkHttpClient(): OkHttpClient {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        return OkHttpClient.Builder()
+            .connectTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .build()
+    }
 }

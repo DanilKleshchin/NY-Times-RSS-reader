@@ -68,4 +68,14 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/favoriteFeedsListFragment"
+        android:name="com.danil.kleshchin.rss.screens.favorites.FavoriteFeedsListFragment"
+        android:label="FavoriteFeedsListFragment"
+        tools:layout="@layout/fragment_favorite_feeds_list">
+        <action
+            android:id="@+id/action_favoriteFeedsListFragment_to_feed_fragment"
+            app:destination="@id/feed_fragment" />
+    </fragment>
+
 </navigation>

@@ -6,7 +6,8 @@ import com.danil.kleshchin.rss.data.feeds.features.favorites.datasource.TABLE_NA
 
 @Entity(tableName = TABLE_NAME)
 data class FavoriteFeedEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val position: Int = 0, // for the stack behavior
     val id: Int,
     val title: String,
     val description: String,
@@ -19,4 +20,5 @@ data class FavoriteFeedEntity(
     val iconUrl: String,
     val iconCaption: String,
     val iconCopyright: String,
+    val isFavorite: Boolean
 )

@@ -34,12 +34,12 @@ abstract class BaseFeedViewModel : ViewModel() {
         addRemoveFavoritesJob?.cancel()
 
         addRemoveFavoritesJob = viewModelScope.launch {
+            feed.isFavorite.set(feed.isFavorite.get().not())
             if (feed.isFavorite.get()) {
-                removeFeedFromFavoritesUseCase.execute(mapper.transform(feed))
-            } else {
                 addFeedToFavouritesUseCase.execute(mapper.transform(feed))
+            } else {
+                removeFeedFromFavoritesUseCase.execute(mapper.transform(feed))
             }
-            feed.isFavorite.set(feed.isFavorite.get().not()) // changes the star icon after adding/removing the feed to/from favorites
         }
     }
 }
