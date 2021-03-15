@@ -132,6 +132,7 @@
             android:layout_height="@dimen/star_icon_size"
             android:contentDescription="@null"
             android:src="@{feed.isFavorite}"
+            android:tint="@color/colorAccent"
             android:scaleType="center"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
@@ -150,13 +151,12 @@
             android:contentDescription="@null"
             android:focusable="true"
             android:src="@drawable/ic_share"
+            android:tint="@color/colorAccent"
             android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/icon_star"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            app:layout_constraintVertical_bias="0.466" />
-
+            app:layout_constraintTop_toBottomOf="@id/divider"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
