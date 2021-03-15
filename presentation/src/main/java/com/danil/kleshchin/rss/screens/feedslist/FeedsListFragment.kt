@@ -74,7 +74,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     }
 
     override fun onStarClick(feed: FeedEntity) {
-        viewModel.onStarClick(feed)
+        viewModel.addRemoveFavoriteFeed(feed)
     }
 
     override fun onShareClick(feed: FeedEntity) {

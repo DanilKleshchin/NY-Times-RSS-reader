@@ -256,7 +256,7 @@
                 android:scaleType="center"
                 android:src="@{viewModel.isFavorite}"
                 android:tint="@color/colorAccent"
-                android:onClick="@{() -> viewModel.onStarClick()}"
+                android:onClick="@{() -> viewModel.addRemoveFavoriteFeed(viewModel.feed)}"
                 app:layout_constraintEnd_toStartOf="@id/icon_share"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider" />

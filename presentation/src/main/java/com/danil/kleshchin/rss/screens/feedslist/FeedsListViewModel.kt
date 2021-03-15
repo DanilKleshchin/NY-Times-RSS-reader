@@ -1,31 +1,16 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
 import com.danil.kleshchin.rss.domain.entity.Feed
-import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.AddFeedToFavouritesUseCase
 import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.GetFavoritesFeedListUseCase
-import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.RemoveFeedFromFavoritesUseCase
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetFeedListBySectionUseCase
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
-import com.danil.kleshchin.rss.entities.feed.FeedMapper
 import com.danil.kleshchin.rss.entities.section.SectionEntity
-import com.danil.kleshchin.rss.utils.ResourceHelper
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import com.danil.kleshchin.rss.screens.BaseFeedViewModel
 import javax.inject.Inject
 
-class FeedsListViewModel : ViewModel() {
-
-    var addRemoveFavoritesJob: Job? = null //TODO ask about the same behavior in different viewModels/fragments (adding to favorites)
-
-    @Inject
-    lateinit var addFeedToFavouritesUseCase: AddFeedToFavouritesUseCase
-
-    @Inject
-    lateinit var removeFeedFromFavoritesUseCase: RemoveFeedFromFavoritesUseCase
+class FeedsListViewModel : BaseFeedViewModel() {
 
     @Inject
     lateinit var getFavoritesFeedListUseCase: GetFavoritesFeedListUseCase
@@ -33,13 +18,7 @@ class FeedsListViewModel : ViewModel() {
     @Inject
     lateinit var getFeedBySectionUseCase: GetFeedListBySectionUseCase
 
-    @Inject
-    lateinit var feedMapper: FeedMapper
-
-    @Inject
-    lateinit var resourceHelper: ResourceHelper
-
-    lateinit var section: SectionEntity //TODO checkout data passing between viewModels
+    lateinit var section: SectionEntity
 
     fun loadFeedsList(): LiveData<List<FeedEntity>> {
         return liveData {
@@ -49,7 +28,7 @@ class FeedsListViewModel : ViewModel() {
             setFavoritesFeeds(feedList, favoritesList) //set isFavorite field to feeds from API or DB
             val currentTime = System.currentTimeMillis()
             val feedEntityList =
-                feedMapper.transform(feedList, currentTime, resourceHelper.getAndroidResources())
+                mapper.transform(feedList, currentTime, resourceHelper.getAndroidResources())
             emit(
                 feedEntityList
             )
@@ -67,20 +46,6 @@ class FeedsListViewModel : ViewModel() {
                     break@loop
                 }
             }
-        }
-    }
-
-    //TODO ask about repeating code
-    fun onStarClick(feed: FeedEntity) {
-        addRemoveFavoritesJob?.cancel()
-
-        addRemoveFavoritesJob = viewModelScope.launch {
-            if (feed.isFavorite.get()) {
-                removeFeedFromFavoritesUseCase.execute(feedMapper.transform(feed))
-            } else {
-                addFeedToFavouritesUseCase.execute(feedMapper.transform(feed))
-            }
-            feed.isFavorite.set(feed.isFavorite.get().not()) // changes the star icon after adding/removing the feed to/from favorites
         }
     }
 }
