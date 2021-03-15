@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.danil.kleshchin.rss.HomeViewPagerFragmentDirections
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.entities.section.SectionEntity
@@ -68,7 +69,8 @@ class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
     }
 
     private fun navigateToFeedScreen(section: SectionEntity) {
-        val action = SectionFragmentDirections.actionSectionFragmentToFeedsListFragment(section)
+        val action =
+            HomeViewPagerFragmentDirections.actionHomeViewPagerFragmentToFeedsListFragment(section)
         findNavController().navigate(action)
     }
 

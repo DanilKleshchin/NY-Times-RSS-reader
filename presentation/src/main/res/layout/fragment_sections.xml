@@ -3,55 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap">
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorToolBar"
-                    app:contentInsetStart="0dp"
-                    app:layout_scrollFlags="scroll|snap">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:text="@string/app_title"
-                        android:gravity="center"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_size_big"
-                        android:fontFamily="@font/chomsky"/>
-
-                </com.google.android.material.appbar.MaterialToolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/section_list_view"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
             android:paddingTop="@dimen/margin_primary_x"
             android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_section_list"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:layout_scrollFlags="scroll|snap">
+            android:layout_gravity="bottom">
 
             <TextView
                 android:layout_width="match_parent"
@@ -64,6 +36,6 @@
                 android:gravity="center"/>
         </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
 </layout>

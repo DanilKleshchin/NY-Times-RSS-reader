@@ -5,6 +5,7 @@
     <string name="date_created">Published %s</string>
     <string name="date_updated">Updated %s</string>
     <string name="article">Article</string>
-    <string name="copy_right_nyt">© The New York Times Company. All Rights Reserved.</string>
+    <string name="copy_right_nyt" translatable="false">© The New York Times Company. All Rights Reserved.</string>
     <string name="favorites_title">Favorites</string>
+    <string name="sections_title">Sections</string>
 </resources>

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.danil.kleshchin.rss.HomeViewPagerFragmentDirections
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFavoriteFeedsListBinding
@@ -95,7 +96,7 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
         val action =
-            FavoriteFeedsListFragmentDirections.actionFavoriteFeedsListFragmentToFeedFragment(feed)
+            HomeViewPagerFragmentDirections.actionHomeViewPagerFragmentToFeedFragment(feed)
         findNavController().navigate(action)
     }
 

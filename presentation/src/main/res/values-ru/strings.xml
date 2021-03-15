@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="choose_news_section">Выберите категорию</string>
     <string name="read_full_article"><u>Читать статью полностью</u></string>
     <string name="date_created">Опубликовано %s</string>
     <string name="date_updated">Изменено %s</string>
     <string name="article">Статья</string>
+    <string name="favorites_title">Избранное</string>
+    <string name="sections_title">Категории</string>
 </resources>

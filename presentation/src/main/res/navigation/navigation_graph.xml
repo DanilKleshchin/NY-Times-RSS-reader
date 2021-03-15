@@ -4,15 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/section_fragment">
+    app:startDestination="@id/homeViewPagerFragment">
 
     <fragment
-        android:id="@+id/section_fragment"
-        android:name="com.danil.kleshchin.rss.screens.sections.SectionFragment"
-        android:label="SectionFragment"
-        tools:layout="@layout/fragment_sections">
+        android:id="@+id/homeViewPagerFragment"
+        android:name="com.danil.kleshchin.rss.HomeViewPagerFragment"
+        android:label="HomeViewPagerFragment"
+        tools:layout="@layout/fragment_home_view_pager">
         <action
-            android:id="@+id/action_section_fragment_to_feeds_list_fragment"
+            android:id="@+id/action_homeViewPagerFragment_to_feed_fragment"
+            app:destination="@id/feed_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_homeViewPagerFragment_to_feeds_list_fragment"
             app:destination="@id/feeds_list_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -66,16 +73,6 @@
         <argument
             android:name="toolbar_title_arg"
             app:argType="string" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/favoriteFeedsListFragment"
-        android:name="com.danil.kleshchin.rss.screens.favorites.FavoriteFeedsListFragment"
-        android:label="FavoriteFeedsListFragment"
-        tools:layout="@layout/fragment_favorite_feeds_list">
-        <action
-            android:id="@+id/action_favoriteFeedsListFragment_to_feed_fragment"
-            app:destination="@id/feed_fragment" />
     </fragment>
 
 </navigation>
