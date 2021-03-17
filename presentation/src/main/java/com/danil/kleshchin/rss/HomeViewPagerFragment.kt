@@ -1,9 +1,18 @@
 package com.danil.kleshchin.rss
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.danil.kleshchin.rss.databinding.FragmentHomeViewPagerBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -22,6 +31,9 @@ class HomeViewPagerFragment : Fragment() {
         val tabLayout = binding.tabs
         val viewPager = binding.viewPager
 
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+
         viewPager.adapter = HomeViewPagerAdapter(this)
 
         // Set the icon and text for each tab
@@ -35,6 +47,56 @@ class HomeViewPagerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.home_menu, menu)
+    }
+
+    var test = false
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.light_dark_mode_menu -> {
+                item.setIcon(if (test) {
+                    R.drawable.ic_light_mode
+                } else {
+                    R.drawable.ic_dark_mode
+                })
+                test = test.not()
+                setTheme()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setTheme() {
+        if (binding.lightDarkModeStub.isVisible) {
+            return
+        }
+
+        val w = binding.coordinatorLayout.measuredWidth
+        val h = binding.coordinatorLayout.measuredHeight
+
+        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        binding.coordinatorLayout.draw(canvas)
+
+        binding.lightDarkModeStub.setImageBitmap(bitmap)
+        binding.lightDarkModeStub.isVisible = true
+
+        //val finalRadius = kotlin.math.hypot(w.toFloat(), h.toFloat())
+        val finalRadius = kotlin.math.hypot(w.toFloat(), h.toFloat()) / 2
+
+        val anim = ViewAnimationUtils.createCircularReveal(binding.coordinatorLayout, w / 2, h / 2, 0f, finalRadius)
+        anim.duration = 400L
+        anim.doOnEnd {
+            binding.lightDarkModeStub.setImageDrawable(null)
+            binding.lightDarkModeStub.isVisible = false
+        }
+        anim.start()
     }
 
     private fun getTabIcon(position: Int): Int {

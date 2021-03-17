@@ -8,4 +8,5 @@
     <string name="copy_right_nyt" translatable="false">© The New York Times Company. All Rights Reserved.</string>
     <string name="favorites_title">Favorites</string>
     <string name="sections_title">Sections</string>
+    <string name="light_dark_mode_title">Light/dark mode</string>
 </resources>
