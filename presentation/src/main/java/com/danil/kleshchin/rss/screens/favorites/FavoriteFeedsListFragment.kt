@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.danil.kleshchin.rss.HomeViewPagerFragmentDirections
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
@@ -66,10 +67,15 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
         navigateToFeedScreen(feed)
     }
 
-    override fun onStarClick(feed: FeedEntity) {
+    override fun onStarClick(viewHolder: RecyclerView.ViewHolder, feed: FeedEntity) {
+        (binding.favoriteFeedsListView.adapter as FavoriteFeedsListAdapter).removeFeed(
+            viewHolder,
+            binding.favoriteFeedsListView
+        )
+    }
+
+    override fun onFeedUndoDismissed(feed: FeedEntity) {
         viewModel.addRemoveFavoriteFeed(feed)
-        //TODO show snack bar with undo
-        //adapter.removeItem()
     }
 
     override fun onShareClick(feed: FeedEntity) {
@@ -91,7 +97,7 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
 
     private fun showFeedList(feedList: List<FeedEntity>) {
         binding.favoriteFeedsListView.adapter =
-            FavoriteFeedsListAdapter(feedList, requireContext(), this)
+            FavoriteFeedsListAdapter(ArrayList(feedList), requireContext(), this)
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {

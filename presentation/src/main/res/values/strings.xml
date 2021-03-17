@@ -8,4 +8,6 @@
     <string name="copy_right_nyt" translatable="false">© The New York Times Company. All Rights Reserved.</string>
     <string name="favorites_title">Favorites</string>
     <string name="sections_title">Sections</string>
+    <string name="undo_snack_bar_title">The feed was removed</string>
+    <string name="undo_snackbar_undo_text">Undo</string>
 </resources>

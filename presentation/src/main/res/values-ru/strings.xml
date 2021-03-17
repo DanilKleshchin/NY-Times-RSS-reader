@@ -6,4 +6,6 @@
     <string name="article">Статья</string>
     <string name="favorites_title">Избранное</string>
     <string name="sections_title">Категории</string>
+    <string name="undo_snack_bar_title">Новость была удалена</string>
+    <string name="undo_snackbar_undo_text">Отмена</string>
 </resources>
