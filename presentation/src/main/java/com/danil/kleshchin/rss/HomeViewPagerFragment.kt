@@ -24,9 +24,7 @@ class HomeViewPagerFragment : Fragment() {
 
         viewPager.adapter = HomeViewPagerAdapter(this)
 
-        // Set the icon and text for each tab
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.setIcon(getTabIcon(position))
             tab.text = getTabTitle(position)
         }.attach()
         return binding.root
@@ -35,14 +33,6 @@ class HomeViewPagerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun getTabIcon(position: Int): Int {
-        return when (position) {
-            SECTIONS_LIST_PAGE_INDEX -> R.drawable.section_tab_selector
-            FAVORITE_FEEDS_LIST_PAGE_INDEX -> R.drawable.favorites_tab_selector
-            else -> throw IndexOutOfBoundsException()
-        }
     }
 
     private fun getTabTitle(position: Int): String? {
