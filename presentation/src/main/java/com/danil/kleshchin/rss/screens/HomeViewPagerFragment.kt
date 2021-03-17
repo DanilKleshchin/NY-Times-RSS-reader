@@ -1,10 +1,11 @@
-package com.danil.kleshchin.rss
+package com.danil.kleshchin.rss.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentHomeViewPagerBinding
 import com.google.android.material.tabs.TabLayoutMediator
 

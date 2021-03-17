@@ -10,10 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.danil.kleshchin.rss.HomeViewPagerFragmentDirections
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.databinding.FragmentSectionsBinding
 import com.danil.kleshchin.rss.entities.section.SectionEntity
+import com.danil.kleshchin.rss.screens.HomeViewPagerFragmentDirections
 import com.danil.kleshchin.rss.screens.sections.adapters.SectionListAdapter
 
 class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {

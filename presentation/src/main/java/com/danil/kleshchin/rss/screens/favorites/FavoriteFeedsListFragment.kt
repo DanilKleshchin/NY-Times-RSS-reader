@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.danil.kleshchin.rss.HomeViewPagerFragmentDirections
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFavoriteFeedsListBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
+import com.danil.kleshchin.rss.screens.HomeViewPagerFragmentDirections
 import com.danil.kleshchin.rss.screens.favorites.adapters.FavoriteFeedsListAdapter
 import com.danil.kleshchin.rss.widgets.VerticalSpaceItemDecoration
 import kotlinx.coroutines.Job

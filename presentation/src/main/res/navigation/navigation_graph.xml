@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/homeViewPagerFragment"
-        android:name="com.danil.kleshchin.rss.HomeViewPagerFragment"
+        android:name="com.danil.kleshchin.rss.screens.HomeViewPagerFragment"
         android:label="HomeViewPagerFragment"
         tools:layout="@layout/fragment_home_view_pager">
         <action

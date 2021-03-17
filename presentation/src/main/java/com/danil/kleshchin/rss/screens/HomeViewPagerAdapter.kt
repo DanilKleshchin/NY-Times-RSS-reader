@@ -1,4 +1,4 @@
-package com.danil.kleshchin.rss
+package com.danil.kleshchin.rss.screens
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
