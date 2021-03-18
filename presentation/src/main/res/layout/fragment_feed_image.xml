@@ -36,7 +36,7 @@
             android:id="@+id/feed_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:background="@color/colorToolBar"
+            android:background="@drawable/gradient_toolbar"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="@dimen/toolbar_padding"
