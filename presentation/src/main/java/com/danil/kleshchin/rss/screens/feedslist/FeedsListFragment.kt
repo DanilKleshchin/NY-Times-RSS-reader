@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ShareCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -61,7 +62,8 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
 
         binding.apply {
             section = viewModel.section
-            setClickListener { navigateBack() }
+            setBackClickListener { navigateBack() }
+            setRetryClickListener { loadFeedsList() }
             refreshView.setOnRefreshListener { loadFeedsList() }
         }
     }
@@ -84,7 +86,8 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     }
 
     private fun changeRetryViewVisibility(isVisible: Boolean) {
-        //TODO do it XML
+        binding.errorContainer.isVisible = isVisible
+        binding.refreshView.isVisible = isVisible.not()
     }
 
     private fun changeLoadingViewVisibility(isVisible: Boolean) {

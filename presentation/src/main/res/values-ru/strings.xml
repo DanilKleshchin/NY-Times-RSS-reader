@@ -8,4 +8,6 @@
     <string name="sections_title">Категории</string>
     <string name="undo_snack_bar_title">Новость была удалена</string>
     <string name="undo_snackbar_undo_text">Отмена</string>
+    <string name="retry_button_text">Повторить</string>
+    <string name="error_text">Что-то пошло не так. Попробуйте ещё раз.</string>
 </resources>
