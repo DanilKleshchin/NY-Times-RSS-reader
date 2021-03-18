@@ -7,8 +7,7 @@ import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.F
 import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.FeedRepository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.selects.select
+import com.danil.kleshchin.rss.domain.interactor.features.feedslist.ResultWrapper
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
@@ -21,28 +20,25 @@ class FeedDataRepository(
 ) : FeedRepository {
 
 
-    override suspend fun getFeedListBySection(sectionName: String) =
-        withContext(dispatcherProvider.network) {
-            val remote =
-                async(dispatcherProvider.network) { getRemoteFeedListBySection(sectionName) }
-            //TODO ask how to implement Observable.concatArrayEager with coroutines.
-            /*val local =
-                async(dispatcherProvider.database) { getLocalApiFeedListBySection(sectionName) }*/
-            select<List<Feed>> {
-                remote.onAwait { it }
-                /*local.onAwait { it }*/
-            }.also { feeds ->
-                updateLocalFeedList(sectionName, feeds)
+    override suspend fun getFeedListBySection(sectionName: String): ResultWrapper<List<Feed>> =
+        try {
+            withContext(dispatcherProvider.network) {
+                getRemoteFeedListBySection(sectionName)
             }
+        } catch (exception: Exception) {
+            ResultWrapper.Error(exception)
         }
 
 
     private suspend fun getRemoteFeedListBySection(sectionName: String) =
-        apiMapper.transform(
-            remoteDataSource.getFeedListBySection(
-                sectionName.toLowerCase(Locale.getDefault())
+        ResultWrapper.Success(
+            apiMapper.transform(
+                remoteDataSource.getFeedListBySection(
+                    sectionName.toLowerCase(Locale.getDefault())
+                )
             )
         )
+
 
     private suspend fun getLocalApiFeedListBySection(sectionName: String) =
         dbMapper.transformToDomain(

@@ -14,6 +14,8 @@ import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
+import com.danil.kleshchin.rss.domain.entity.Feed
+import com.danil.kleshchin.rss.domain.interactor.features.feedslist.ResultWrapper
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
@@ -93,7 +95,24 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         loadFeedsListJob?.cancel()
         loadFeedsListJob = lifecycleScope.launch {
             viewModel.loadFeedsList().observe(viewLifecycleOwner) { feeds ->
+                when(feeds) {
+                    is ResultWrapper.Success ->  setFavoritesToFeedList(feeds.value)
+                    is ResultWrapper.Error -> {
+                        changeLoadingViewVisibility(false)
+                        changeRetryViewVisibility(true)
+                        feeds.exception.printStackTrace()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setFavoritesToFeedList(feedList: List<Feed>) {
+        loadFeedsListJob?.cancel()
+        loadFeedsListJob = lifecycleScope.launch {
+            viewModel.getFeedListWithFavorites(feedList).observe(viewLifecycleOwner) { feeds ->
                 changeLoadingViewVisibility(false)
+                changeRetryViewVisibility(false)
                 showFeedList(feeds)
             }
         }
