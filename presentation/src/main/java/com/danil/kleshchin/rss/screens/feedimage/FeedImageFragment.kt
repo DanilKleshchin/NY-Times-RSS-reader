@@ -1,11 +1,9 @@
 package com.danil.kleshchin.rss.screens.feedimage
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -25,6 +23,8 @@ class FeedImageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+
         _binding = FragmentFeedImageBinding.inflate(inflater, container, false).also {
             it.imageUrl = args.imageUrlArg
             it.toolbarTitle = args.toolbarTitleArg
@@ -40,14 +40,9 @@ class FeedImageFragment : Fragment() {
         return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
     }
 
     //TODO do this with animation
