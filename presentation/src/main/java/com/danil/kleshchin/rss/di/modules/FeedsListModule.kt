@@ -1,11 +1,13 @@
 package com.danil.kleshchin.rss.di.modules
 
 import android.content.Context
+import com.danil.kleshchin.rss.BuildConfig
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.FeedDataRepository
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDatabase
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDbMapper
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedLocalDataSource
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedLocalDataSourceImpl
+import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.API_KEY_PARAM
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.API_TIMEOUT_SECONDS
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.BASE_URL
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApi
@@ -80,6 +82,14 @@ class FeedsListModule(
             .writeTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .addInterceptor(logging)
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                val originalHttpUrl = chain.request().url()
+                val url = originalHttpUrl.newBuilder()
+                    .addQueryParameter(API_KEY_PARAM, BuildConfig.API_KEY).build()
+                request.url(url)
+                return@addInterceptor chain.proceed(request.build())
+            }
             .build()
     }
 }

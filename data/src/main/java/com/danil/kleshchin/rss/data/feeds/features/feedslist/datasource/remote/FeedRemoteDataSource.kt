@@ -4,5 +4,5 @@ import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.e
 
 interface FeedRemoteDataSource {
 
-    suspend fun getFeedListBySection(sectionName: String, apiKey: String): FeedObjectApiEntity
+    suspend fun getFeedListBySection(sectionName: String): FeedObjectApiEntity
 }

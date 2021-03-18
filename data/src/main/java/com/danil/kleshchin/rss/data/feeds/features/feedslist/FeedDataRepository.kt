@@ -1,6 +1,5 @@
 package com.danil.kleshchin.rss.data.feeds.features.feedslist
 
-import com.danil.kleshchin.rss.data.BuildConfig
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDbMapper
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedLocalDataSource
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApiMapper
@@ -41,8 +40,7 @@ class FeedDataRepository(
     private suspend fun getRemoteFeedListBySection(sectionName: String) =
         apiMapper.transform(
             remoteDataSource.getFeedListBySection(
-                sectionName.toLowerCase(Locale.getDefault()),
-                BuildConfig.API_KEY
+                sectionName.toLowerCase(Locale.getDefault())
             )
         )
 

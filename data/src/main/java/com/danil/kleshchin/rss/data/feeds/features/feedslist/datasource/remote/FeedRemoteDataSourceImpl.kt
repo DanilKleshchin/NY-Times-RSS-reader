@@ -7,9 +7,8 @@ class FeedRemoteDataSourceImpl(
 ) : FeedRemoteDataSource {
 
     override suspend fun getFeedListBySection(
-        sectionName: String,
-        apiKey: String
+        sectionName: String
     ): FeedObjectApiEntity {
-        return feedApi.getTopStories(sectionName, apiKey)
+        return feedApi.getTopStories(sectionName)
     }
 }
