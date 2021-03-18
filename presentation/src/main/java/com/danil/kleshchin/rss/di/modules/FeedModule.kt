@@ -9,6 +9,7 @@ import com.danil.kleshchin.rss.data.feeds.features.favorites.datasource.Favorite
 import com.danil.kleshchin.rss.domain.interactor.features.favorites.FavoriteFeedRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module(includes = [AppModule::class])
 class FeedModule {
@@ -28,5 +29,6 @@ class FeedModule {
         )
 
     @Provides
+    @Singleton
     fun provideFavoriteFeedDatabase(context: Context) = FavoriteFeedDatabase.getInstance(context)
 }

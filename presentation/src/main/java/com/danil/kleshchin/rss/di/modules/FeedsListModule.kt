@@ -24,6 +24,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module(includes = [AppModule::class, FeedModule::class])
 class FeedsListModule(
@@ -55,6 +56,7 @@ class FeedsListModule(
         )
 
     @Provides
+    @Singleton
     fun provideFeedApi(okHttpClient: OkHttpClient): FeedApi =
         Retrofit.Builder()
             .client(okHttpClient)
@@ -64,9 +66,11 @@ class FeedsListModule(
             .create(FeedApi::class.java)
 
     @Provides
+    @Singleton
     fun provideFeedDatabase(context: Context) = FeedDatabase.getInstance(context)
 
     @Provides
+    @Singleton
     fun provideDispatchers() = DispatcherProvider(
         database = dispatcher.IO,
         main = dispatcher.Main,
@@ -74,6 +78,7 @@ class FeedsListModule(
     )
 
     @Provides
+    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
