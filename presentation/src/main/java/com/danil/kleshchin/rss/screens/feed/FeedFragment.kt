@@ -53,7 +53,7 @@ class FeedFragment : Fragment() {
             pageUrl.setOnClickListener { showWebPage() }
             iconShare.setOnClickListener { createShareIntent() }
             backButton.setOnClickListener { navigateBack() }
-            image.setOnClickListener { navigateToZoomImageScreen() }
+            image.setOnClickListener { navigateToFeedImageScreen() }
         }
     }
 
@@ -62,6 +62,7 @@ class FeedFragment : Fragment() {
         _binding = null
     }
 
+    //TODO create base fragment for this?
     private fun createShareIntent() {
         ShareCompat.IntentBuilder.from(requireActivity())
             .setType("text/plain")
@@ -75,10 +76,10 @@ class FeedFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun navigateToZoomImageScreen() {
+    private fun navigateToFeedImageScreen() {
         viewModel.feed.apply {
             if (thumbUrl.isNotEmpty()) {
-                val action = FeedFragmentDirections.actionFeedFragmentToFeedImageZoomFragment(
+                val action = FeedFragmentDirections.actionFeedFragmentToFeedImageFragment(
                     iconUrl,
                     title
                 )

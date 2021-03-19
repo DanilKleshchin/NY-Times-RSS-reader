@@ -54,8 +54,8 @@
             app:argType="com.danil.kleshchin.rss.entities.feed.FeedEntity" />
 
         <action
-            android:id="@+id/action_feed_fragment_to_feedImageZoomFragment"
-            app:destination="@id/feedImageZoomFragment"
+            android:id="@+id/action_feed_fragment_to_feedImageFragment"
+            app:destination="@id/feedImageFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -63,9 +63,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/feedImageZoomFragment"
+        android:id="@+id/feedImageFragment"
         android:name="com.danil.kleshchin.rss.screens.feedimage.FeedImageFragment"
-        android:label="FeedImageZoomFragment"
+        android:label="FeedImageFragment"
         tools:layout="@layout/fragment_feed_image">
         <argument
             android:name="image_url_arg"

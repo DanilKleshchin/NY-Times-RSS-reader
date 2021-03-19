@@ -68,14 +68,7 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     }
 
     override fun onStarClick(viewHolder: RecyclerView.ViewHolder, feed: FeedEntity) {
-        (binding.favoriteFeedsListView.adapter as FavoriteFeedsListAdapter).removeFeed(
-            viewHolder,
-            binding.favoriteFeedsListView
-        )
-    }
-
-    override fun onFeedUndoDismissed(feed: FeedEntity) {
-        viewModel.addRemoveFavoriteFeed(feed)
+        removeFeed(viewHolder.adapterPosition)
     }
 
     override fun onShareClick(feed: FeedEntity) {
@@ -97,7 +90,43 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
 
     private fun showFeedList(feedList: List<FeedEntity>) {
         binding.favoriteFeedsListView.adapter =
-            FavoriteFeedsListAdapter(ArrayList(feedList), requireContext(), this)
+            FavoriteFeedsListAdapter(feedList, requireContext(), this)
+    }
+
+    private fun removeFeed(position: Int) {
+        viewModel.selectFeedToRemove(position)
+        updateAdapterFeedsList(viewModel.feedList)
+        binding.favoriteFeedsListView.adapter?.notifyItemRemoved(position)
+        showUndoSnackbar()
+    }
+
+    private fun showUndoSnackbar() {
+        val snackbar: Snackbar = Snackbar.make(
+            binding.root, getString(R.string.undo_snack_bar_title),
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction(getString(R.string.undo_snackbar_undo_text)) {
+            undoRemoving()
+        }
+            .addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    if (event == DISMISS_EVENT_TIMEOUT) { // When user didn't click on the snackbar
+                        viewModel.feedToRemove?.let { viewModel.addRemoveFavoriteFeed(it) }
+                    }
+                }
+            })
+        snackbar.show()
+    }
+
+    private fun undoRemoving() {
+        viewModel.deselectFeedToRemove()
+        updateAdapterFeedsList(viewModel.feedList)
+        binding.favoriteFeedsListView.adapter?.notifyItemInserted(viewModel.feedToRemovePosition)
+        binding.favoriteFeedsListView.scrollToPosition(viewModel.feedToRemovePosition)
+    }
+
+    private fun updateAdapterFeedsList(feedList: List<FeedEntity>) {
+        (binding.favoriteFeedsListView.adapter as FavoriteFeedsListAdapter).updateFeedList(feedList)
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
@@ -118,7 +147,7 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     private fun setBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().finish() //TODO check
+                requireActivity().finish()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)

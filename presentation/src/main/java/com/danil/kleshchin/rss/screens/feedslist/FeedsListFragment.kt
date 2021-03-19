@@ -138,9 +138,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     private fun init(savedInstanceState: Bundle?) {
         viewModel.section = if (savedInstanceState == null) {
             args.sectionArg
-        } else (
-                savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)
-                ) as SectionEntity
+        } else (savedInstanceState.getSerializable(INSTANCE_STATE_PARAM_SECTION)) as SectionEntity
     }
 
     private fun createShareIntent(feed: FeedEntity) {

@@ -17,7 +17,7 @@ class SectionViewModel : ViewModel() {
     val sections =
         liveData {
             emit(
-                sectionMapper.transform(getSectionListUseCase.execute(Unit))
+                getSectionListUseCase.execute(Unit).map { sectionMapper.transform(it) }
             )
         }
 }

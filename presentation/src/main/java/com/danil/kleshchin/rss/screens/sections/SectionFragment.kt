@@ -38,7 +38,7 @@ class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
     ): View {
         _binding = FragmentSectionsBinding.inflate(inflater, container, false)
         setUpSectionRecyclerView()
-        subscribeUi()
+        loadSectionList()
         return binding.root
     }
 
@@ -51,12 +51,6 @@ class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
         navigateToFeedScreen(section)
     }
 
-    private fun subscribeUi() {
-        viewModel.sections.observe(viewLifecycleOwner) { sections ->
-            binding.sectionListView.adapter = SectionListAdapter(sections, requireContext(), this)
-        }
-    }
-
     private fun setUpSectionRecyclerView() {
         val orientation = this.resources.configuration.orientation
         val spansCount = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -66,6 +60,12 @@ class SectionFragment : Fragment(), SectionListAdapter.OnSectionClickListener {
         }
         binding.sectionListView.layoutManager =
             GridLayoutManager(requireContext(), spansCount, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun loadSectionList() {
+        viewModel.sections.observe(viewLifecycleOwner) { sections ->
+            binding.sectionListView.adapter = SectionListAdapter(sections, requireContext(), this)
+        }
     }
 
     private fun navigateToFeedScreen(section: SectionEntity) {

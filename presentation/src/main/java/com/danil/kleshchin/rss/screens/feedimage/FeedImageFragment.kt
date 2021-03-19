@@ -23,7 +23,7 @@ class FeedImageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN //hide status bar
 
         _binding = FragmentFeedImageBinding.inflate(inflater, container, false).also {
             it.imageUrl = args.imageUrlArg
@@ -42,7 +42,7 @@ class FeedImageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE //show status bar
     }
 
     //TODO do this with animation
