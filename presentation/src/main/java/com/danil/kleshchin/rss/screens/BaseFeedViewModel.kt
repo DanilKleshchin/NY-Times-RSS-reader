@@ -36,10 +36,18 @@ abstract class BaseFeedViewModel : ViewModel() {
         addRemoveFavoritesJob = viewModelScope.launch {
             feed.isFavorite.set(feed.isFavorite.get().not())
             if (feed.isFavorite.get()) {
-                addFeedToFavouritesUseCase.execute(mapper.transform(feed))
+                addFavoriteFeed(feed)
             } else {
-                removeFeedFromFavoritesUseCase.execute(mapper.transform(feed))
+                removeFavoriteFeed(feed)
             }
         }
+    }
+
+    private suspend fun addFavoriteFeed(feed: FeedEntity) {
+        addFeedToFavouritesUseCase.execute(mapper.transform(feed))
+    }
+
+    private suspend fun removeFavoriteFeed(feed: FeedEntity) {
+        removeFeedFromFavoritesUseCase.execute(mapper.transform(feed))
     }
 }
