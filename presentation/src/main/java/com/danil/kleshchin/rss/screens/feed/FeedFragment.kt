@@ -1,5 +1,7 @@
 package com.danil.kleshchin.rss.screens.feed
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
+
 
 class FeedFragment : Fragment() {
 
@@ -68,7 +71,8 @@ class FeedFragment : Fragment() {
     }
 
     private fun showWebPage() {
-        //Todo use custom tabs for this
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.feed.pageUrl))
+        startActivity(intent)
     }
 
     private fun navigateToZoomImageScreen() {
