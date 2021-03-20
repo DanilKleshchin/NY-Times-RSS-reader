@@ -10,6 +10,32 @@
         android:background="@color/colorItemBackground"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/empty_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/empty_favorites_icon_width"
+                android:layout_height="@dimen/empty_favorites_icon_height"
+                android:src="@drawable/ic_favorites_list_empty_view"
+                android:scaleType="fitXY"
+                android:tint="@color/black"
+                android:contentDescription="@null"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_primary_x"
+                android:text="@string/empty_favorites_list"/>
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favorite_feeds_list_view"
             android:layout_width="match_parent"

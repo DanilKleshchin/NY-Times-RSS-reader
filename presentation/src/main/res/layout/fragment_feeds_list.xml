@@ -52,8 +52,8 @@
             android:visibility="gone">
 
             <ImageView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="@dimen/error_icon_size"
+                android:layout_height="@dimen/error_icon_size"
                 android:src="@drawable/ic_error"
                 android:tint="@color/black"
                 android:contentDescription="@null"/>

@@ -28,4 +28,7 @@
     <dimen name="feed_thumb_width">300dp</dimen>
     <dimen name="feed_thumb_height">200dp</dimen>
     <dimen name="author_width">150dp</dimen>
+    <dimen name="empty_favorites_icon_width">130dp</dimen>
+    <dimen name="empty_favorites_icon_height">160dp</dimen>
+    <dimen name="error_icon_size">90dp</dimen>
 </resources>

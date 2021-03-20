@@ -13,4 +13,5 @@
     <string name="retry_button_text">RETRY</string>
     <string name="error_text">Feeds wasn\'t loaded</string>
     <string name="network_error_message">Internet connection problem</string>
+    <string name="empty_favorites_list">The favorites list is empty. Add some feed</string>
 </resources>

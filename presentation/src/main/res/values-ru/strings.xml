@@ -11,4 +11,5 @@
     <string name="retry_button_text">Повторить</string>
     <string name="error_text">Новости не загружены</string>
     <string name="network_error_message">Проблема с подключением к сети Интернет</string>
+    <string name="empty_favorites_list">Список избранного пуст. Добавьте новость</string>
 </resources>

@@ -88,8 +88,10 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     }
 
     private fun changeErrorViewVisibility(isVisible: Boolean) {
-        binding.errorContainer.isVisible = isVisible
-        binding.refreshView.isVisible = isVisible.not()
+        binding.apply {
+            errorContainer.isVisible = isVisible
+            refreshView.isVisible = isVisible.not()
+        }
     }
 
     private fun changeLoadingViewVisibility(isVisible: Boolean) {
@@ -103,7 +105,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
                 when(feeds) {
                     is ResultWrapper.Success -> setFavoritesToFeedList(feeds.value)
                     is ResultWrapper.Error -> onErrorReceived(feeds.exception)
-                    is ResultWrapper.NetworkError -> showNetworkErrorSnackBar()
+                    is ResultWrapper.NetworkError -> showNetworkErrorView()
                 }
             }
         }
@@ -130,7 +132,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         exception.printStackTrace()
     }
 
-    private fun showNetworkErrorSnackBar() {
+    private fun showNetworkErrorView() {
         changeLoadingViewVisibility(false)
         changeErrorViewVisibility(true)
         Snackbar.make(binding.root, getString(R.string.network_error_message), LENGTH_INDEFINITE).show()
