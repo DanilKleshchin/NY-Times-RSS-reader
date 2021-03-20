@@ -9,6 +9,7 @@ import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.Get
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.BaseFeedViewModel
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class FeedsListViewModel : BaseFeedViewModel() {
@@ -24,10 +25,10 @@ class FeedsListViewModel : BaseFeedViewModel() {
     fun loadFeedsList(): LiveData<ResultWrapper<List<Feed>>> {
         return liveData {
             val params = GetFeedListBySectionUseCase.Params(section.toSection().name)
-            val feedList = getFeedBySectionUseCase.execute(params)
-            emit(
-                feedList
-            )
+            getFeedBySectionUseCase.execute(params)
+                .collect {
+                    emit(it)
+                }
         }
     }
 

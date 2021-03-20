@@ -6,49 +6,37 @@ import javax.inject.Inject
 
 class FeedDbMapper @Inject constructor() {
 
-    fun transformToDomain(list: List<FeedDbEntity>): List<Feed> {
-        val feedList = ArrayList<Feed>()
-        list.forEach { feed ->
-            feedList.add(
-                Feed(
-                    title = feed.title,
-                    description = feed.description,
-                    pageUrl = feed.pageUrl,
-                    author = feed.author,
-                    dateCreated = feed.dateCreated,
-                    dateUpdated = feed.dateUpdated,
-                    kicker = feed.kicker,
-                    thumbUrl = feed.thumbUrl,
-                    iconUrl = feed.iconUrl,
-                    iconCaption = feed.iconCaption,
-                    iconCopyright = feed.iconCopyright
-                )
-            )
-        }
-        return feedList
+    fun transformToDomain(feedDbEntity: FeedDbEntity): Feed {
+        return Feed(
+            title = feedDbEntity.title,
+            description = feedDbEntity.description,
+            pageUrl = feedDbEntity.pageUrl,
+            author = feedDbEntity.author,
+            dateCreated = feedDbEntity.dateCreated,
+            dateUpdated = feedDbEntity.dateUpdated,
+            kicker = feedDbEntity.kicker,
+            thumbUrl = feedDbEntity.thumbUrl,
+            iconUrl = feedDbEntity.iconUrl,
+            iconCaption = feedDbEntity.iconCaption,
+            iconCopyright = feedDbEntity.iconCopyright
+        )
     }
 
-    fun transformToDb(sectionName: String, list: List<Feed>): List<FeedDbEntity> {
-        val feedList = ArrayList<FeedDbEntity>()
-        list.forEach { feed ->
-            feedList.add(
-                FeedDbEntity(
-                    id = feed.id,
-                    sectionName = sectionName,
-                    title = feed.title,
-                    description = feed.description,
-                    pageUrl = feed.pageUrl,
-                    author = feed.author,
-                    dateCreated = feed.dateCreated,
-                    dateUpdated = feed.dateUpdated,
-                    kicker = feed.kicker,
-                    thumbUrl = feed.thumbUrl,
-                    iconUrl = feed.iconUrl,
-                    iconCaption = feed.iconCaption,
-                    iconCopyright = feed.iconCopyright
-                )
-            )
-        }
-        return feedList
+    fun transformToDb(sectionName: String, feed: Feed): FeedDbEntity {
+        return FeedDbEntity(
+            id = feed.id,
+            sectionName = sectionName,
+            title = feed.title,
+            description = feed.description,
+            pageUrl = feed.pageUrl,
+            author = feed.author,
+            dateCreated = feed.dateCreated,
+            dateUpdated = feed.dateUpdated,
+            kicker = feed.kicker,
+            thumbUrl = feed.thumbUrl,
+            iconUrl = feed.iconUrl,
+            iconCaption = feed.iconCaption,
+            iconCopyright = feed.iconCopyright
+        )
     }
 }

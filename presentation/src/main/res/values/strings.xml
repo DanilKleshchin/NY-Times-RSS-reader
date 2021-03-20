@@ -11,5 +11,6 @@
     <string name="undo_snack_bar_title">The feed was removed</string>
     <string name="undo_snackbar_undo_text">Undo</string>
     <string name="retry_button_text">RETRY</string>
-    <string name="error_text">Something went wrong. Try again</string>
+    <string name="error_text">Feeds wasn\'t loaded</string>
+    <string name="network_error_message">Internet connection problem</string>
 </resources>

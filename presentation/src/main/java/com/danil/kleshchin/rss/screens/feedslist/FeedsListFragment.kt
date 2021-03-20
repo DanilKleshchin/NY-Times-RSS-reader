@@ -21,6 +21,8 @@ import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
 import com.danil.kleshchin.rss.widgets.VerticalSpaceItemDecoration
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -85,7 +87,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         createShareIntent(feed)
     }
 
-    private fun changeRetryViewVisibility(isVisible: Boolean) {
+    private fun changeErrorViewVisibility(isVisible: Boolean) {
         binding.errorContainer.isVisible = isVisible
         binding.refreshView.isVisible = isVisible.not()
     }
@@ -99,12 +101,9 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         loadFeedsListJob = lifecycleScope.launch {
             viewModel.loadFeedsList().observe(viewLifecycleOwner) { feeds ->
                 when(feeds) {
-                    is ResultWrapper.Success ->  setFavoritesToFeedList(feeds.value)
-                    is ResultWrapper.Error -> {
-                        changeLoadingViewVisibility(false)
-                        changeRetryViewVisibility(true)
-                        feeds.exception.printStackTrace()
-                    }
+                    is ResultWrapper.Success -> setFavoritesToFeedList(feeds.value)
+                    is ResultWrapper.Error -> onErrorReceived(feeds.exception)
+                    is ResultWrapper.NetworkError -> showNetworkErrorSnackBar()
                 }
             }
         }
@@ -115,7 +114,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         loadFeedsListJob = lifecycleScope.launch {
             viewModel.getFeedListWithFavorites(feedList).observe(viewLifecycleOwner) { feeds ->
                 changeLoadingViewVisibility(false)
-                changeRetryViewVisibility(false)
+                changeErrorViewVisibility(false)
                 showFeedList(feeds)
             }
         }
@@ -123,6 +122,18 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
 
     private fun showFeedList(feedList: List<FeedEntity>) {
         binding.feedListView.adapter = FeedsListAdapter(feedList, requireContext(), this)
+    }
+
+    private fun onErrorReceived(exception: Exception) {
+        changeLoadingViewVisibility(false)
+        changeErrorViewVisibility(true)
+        exception.printStackTrace()
+    }
+
+    private fun showNetworkErrorSnackBar() {
+        changeLoadingViewVisibility(false)
+        changeErrorViewVisibility(true)
+        Snackbar.make(binding.root, getString(R.string.network_error_message), LENGTH_INDEFINITE).show()
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
