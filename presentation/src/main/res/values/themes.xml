@@ -4,9 +4,23 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccentDark</item>
+
+        <!-- Snackbar -->
+        <item name="snackbarButtonStyle">@style/MaterialSnackbarTextButtonTheme</item>
+        <item name="snackbarTextViewStyle">@style/MaterialSnackbarTextViewTheme</item>
     </style>
 
     <style name="SplashScreenTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen_background</item>
+    </style>
+
+    <style name="MaterialSnackbarTextButtonTheme" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/colorTextLink</item>
+        <item name="android:alpha">1.0</item>
+    </style>
+
+    <style name="MaterialSnackbarTextViewTheme" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:textColor">@color/colorTextPrimary</item>
+        <item name="android:alpha">1.0</item>
     </style>
 </resources>
