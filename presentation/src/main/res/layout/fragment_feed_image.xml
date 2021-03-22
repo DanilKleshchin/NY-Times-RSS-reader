@@ -32,46 +32,50 @@
             app:load_image="@{imageUrl}"
             tools:src="@drawable/test_image"/>
 
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/feed_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@drawable/gradient_toolbar"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/toolbar_padding"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/back_button"
-                android:layout_width="@dimen/back_button_size"
-                android:layout_height="@dimen/back_button_size"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"
-                android:src="@drawable/back_arrow"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="@{clickListener}"
-                android:contentDescription="@null"/>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetStart="0dp">
 
-            <TextView
-                android:id="@+id/feed_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:layout_marginStart="@dimen/margin_big"
-                android:layout_marginEnd="@dimen/margin_primary"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_size_primary"
-                android:text="@{toolbarTitle}"
-                android:fontFamily="@font/ubuntu_bold"
-                tools:text="Cuomo Is Accused of Sexual Harassment by a 2nd Former Aide"/>
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="@dimen/back_button_size"
+                    android:layout_height="@dimen/back_button_size"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="@dimen/margin_primary_x"
+                    android:src="@drawable/back_arrow"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{clickListener}"
+                    android:contentDescription="@null"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/feed_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginStart="@dimen/margin_big"
+                    android:layout_marginEnd="@dimen/margin_primary"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_primary"
+                    android:text="@{toolbarTitle}"
+                    android:fontFamily="@font/ubuntu_bold"
+                    tools:text="Cuomo Is Accused of Sexual Harassment by a 2nd Former Aide"/>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
