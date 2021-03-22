@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.danil.kleshchin.rss.databinding.ItemFeedListBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
-import com.squareup.picasso.Picasso
 
 class FeedsListAdapter(
     private val feedList: List<FeedEntity>,
@@ -41,7 +41,7 @@ class FeedsListAdapter(
 
     override fun onViewRecycled(holder: FeedListViewHolder) {
         holder.getBinding().thumb.let {
-            Picasso.get().cancelRequest(it)
+            Glide.with(context).clear(it)
         }
         super.onViewRecycled(holder)
     }

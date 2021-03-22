@@ -6,8 +6,8 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.danil.kleshchin.rss.R
-import com.squareup.picasso.Picasso
 
 
 @BindingAdapter("load_image")
@@ -16,7 +16,7 @@ fun bindLoadImage(view: ImageView, imageUrl: String) {
         view.visibility = View.GONE
     } else {
         view.visibility = View.VISIBLE
-        Picasso.get().load(imageUrl).into(view)
+        Glide.with(view.context).load(imageUrl).into(view)
     }
 }
 
