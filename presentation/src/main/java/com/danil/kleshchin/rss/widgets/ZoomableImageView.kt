@@ -3,6 +3,7 @@ package com.danil.kleshchin.rss.widgets
 import android.content.Context
 import android.graphics.Matrix
 import android.graphics.PointF
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -141,9 +142,9 @@ class ZoomableImageView : AppCompatImageView, View.OnTouchListener,
 
     private fun fitToScreen() {
         currentScale = initialScale
-        val drawable = drawable
-        val imageWidth = drawable.intrinsicWidth
-        val imageHeight = drawable.intrinsicHeight
+        val drawable: Drawable? = drawable
+        val imageWidth = drawable?.intrinsicWidth ?: 0
+        val imageHeight = drawable?.intrinsicHeight ?: 0
         if (drawable == null || imageWidth == 0 || imageHeight == 0) {
             return
         }

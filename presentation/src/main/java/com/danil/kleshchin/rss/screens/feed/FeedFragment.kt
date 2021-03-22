@@ -14,8 +14,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
+import com.danil.kleshchin.rss.data.feeds.utils.isNetworkAvailable
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 
 
 class FeedFragment : Fragment() {
@@ -53,7 +56,7 @@ class FeedFragment : Fragment() {
             pageUrl.setOnClickListener { showWebPage() }
             iconShare.setOnClickListener { createShareIntent() }
             backButton.setOnClickListener { navigateBack() }
-            image.setOnClickListener { navigateToFeedImageScreen() }
+            image.setOnClickListener { onImageSelected() }
         }
     }
 
@@ -74,6 +77,20 @@ class FeedFragment : Fragment() {
     private fun showWebPage() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.feed.pageUrl))
         startActivity(intent)
+    }
+
+    private fun onImageSelected() {
+        if (isNetworkAvailable(requireContext()).not()) {
+            showNetworkErrorView()
+            return
+        }
+        navigateToFeedImageScreen()
+    }
+
+    private fun showNetworkErrorView() {
+        Snackbar.make(binding.root, getString(R.string.network_error_message),
+            BaseTransientBottomBar.LENGTH_LONG
+        ).show()
     }
 
     private fun navigateToFeedImageScreen() {
