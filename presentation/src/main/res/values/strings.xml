@@ -16,4 +16,6 @@
     <string name="empty_favorites_list">The favorites list is empty. Add some feed</string>
     <string name="save_to_gallery">Save to gallery</string>
     <string name="share">Share</string>
+    <string name="image_saved">Image saved!</string>
+    <string name="unable_to_save">Unable to save image</string>
 </resources>

@@ -6,6 +6,7 @@ import com.danil.kleshchin.elapsed_time.getDateTimeFromTimestamp
 import com.danil.kleshchin.elapsed_time.getElapsedTimeString
 import com.danil.kleshchin.elapsed_time.getTimestampFromDateTime
 import com.danil.kleshchin.elapsed_time.pattern_1
+import com.danil.kleshchin.elapsed_time.pattern_7
 import com.danil.kleshchin.rss.domain.entity.Feed
 import javax.inject.Inject
 
@@ -44,8 +45,8 @@ class FeedMapper @Inject constructor() {
             pageUrl = feed.pageUrl,
             author = feed.author,
             timeElapsed = getElapsedTimeString(feed.dateCreated, currentTime, resources),
-            dateCreated = getDateTimeFromTimestamp(feed.dateCreated, pattern_1),
-            dateUpdated = getDateTimeFromTimestamp(feed.dateUpdated, pattern_1),
+            dateCreated = getDateTimeFromTimestamp(feed.dateCreated, pattern_7),
+            dateUpdated = getDateTimeFromTimestamp(feed.dateUpdated, pattern_7),
             kicker = feed.kicker,
             thumbUrl = feed.thumbUrl,
             iconUrl = feed.iconUrl,

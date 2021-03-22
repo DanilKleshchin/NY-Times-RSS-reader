@@ -1,5 +1,8 @@
 package com.danil.kleshchin.rss.screens.feedimage
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -10,16 +13,27 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedImageBinding
 import com.danil.kleshchin.rss.widgets.ZoomableImageView
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 
 class FeedImageFragment : Fragment() {
+
+    private val REQUEST_CODE_WRITE_PERMISSIONS = 10001
 
     private val viewModel: FeedImageViewModel by viewModels()
 
@@ -32,7 +46,8 @@ class FeedImageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN //hide status bar
+        requireActivity().window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_FULLSCREEN //hide status bar
 
         _binding = FragmentFeedImageBinding.inflate(inflater, container, false).also {
             it.imageUrl = args.imageUrlArg
@@ -55,7 +70,8 @@ class FeedImageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE //show status bar
+        requireActivity().window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_VISIBLE //show status bar
         (activity as AppCompatActivity).setSupportActionBar(null)
     }
 
@@ -70,7 +86,7 @@ class FeedImageFragment : Fragment() {
                 true
             }
             R.id.save_to_gallery -> {
-                saveToGallery()
+                saveToGallerySelected()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -91,8 +107,65 @@ class FeedImageFragment : Fragment() {
             .startChooser()
     }
 
+    private fun saveToGallerySelected() {
+        if (!isStoragePermissionGranted()) {
+            requestWritePermissions()
+            return
+        }
+        saveToGallery()
+    }
+
     private fun saveToGallery() {
-        viewModel.saveImageToGallery()
+        var saved: Boolean
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                saved = viewModel.saveImageToGallery(
+                    Glide.with(requireActivity())
+                        .asBitmap()
+                        .load(args.imageUrlArg)
+                        .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                        .error(android.R.drawable.stat_notify_error)
+                        .submit()
+                        .get(),
+                    requireActivity().contentResolver
+                )
+                val message = if (saved) {
+                    getString(R.string.image_saved)
+                } else {
+                    getString(R.string.unable_to_save)
+                }
+                Snackbar.make(binding.root, message, BaseTransientBottomBar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun isStoragePermissionGranted(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
+
+    private fun requestWritePermissions() {
+        requestPermissions(
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            REQUEST_CODE_WRITE_PERMISSIONS
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveToGallery()
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun setBackPressedCallback() {

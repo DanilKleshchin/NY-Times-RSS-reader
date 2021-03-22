@@ -14,4 +14,6 @@
     <string name="empty_favorites_list">Список избранного пуст. Добавьте новость</string>
     <string name="save_to_gallery">Сохранить в галерею</string>
     <string name="share">Поделиться</string>
+    <string name="image_saved">Изображение сохранено!</string>
+    <string name="unable_to_save">Невозможно сохранить изображение</string>
 </resources>
