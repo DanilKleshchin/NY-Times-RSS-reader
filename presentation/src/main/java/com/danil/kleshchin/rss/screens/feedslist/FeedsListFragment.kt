@@ -21,7 +21,7 @@ import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
 import com.danil.kleshchin.rss.widgets.VerticalSpaceItemDecoration
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -135,7 +135,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     private fun showNetworkErrorView() {
         changeLoadingViewVisibility(false)
         changeErrorViewVisibility(true)
-        Snackbar.make(binding.root, getString(R.string.network_error_message), LENGTH_INDEFINITE).show()
+        Snackbar.make(binding.root, getString(R.string.network_error_message), LENGTH_LONG).show()
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
