@@ -15,8 +15,8 @@ interface FeedDao {
     @Query("DELETE FROM FEED_TABLE WHERE sectionName = :sectionName")
     suspend fun removeFeedsBySection(sectionName: String)
 
-    @Query("SELECT * FROM FEED_TABLE WHERE sectionName = :sectionName")
-    suspend fun getFeedListBySection(sectionName: String): List<FeedDbEntity> //TODO checkout about FLOW
+    @Query("SELECT * FROM FEED_TABLE WHERE sectionName = :sectionName ORDER BY position")
+    suspend fun getFeedListBySection(sectionName: String): List<FeedDbEntity>
 
     @Query("DELETE FROM FEED_TABLE")
     suspend fun removeAll()

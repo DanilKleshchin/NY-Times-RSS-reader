@@ -79,6 +79,8 @@ class FeedDataRepository(
 
     private suspend fun updateLocalFeedList(sectionName: String, list: List<Feed>) {
         localDataSource.removeFeedBySection(sectionName)
-        localDataSource.setFeedList(list.map { dbMapper.transformToDb(sectionName, it) })
+        localDataSource.setFeedList(list.mapIndexed { index, feed ->
+            dbMapper.transformToDb(sectionName, index, feed)
+        })
     }
 }

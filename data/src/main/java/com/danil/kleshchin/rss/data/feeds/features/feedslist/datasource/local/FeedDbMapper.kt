@@ -22,9 +22,10 @@ class FeedDbMapper @Inject constructor() {
         )
     }
 
-    fun transformToDb(sectionName: String, feed: Feed): FeedDbEntity {
+    fun transformToDb(sectionName: String, position: Int, feed: Feed): FeedDbEntity {
         return FeedDbEntity(
             id = feed.id,
+            position = position,
             sectionName = sectionName,
             title = feed.title,
             description = feed.description,

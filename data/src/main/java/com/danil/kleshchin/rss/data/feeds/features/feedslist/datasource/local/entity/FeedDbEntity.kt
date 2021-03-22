@@ -8,6 +8,7 @@ import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.TA
 data class FeedDbEntity(
     @PrimaryKey
     val id: Int,
+    val position: Int,
     val sectionName: String,
     val title: String,
     val description: String,
