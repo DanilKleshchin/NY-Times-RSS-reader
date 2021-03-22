@@ -14,6 +14,8 @@ class HomeViewPagerFragment : Fragment() {
     private var _binding: FragmentHomeViewPagerBinding? = null
     private val binding get() = _binding!!
 
+    private var tabLayoutMediator: TabLayoutMediator? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,14 +27,18 @@ class HomeViewPagerFragment : Fragment() {
 
         viewPager.adapter = HomeViewPagerAdapter(this)
 
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        tabLayoutMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = getTabTitle(position)
-        }.attach()
+        }
+        tabLayoutMediator?.attach()
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.viewPager.adapter = null
+        tabLayoutMediator?.detach()
+        tabLayoutMediator = null
         _binding = null
     }
 
