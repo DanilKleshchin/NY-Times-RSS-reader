@@ -13,7 +13,7 @@
     <string name="retry_button_text">RETRY</string>
     <string name="error_text">Feeds wasn\'t loaded</string>
     <string name="network_error_message">Internet connection problem</string>
-    <string name="empty_favorites_list">The favorites list is empty. Add some feed</string>
+    <string name="empty_favorites_list">The favorites list is empty \nAdd some feed</string>
     <string name="save_to_gallery">Save to gallery</string>
     <string name="share">Share</string>
     <string name="image_saved">Image saved!</string>
