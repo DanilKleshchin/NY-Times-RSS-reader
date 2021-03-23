@@ -31,4 +31,5 @@
     <dimen name="empty_favorites_icon_width">130dp</dimen>
     <dimen name="empty_favorites_icon_height">160dp</dimen>
     <dimen name="error_icon_size">90dp</dimen>
+    <dimen name="back_button_width">55dp</dimen>
 </resources>
