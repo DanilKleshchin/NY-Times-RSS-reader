@@ -105,7 +105,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
                 when(feeds) {
                     is ResultWrapper.Success -> setFavoritesToFeedList(feeds.value)
                     is ResultWrapper.Error -> onErrorReceived(feeds.exception)
-                    is ResultWrapper.NetworkError -> showNetworkErrorView()
+                    is ResultWrapper.NetworkError -> showNetworkErrorSnackbar()
                 }
             }
         }
@@ -132,7 +132,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         exception.printStackTrace()
     }
 
-    private fun showNetworkErrorView() {
+    private fun showNetworkErrorSnackbar() {
         changeLoadingViewVisibility(false)
         changeErrorViewVisibility(true)
         Snackbar.make(binding.root, getString(R.string.network_error_message), LENGTH_LONG).show()

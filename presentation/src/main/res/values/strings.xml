@@ -18,4 +18,5 @@
     <string name="share">Share</string>
     <string name="image_saved">Image saved!</string>
     <string name="unable_to_save">Unable to save image</string>
+    <string name="visit_site_for_more">Visit <a href="https://www.nytimes.com">The New York Times</a> for getting more</string>
 </resources>

@@ -16,4 +16,5 @@
     <string name="share">Поделиться</string>
     <string name="image_saved">Изображение сохранено!</string>
     <string name="unable_to_save">Невозможно сохранить изображение</string>
+    <string name="visit_site_for_more">Посетите <a href="https://www.nytimes.com">The New York Times</a> чтобы получить больше новостей</string>
 </resources>
