@@ -5,7 +5,6 @@ import androidx.databinding.ObservableBoolean
 import com.danil.kleshchin.elapsed_time.getDateTimeFromTimestamp
 import com.danil.kleshchin.elapsed_time.getElapsedTimeString
 import com.danil.kleshchin.elapsed_time.getTimestampFromDateTime
-import com.danil.kleshchin.elapsed_time.pattern_1
 import com.danil.kleshchin.elapsed_time.pattern_7
 import com.danil.kleshchin.rss.domain.entity.Feed
 import javax.inject.Inject
@@ -26,8 +25,8 @@ class FeedMapper @Inject constructor() {
             description = feedEntity.description,
             pageUrl = feedEntity.pageUrl,
             author = feedEntity.author,
-            dateCreated = getTimestampFromDateTime(feedEntity.dateCreated, pattern_1), //TODO probably should store the long values in feedEntity too?
-            dateUpdated = getTimestampFromDateTime(feedEntity.dateUpdated, pattern_1),
+            dateCreated = getTimestampFromDateTime(feedEntity.dateCreated, pattern_7), //TODO probably should store the long values in feedEntity too?
+            dateUpdated = getTimestampFromDateTime(feedEntity.dateUpdated, pattern_7),
             kicker = feedEntity.kicker,
             thumbUrl = feedEntity.thumbUrl,
             iconUrl = feedEntity.iconUrl,
