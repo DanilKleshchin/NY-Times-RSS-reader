@@ -15,7 +15,6 @@ import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
-import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.ResultWrapper
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
@@ -52,6 +51,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
 
         init(savedInstanceState)
         changeLoadingViewVisibility(true)
+
         loadFeedsList()
 
         binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
@@ -65,8 +65,8 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         binding.apply {
             section = viewModel.section
             setBackClickListener { navigateBack() }
-            setRetryClickListener { loadFeedsList() }
-            refreshView.setOnRefreshListener { loadFeedsList() }
+            setRetryClickListener { loadUpdatedFeedsList() }
+            refreshView.setOnRefreshListener { loadUpdatedFeedsList() }
         }
     }
 
@@ -102,23 +102,29 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         loadFeedsListJob?.cancel()
         loadFeedsListJob = lifecycleScope.launch {
             viewModel.loadFeedsList().observe(viewLifecycleOwner) { feeds ->
-                when(feeds) {
-                    is ResultWrapper.Success -> setFavoritesToFeedList(feeds.value)
-                    is ResultWrapper.Error -> onErrorReceived(feeds.exception)
-                    is ResultWrapper.NetworkError -> showNetworkErrorSnackbar()
-                }
+                onFeedListLoaded(feeds)
             }
         }
     }
 
-    private fun setFavoritesToFeedList(feedList: List<Feed>) {
+    private fun loadUpdatedFeedsList() {
         loadFeedsListJob?.cancel()
         loadFeedsListJob = lifecycleScope.launch {
-            viewModel.getFeedListWithFavorites(feedList).observe(viewLifecycleOwner) { feeds ->
+            viewModel.loadUpdatedFeedsList().observe(viewLifecycleOwner) { feeds ->
+                onFeedListLoaded(feeds)
+            }
+        }
+    }
+
+    private fun onFeedListLoaded(feeds: ResultWrapper<List<FeedEntity>>) {
+        when(feeds) {
+            is ResultWrapper.Success ->  {
                 changeLoadingViewVisibility(false)
                 changeErrorViewVisibility(false)
-                showFeedList(feeds)
+                showFeedList(feeds.value)
             }
+            is ResultWrapper.Error -> onErrorReceived(feeds.exception)
+            is ResultWrapper.NetworkError -> showNetworkErrorSnackbar()
         }
     }
 

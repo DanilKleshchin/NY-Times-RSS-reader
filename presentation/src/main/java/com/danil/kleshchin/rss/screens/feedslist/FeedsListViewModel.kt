@@ -22,27 +22,43 @@ class FeedsListViewModel : BaseFeedViewModel() {
 
     lateinit var section: SectionEntity
 
-    fun loadFeedsList(): LiveData<ResultWrapper<List<Feed>>> {
+    private var feedEntityList: List<FeedEntity> = ArrayList()
+
+    //TODO ask how to do that
+    fun loadFeedsList(): LiveData<ResultWrapper<List<FeedEntity>>> {
+        if (feedEntityList.isNotEmpty()) {
+            return liveData {
+                emit(ResultWrapper.Success(feedEntityList))
+            }
+        } else {
+            return loadUpdatedFeedsList()
+        }
+    }
+
+    fun loadUpdatedFeedsList(): LiveData<ResultWrapper<List<FeedEntity>>> {
         return liveData {
             val params = GetFeedListBySectionUseCase.Params(section.toSection().name)
             getFeedBySectionUseCase.execute(params)
-                .collect {
-                    emit(it)
+                .collect { feeds ->
+                    when (feeds) {
+                        is ResultWrapper.Success -> emit(
+                            ResultWrapper.Success(
+                                getFeedListWithFavorites(feeds.value)
+                            )
+                        )
+                        is ResultWrapper.Error -> emit(feeds)
+                        is ResultWrapper.NetworkError -> emit(feeds)
+                    }
                 }
         }
     }
 
-    fun getFeedListWithFavorites(feedList: List<Feed>): LiveData<List<FeedEntity>> {
-        return liveData {
-            val favoritesList = getFavoriteFeedsListUseCase.execute(Unit)
-            setFavoritesFeeds(feedList, favoritesList)
-            val currentTime = System.currentTimeMillis()
-            val feedEntityList =
-                mapper.transform(feedList, currentTime, resourceHelper.getAndroidResources())
-            emit(
-                feedEntityList
-            )
-        }
+    private suspend fun getFeedListWithFavorites(feedList: List<Feed>): List<FeedEntity> {
+        val favoritesList = getFavoriteFeedsListUseCase.execute(Unit)
+        setFavoritesFeeds(feedList, favoritesList)
+        val currentTime = System.currentTimeMillis()
+        feedEntityList = mapper.transform(feedList, currentTime, resourceHelper.getAndroidResources())
+        return feedEntityList
     }
 
     /**

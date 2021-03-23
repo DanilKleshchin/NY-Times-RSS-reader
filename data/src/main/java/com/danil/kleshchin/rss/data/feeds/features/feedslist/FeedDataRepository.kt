@@ -28,19 +28,13 @@ class FeedDataRepository(
     private val dispatcherProvider: DispatcherProvider
 ) : FeedRepository {
 
+    /**
+     * Returns feeds from the remote data source and updates it in the local data source.
+     */
     override suspend fun getFeedListBySection(sectionName: String): Flow<ResultWrapper<List<Feed>>> =
         channelFlow {
             try {
                 coroutineScope {
-                    getLocalFeedListBySection(sectionName)
-                        .flowOn(dispatcherProvider.database)
-                        .onEach {
-                            if (it.value.isNotEmpty()) {
-                                send(it)
-                            }
-                        }
-                        .launchIn(this)
-
                     if (isNetworkAvailable(context)) {
                         getRemoteFeedListBySection(sectionName)
                             .flowOn(dispatcherProvider.network)
@@ -51,6 +45,14 @@ class FeedDataRepository(
                             .launchIn(this)
                     } else {
                         send(ResultWrapper.NetworkError)
+                        getLocalFeedListBySection(sectionName)
+                            .flowOn(dispatcherProvider.database)
+                            .onEach {
+                                if (it.value.isNotEmpty()) {
+                                    send(it)
+                                }
+                            }
+                            .launchIn(this)
                     }
                 }
             } catch (exception: Exception) {
@@ -58,6 +60,9 @@ class FeedDataRepository(
             }
         }
 
+    /**
+     * Feeds from [com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApi]
+     */
     private suspend fun getRemoteFeedListBySection(sectionName: String) =
         flow {
             val feeds = remoteDataSource.getFeedListBySection(
@@ -68,6 +73,9 @@ class FeedDataRepository(
             )
         }
 
+    /**
+     * Feeds from [com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDatabase]
+     */
     private suspend fun getLocalFeedListBySection(sectionName: String) =
         flow {
             val feeds = localDataSource.getFeedListBySection(sectionName)
