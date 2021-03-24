@@ -8,6 +8,7 @@ import com.danil.kleshchin.rss.databinding.MainActivityBinding
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_NYTimesRSSFeeds)
         setContentView<MainActivityBinding>(this, R.layout.main_activity)
     }
 }
