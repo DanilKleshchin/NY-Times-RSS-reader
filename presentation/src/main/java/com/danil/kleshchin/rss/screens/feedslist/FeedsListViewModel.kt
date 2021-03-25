@@ -1,15 +1,19 @@
 package com.danil.kleshchin.rss.screens.feedslist
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.GetFavoriteFeedsListUseCase
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.ResultWrapper
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetFeedListBySectionUseCase
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
+import com.danil.kleshchin.rss.entities.section.SectionMapper
 import com.danil.kleshchin.rss.screens.BaseFeedViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FeedsListViewModel : BaseFeedViewModel() {
@@ -20,35 +24,48 @@ class FeedsListViewModel : BaseFeedViewModel() {
     @Inject
     lateinit var getFeedBySectionUseCase: GetFeedListBySectionUseCase
 
+    @Inject
+    lateinit var sectionMapper: SectionMapper
+
+    @Inject
+    lateinit var dispatcher: DispatcherProvider
+
     lateinit var section: SectionEntity
 
     private var feedEntityList: List<FeedEntity> = ArrayList()
 
-    //TODO ask how to do that
-    fun loadFeedsList(): LiveData<ResultWrapper<List<FeedEntity>>> {
+    private val _feeds = MutableLiveData<ResultWrapper<List<FeedEntity>>>()
+    val feeds: LiveData<ResultWrapper<List<FeedEntity>>>
+        get() = _feeds
+
+    fun loadFeedsList() {
         if (feedEntityList.isNotEmpty()) {
-            return liveData {
-                emit(ResultWrapper.Success(feedEntityList))
-            }
-        } else {
-            return loadUpdatedFeedsList()
+            _feeds.value = (ResultWrapper.Success(feedEntityList))
+            return
         }
+        loadFeeds()
     }
 
-    fun loadUpdatedFeedsList(): LiveData<ResultWrapper<List<FeedEntity>>> {
-        return liveData {
-            val params = GetFeedListBySectionUseCase.Params(section.toSection().name)
+    fun loadUpdatedFeedsList() {
+        loadFeeds()
+    }
+
+    private fun loadFeeds() {
+        viewModelScope.launch(dispatcher.network) {
+            val params = GetFeedListBySectionUseCase.Params(sectionMapper.transform(section).name)
             getFeedBySectionUseCase.execute(params)
                 .collect { feeds ->
-                    when (feeds) {
-                        is ResultWrapper.Success -> emit(
-                            ResultWrapper.Success(
-                                getFeedListWithFavorites(feeds.value)
+                    _feeds.postValue(
+                        when (feeds) {
+                            is ResultWrapper.Success -> ResultWrapper.Success(
+                                getFeedListWithFavorites( // Set the isFavorite value to the same feed which was added to favorites
+                                    feeds.value
+                                )
                             )
-                        )
-                        is ResultWrapper.Error -> emit(feeds)
-                        is ResultWrapper.NetworkError -> emit(feeds)
-                    }
+                            is ResultWrapper.Error -> ResultWrapper.Error(feeds.exception)
+                            else -> ResultWrapper.NetworkError
+                        }
+                    )
                 }
         }
     }
@@ -57,7 +74,8 @@ class FeedsListViewModel : BaseFeedViewModel() {
         val favoritesList = getFavoriteFeedsListUseCase.execute(Unit)
         setFavoritesFeeds(feedList, favoritesList)
         val currentTime = System.currentTimeMillis()
-        feedEntityList = mapper.transform(feedList, currentTime, resourceHelper.getAndroidResources())
+        feedEntityList =
+            feedList.map { mapper.transform(it, currentTime, resourceHelper.getAndroidResources()) }
         return feedEntityList
     }
 

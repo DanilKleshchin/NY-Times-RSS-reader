@@ -53,6 +53,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         changeLoadingViewVisibility(true)
 
         loadFeedsList()
+        observeFeedsListLoading()
 
         binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
         return binding.root
@@ -101,34 +102,42 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     private fun loadFeedsList() {
         loadFeedsListJob?.cancel()
         loadFeedsListJob = lifecycleScope.launch {
-            viewModel.loadFeedsList().observe(viewLifecycleOwner) { feeds ->
-                onFeedListLoaded(feeds)
-            }
+            viewModel.loadFeedsList()
         }
     }
 
     private fun loadUpdatedFeedsList() {
         loadFeedsListJob?.cancel()
         loadFeedsListJob = lifecycleScope.launch {
-            viewModel.loadUpdatedFeedsList().observe(viewLifecycleOwner) { feeds ->
-                onFeedListLoaded(feeds)
-            }
+            viewModel.loadUpdatedFeedsList()
         }
     }
 
-    private fun onFeedListLoaded(feeds: ResultWrapper<List<FeedEntity>>) {
+    private fun observeFeedsListLoading() {
+        viewModel.feeds.observe(viewLifecycleOwner) { feeds ->
+            onFeedsListLoaded(feeds)
+        }
+    }
+
+    private fun onFeedsListLoaded(feeds: ResultWrapper<List<FeedEntity>>) {
         when(feeds) {
             is ResultWrapper.Success ->  {
                 changeLoadingViewVisibility(false)
                 changeErrorViewVisibility(false)
-                showFeedList(feeds.value)
+                showFeedsList(feeds.value)
             }
             is ResultWrapper.Error -> onErrorReceived(feeds.exception)
             is ResultWrapper.NetworkError -> showNetworkErrorSnackbar()
+            else -> Unit
         }
     }
 
-    private fun showFeedList(feedList: List<FeedEntity>) {
+    private fun showFeedsList(feedList: List<FeedEntity>) {
+        if (feedList.isEmpty()) {
+            changeErrorViewVisibility(true)
+            return
+        }
+        changeErrorViewVisibility(false)
         binding.feedListView.adapter = FeedsListAdapter(feedList, requireContext(), this)
     }
 

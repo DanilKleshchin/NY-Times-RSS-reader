@@ -10,13 +10,10 @@ import com.danil.kleshchin.rss.data.feeds.utils.isNetworkAvailable
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.FeedRepository
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.ResultWrapper
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class FeedDataRepository(
@@ -31,28 +28,24 @@ class FeedDataRepository(
     /**
      * Returns feeds from the remote data source and updates it in the local data source.
      */
+    @ExperimentalCoroutinesApi
     override suspend fun getFeedListBySection(sectionName: String): Flow<ResultWrapper<List<Feed>>> =
         channelFlow {
             try {
-                coroutineScope {
-                    if (isNetworkAvailable(context)) {
-                        getRemoteFeedListBySection(sectionName)
-                            .flowOn(dispatcherProvider.network)
-                            .onEach { resultWrapper ->
-                                updateLocalFeedList(sectionName, resultWrapper.value)
-                                send(resultWrapper)
-                            }
-                            .launchIn(this)
-                    } else {
-                        send(ResultWrapper.NetworkError)
-                        getLocalFeedListBySection(sectionName)
-                            .flowOn(dispatcherProvider.database)
-                            .onEach {
-                                if (it.value.isNotEmpty()) {
-                                    send(it)
-                                }
-                            }
-                            .launchIn(this)
+                if (isNetworkAvailable(context)) {
+                    withContext(dispatcherProvider.network) {
+                        val result = getRemoteFeedListBySection(sectionName)
+                        send(result)
+                        if (result is ResultWrapper.Success) {
+                            updateLocalFeedList(sectionName, result.value)
+                        } else {
+                            send(getLocalFeedListBySection(sectionName))
+                        }
+                    }
+                } else {
+                    send(ResultWrapper.NetworkError)
+                    withContext(dispatcherProvider.database) {
+                        send(getLocalFeedListBySection(sectionName))
                     }
                 }
             } catch (exception: Exception) {
@@ -63,27 +56,22 @@ class FeedDataRepository(
     /**
      * Feeds from [com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApi]
      */
-    private suspend fun getRemoteFeedListBySection(sectionName: String) =
-        flow {
-            val feeds = remoteDataSource.getFeedListBySection(
-                sectionName.toLowerCase(Locale.getDefault())
-            ).results.map { apiMapper.transform(it) }
-            emit(
-                ResultWrapper.Success(feeds)
-            )
-        }
+    private suspend fun getRemoteFeedListBySection(sectionName: String): ResultWrapper<List<Feed>> {
+        val feeds = remoteDataSource.getFeedListBySection(
+            sectionName.toLowerCase(Locale.getDefault())
+        )
+            .results.map { apiMapper.transform(it) }
+        return ResultWrapper.Success(feeds)
+    }
 
     /**
      * Feeds from [com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDatabase]
      */
-    private suspend fun getLocalFeedListBySection(sectionName: String) =
-        flow {
-            val feeds = localDataSource.getFeedListBySection(sectionName)
-                .map { dbMapper.transformToDomain(it) }
-            emit(
-                ResultWrapper.Success(feeds)
-            )
-        }
+    private suspend fun getLocalFeedListBySection(sectionName: String): ResultWrapper<List<Feed>> {
+        val feeds = localDataSource.getFeedListBySection(sectionName)
+            .map { dbMapper.transformToDomain(it) }
+        return ResultWrapper.Success(feeds)
+    }
 
     private suspend fun updateLocalFeedList(sectionName: String, list: List<Feed>) {
         localDataSource.removeFeedBySection(sectionName)
