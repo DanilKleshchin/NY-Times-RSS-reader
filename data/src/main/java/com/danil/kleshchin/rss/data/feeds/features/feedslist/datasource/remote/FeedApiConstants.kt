@@ -8,7 +8,7 @@ const val API_KEY_PARAM = "api-key"
 const val SECTION_NAME_PARAM = "section_name"
 const val GET_SECTION_PARAM = "{$SECTION_NAME_PARAM}.json"
 
-//The API sends images in several formats. Use the next formats for Retrieving thumb and full size images
+//The API sends images in several formats. Use the next formats for retrieving thumb and full size images
 const val THUMB_FORMAT = "Normal"
 const val ICON_FORMAT = "superJumbo"
 

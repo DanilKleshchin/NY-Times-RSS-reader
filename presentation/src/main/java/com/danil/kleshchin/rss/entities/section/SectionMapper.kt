@@ -14,4 +14,13 @@ class SectionMapper @Inject constructor() {
         }
         throw IllegalArgumentException("Unknown section: ${section.name}")
     }
+
+    fun transform(sectionEntity: SectionEntity): Section {
+        for (section in Section.values()) {
+            if (sectionEntity.id == section.id) {
+                return section
+            }
+        }
+        throw IllegalArgumentException("Unknown section: ${sectionEntity.name}")
+    }
 }

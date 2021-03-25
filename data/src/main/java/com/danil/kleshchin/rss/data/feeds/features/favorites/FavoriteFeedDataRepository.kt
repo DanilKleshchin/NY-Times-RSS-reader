@@ -17,5 +17,5 @@ class FavoriteFeedDataRepository(
         localDataSource.removeFeedFromFavorites(mapper.transformToDb(feed))
 
     override suspend fun getFavoritesFeedList(): List<Feed> =
-        mapper.transformToDomain(localDataSource.getFavoritesFeedList())
+        localDataSource.getFavoritesFeedList().map { mapper.transformToDomain(it) }
 }

@@ -24,24 +24,10 @@ class FeedApiMapper @Inject constructor() {
     }
 
     private fun getThumbUrlObject(result: FeedResultApiEntity): String {
-        if (result.multimedia == null) return UNKNOWN_DATA
-
-        for (multimedia in result.multimedia) {
-            if (multimedia.format == THUMB_FORMAT) {
-                return multimedia.url
-            }
-        }
-        return UNKNOWN_DATA
+        return result.multimedia?.firstOrNull { it.format == THUMB_FORMAT }?.url ?: UNKNOWN_DATA
     }
 
     private fun getIconUrlObject(result: FeedResultApiEntity): String {
-        if (result.multimedia == null) return UNKNOWN_DATA
-
-        for (multimedia in result.multimedia) {
-            if (multimedia.format == ICON_FORMAT) {
-                return multimedia.url
-            }
-        }
-        return UNKNOWN_DATA
+        return result.multimedia?.firstOrNull { it.format == ICON_FORMAT }?.url ?: UNKNOWN_DATA
     }
 }

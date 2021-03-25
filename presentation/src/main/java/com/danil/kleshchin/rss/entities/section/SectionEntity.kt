@@ -39,13 +39,4 @@ enum class SectionEntity(
     Upshot(23, "Upshot", R.drawable.ic_section_obituares),
     US(24, "US", R.drawable.ic_section_us),
     World(25, "World", R.drawable.ic_section_world);
-
-    fun toSection(): Section {
-        for (section in Section.values()) {
-            if (this.id == section.id) {
-                return section
-            }
-        }
-        throw IllegalArgumentException("Unknown section: ${this.name}")
-    }
 }

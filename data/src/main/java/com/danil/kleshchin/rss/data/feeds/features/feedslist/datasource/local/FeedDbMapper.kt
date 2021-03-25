@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class FeedDbMapper @Inject constructor() {
 
-    fun transformToDomain(feedDbEntity: FeedDbEntity): Feed {
-        return Feed(
+    fun transformToDomain(feedDbEntity: FeedDbEntity): Feed =
+        Feed(
             title = feedDbEntity.title,
             description = feedDbEntity.description,
             pageUrl = feedDbEntity.pageUrl,
@@ -20,10 +20,9 @@ class FeedDbMapper @Inject constructor() {
             iconCaption = feedDbEntity.iconCaption,
             iconCopyright = feedDbEntity.iconCopyright
         )
-    }
 
-    fun transformToDb(sectionName: String, position: Int, feed: Feed): FeedDbEntity {
-        return FeedDbEntity(
+    fun transformToDb(sectionName: String, position: Int, feed: Feed): FeedDbEntity =
+        FeedDbEntity(
             id = feed.id,
             position = position,
             sectionName = sectionName,
@@ -39,5 +38,4 @@ class FeedDbMapper @Inject constructor() {
             iconCaption = feed.iconCaption,
             iconCopyright = feed.iconCopyright
         )
-    }
 }

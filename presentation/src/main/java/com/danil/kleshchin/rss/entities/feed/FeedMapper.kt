@@ -11,14 +11,6 @@ import javax.inject.Inject
 
 class FeedMapper @Inject constructor() {
 
-    fun transform(feedList: List<Feed>, currentTime: Long, resources: Resources): List<FeedEntity> {
-        val feedEntityList = arrayListOf<FeedEntity>()
-        for (feed in feedList) {
-            feedEntityList.add(transform(feed, currentTime, resources))
-        }
-        return feedEntityList
-    }
-
     fun transform(feedEntity: FeedEntity): Feed {
         return Feed(
             title = feedEntity.title,
@@ -36,7 +28,7 @@ class FeedMapper @Inject constructor() {
         )
     }
 
-    private fun transform(feed: Feed, currentTime: Long, resources: Resources): FeedEntity {
+    fun transform(feed: Feed, currentTime: Long, resources: Resources): FeedEntity {
         return FeedEntity(
             id = feed.id,
             title = feed.title,
