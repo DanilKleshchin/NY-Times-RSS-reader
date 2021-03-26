@@ -41,7 +41,6 @@ class FeedsListModule(
 
     @Provides
     fun provideFeedRepository(
-        context: Context,
         feedRemoteDataSource: FeedRemoteDataSource,
         feedLocalDataSource: FeedLocalDataSource,
         apiMapper: FeedApiMapper,
@@ -49,7 +48,6 @@ class FeedsListModule(
         dispatcher: DispatcherProvider
     ): FeedRepository =
         FeedDataRepository(
-            context,
             feedRemoteDataSource,
             feedLocalDataSource,
             apiMapper,

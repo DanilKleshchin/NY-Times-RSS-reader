@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import com.danil.kleshchin.rss.domain.entity.Feed
 import com.danil.kleshchin.rss.domain.interactor.features.favorites.usecases.GetFavoriteFeedsListUseCase
-import com.danil.kleshchin.rss.domain.interactor.features.feedslist.ResultWrapper
+import com.danil.kleshchin.rss.domain.interactor.features.feedslist.Result
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetFeedListBySectionUseCase
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
@@ -34,13 +34,13 @@ class FeedsListViewModel : BaseFeedViewModel() {
 
     private var feedEntityList: List<FeedEntity> = ArrayList()
 
-    private val _feeds = MutableLiveData<ResultWrapper<List<FeedEntity>>>()
-    val feeds: LiveData<ResultWrapper<List<FeedEntity>>>
+    private val _feeds = MutableLiveData<Result<List<FeedEntity>>>()
+    val feeds: LiveData<Result<List<FeedEntity>>>
         get() = _feeds
 
     fun loadFeedsList() {
         if (feedEntityList.isNotEmpty()) {
-            _feeds.value = (ResultWrapper.Success(feedEntityList))
+            _feeds.value = (Result.Success(feedEntityList))
             return
         }
         loadFeeds()
@@ -57,13 +57,13 @@ class FeedsListViewModel : BaseFeedViewModel() {
                 .collect { feeds ->
                     _feeds.postValue(
                         when (feeds) {
-                            is ResultWrapper.Success -> ResultWrapper.Success(
+                            is Result.Success -> Result.Success(
                                 getFeedListWithFavorites( // Set the isFavorite value to the same feed which was added to favorites
                                     feeds.value
                                 )
                             )
-                            is ResultWrapper.Error -> ResultWrapper.Error(feeds.exception)
-                            else -> ResultWrapper.NetworkError
+                            is Result.Error -> Result.Error(feeds.exception)
+                            else -> Result.InvalidData
                         }
                     )
                 }

@@ -1,6 +1,7 @@
 package com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote
 
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.entity.FeedObjectApiEntity
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -14,5 +15,5 @@ interface FeedApi {
     @GET(GET_SECTION_PARAM)
     suspend fun getTopStories(
         @Path(SECTION_NAME_PARAM) sectionName: String
-    ): FeedObjectApiEntity
+    ): Response<FeedObjectApiEntity>
 }

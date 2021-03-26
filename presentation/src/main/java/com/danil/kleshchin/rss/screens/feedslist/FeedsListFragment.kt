@@ -15,7 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedsListBinding
-import com.danil.kleshchin.rss.domain.interactor.features.feedslist.ResultWrapper
+import com.danil.kleshchin.rss.domain.interactor.features.feedslist.Result
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 import com.danil.kleshchin.rss.entities.section.SectionEntity
 import com.danil.kleshchin.rss.screens.feedslist.adapters.FeedsListAdapter
@@ -24,6 +24,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
 
@@ -119,15 +121,14 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         }
     }
 
-    private fun onFeedsListLoaded(feeds: ResultWrapper<List<FeedEntity>>) {
+    private fun onFeedsListLoaded(feeds: Result<List<FeedEntity>>) {
         when(feeds) {
-            is ResultWrapper.Success ->  {
+            is Result.Success ->  {
                 changeLoadingViewVisibility(false)
                 changeErrorViewVisibility(false)
                 showFeedsList(feeds.value)
             }
-            is ResultWrapper.Error -> onErrorReceived(feeds.exception)
-            is ResultWrapper.NetworkError -> showNetworkErrorSnackbar()
+            is Result.Error -> onErrorReceived(feeds.exception)
             else -> Unit
         }
     }
@@ -145,12 +146,18 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         changeLoadingViewVisibility(false)
         changeErrorViewVisibility(true)
         exception.printStackTrace()
+        when(exception) {
+            is HttpException -> {
+                showErrorSnackbar(getString(R.string.error_text))
+            }
+            is IOException -> {
+                showErrorSnackbar(getString(R.string.network_error_message))
+            }
+        }
     }
 
-    private fun showNetworkErrorSnackbar() {
-        changeLoadingViewVisibility(false)
-        changeErrorViewVisibility(true)
-        Snackbar.make(binding.root, getString(R.string.network_error_message), LENGTH_LONG).show()
+    private fun showErrorSnackbar(message: String) {
+        Snackbar.make(binding.root, message, LENGTH_LONG).show()
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {

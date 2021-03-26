@@ -1,6 +1,7 @@
 package com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote
 
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.entity.FeedObjectApiEntity
+import retrofit2.Response
 
 class FeedRemoteDataSourceImpl(
     private val feedApi: FeedApi
@@ -8,7 +9,7 @@ class FeedRemoteDataSourceImpl(
 
     override suspend fun getFeedListBySection(
         sectionName: String
-    ): FeedObjectApiEntity {
+    ): Response<FeedObjectApiEntity> {
         return feedApi.getTopStories(sectionName)
     }
 }

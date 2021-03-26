@@ -9,7 +9,7 @@
     <string name="undo_snack_bar_title">Новость была удалена</string>
     <string name="undo_snackbar_undo_text">Отмена</string>
     <string name="retry_button_text">Повторить</string>
-    <string name="error_text">Новости не загружены</string>
+    <string name="error_text">Не удалось загрузить новости. Попробуйте позже</string>
     <string name="network_error_message">Проблема с подключением к сети Интернет</string>
     <string name="empty_favorites_list">Список избранного пуст\nДобавьте новость</string>
     <string name="save_to_gallery">Сохранить в галерею</string>

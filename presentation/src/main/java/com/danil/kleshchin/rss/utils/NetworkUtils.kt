@@ -1,4 +1,4 @@
-package com.danil.kleshchin.rss.data.feeds.utils
+package com.danil.kleshchin.rss.utils
 
 import android.Manifest.permission.ACCESS_NETWORK_STATE
 import android.content.Context

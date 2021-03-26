@@ -14,9 +14,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
-import com.danil.kleshchin.rss.data.feeds.utils.isNetworkAvailable
 import com.danil.kleshchin.rss.databinding.FragmentFeedBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
+import com.danil.kleshchin.rss.utils.isNetworkAvailable
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
@@ -80,7 +80,7 @@ class FeedFragment : Fragment() {
     }
 
     private fun onImageSelected() {
-        if (isNetworkAvailable(requireContext()).not()) {
+        if (isNetworkAvailable(requireContext()).not()) { //TODO ask about this
             showNetworkErrorView()
             return
         }
