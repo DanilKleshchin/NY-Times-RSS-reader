@@ -1,10 +1,11 @@
 package com.danil.kleshchin.rss.data.feeds.features.favorites.datasource.entity
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.danil.kleshchin.rss.data.feeds.features.favorites.datasource.TABLE_NAME
 
-@Entity(tableName = TABLE_NAME)
+@Entity(tableName = TABLE_NAME, indices = [Index(value = ["id"], unique = true)])
 data class FavoriteFeedEntity(
     @PrimaryKey(autoGenerate = true)
     val position: Int = 0, // for the stack behavior
