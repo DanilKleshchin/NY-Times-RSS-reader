@@ -39,6 +39,8 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     private var _binding: FragmentFeedsListBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var feedsListAdapter: FeedsListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel()
@@ -58,6 +60,9 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         observeFeedsListLoading()
 
         binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
+        feedsListAdapter = FeedsListAdapter(requireContext(), this)
+        binding.feedListView.adapter = feedsListAdapter
+        binding.feedListView.isVisible = false
         return binding.root
     }
 
@@ -139,7 +144,9 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
             return
         }
         changeErrorViewVisibility(false)
-        binding.feedListView.adapter = FeedsListAdapter(feedList, requireContext(), this)
+        binding.feedListView.isVisible = true
+        feedsListAdapter.feedList = feedList
+        feedsListAdapter.notifyDataSetChanged()
     }
 
     private fun onErrorReceived(exception: Exception) {

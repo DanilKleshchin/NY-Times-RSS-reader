@@ -4,6 +4,8 @@ import android.content.Context
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.danil.kleshchin.rss.databinding.ItemFeedListBinding
@@ -11,7 +13,6 @@ import com.danil.kleshchin.rss.databinding.ItemVisitSiteBinding
 import com.danil.kleshchin.rss.entities.feed.FeedEntity
 
 class FeedsListAdapter(
-    private val feedList: List<FeedEntity>,
     private val context: Context,
     private val feedClickListener: OnFeedClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -26,6 +27,22 @@ class FeedsListAdapter(
 
     private val TYPE_FEED = 0
     private val TYPE_VISIT_SITE = 1
+
+    private val diffCallback = object : DiffUtil.ItemCallback<FeedEntity>() {
+        override fun areItemsTheSame(oldItem: FeedEntity, newItem: FeedEntity): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: FeedEntity, newItem: FeedEntity): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
+    private val differ = AsyncListDiffer(this, diffCallback)
+
+    var feedList: List<FeedEntity>
+        get() = differ.currentList
+        set(value) { differ.submitList(value) }
+
 
     override fun getItemCount(): Int = feedList.size + 1 //Plus one for the Visit NYTimes site item
 
