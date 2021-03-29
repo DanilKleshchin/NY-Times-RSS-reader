@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class FeedDbMapper @Inject constructor() {
 
-    fun transformToDomain(feedDbEntity: FeedDbEntity): Feed =
+    fun transform(feedDbEntity: FeedDbEntity): Feed =
         Feed(
             title = feedDbEntity.title,
             description = feedDbEntity.description,
@@ -21,7 +21,7 @@ class FeedDbMapper @Inject constructor() {
             iconCopyright = feedDbEntity.iconCopyright
         )
 
-    fun transformToDb(sectionName: String, position: Int, feed: Feed): FeedDbEntity =
+    fun transform(sectionName: String, position: Int, feed: Feed): FeedDbEntity =
         FeedDbEntity(
             id = feed.id,
             position = position,

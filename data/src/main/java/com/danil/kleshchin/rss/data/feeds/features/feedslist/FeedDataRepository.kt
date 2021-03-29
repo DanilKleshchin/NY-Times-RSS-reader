@@ -65,14 +65,14 @@ class FeedDataRepository(
      */
     private suspend fun getLocalFeedListBySection(sectionName: String): Result<List<Feed>> {
         val feeds = localDataSource.getFeedListBySection(sectionName)
-            .map { dbMapper.transformToDomain(it) }
+            .map { dbMapper.transform(it) }
         return Result.Success(feeds)
     }
 
     private suspend fun updateLocalFeedList(sectionName: String, list: List<Feed>) {
         localDataSource.removeFeedBySection(sectionName)
         localDataSource.setFeedList(list.mapIndexed { index, feed ->
-            dbMapper.transformToDb(sectionName, index, feed)
+            dbMapper.transform(sectionName, index, feed)
         })
     }
 }
