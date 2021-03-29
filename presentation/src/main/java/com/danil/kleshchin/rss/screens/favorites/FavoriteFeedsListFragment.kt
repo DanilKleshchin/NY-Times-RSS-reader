@@ -133,7 +133,13 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     }
 
     private fun updateAdapterFeedsList(feedList: List<FeedEntity>) {
-        (binding.favoriteFeedsListView.adapter as FavoriteFeedsListAdapter).updateFeedList(feedList)
+        if (feedList.isEmpty()) {
+            changeEmptyViewVisibility(true)
+        } else {
+            changeEmptyViewVisibility(false)
+            (binding.favoriteFeedsListView.adapter as FavoriteFeedsListAdapter)
+                .updateFeedList(feedList)
+        }
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
