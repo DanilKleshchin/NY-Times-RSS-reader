@@ -1,7 +1,7 @@
 package com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote
 
 const val BASE_URL = "https://api.nytimes.com/svc/topstories/v2/"
-const val API_TIMEOUT_SECONDS = 5L
+const val API_TIMEOUT_SECONDS = 30L
 
 //The API params
 const val API_KEY_PARAM = "api-key"
