@@ -10,6 +10,6 @@ class GetFavoriteFeedsListUseCase @Inject constructor(
 ) : UseCase<List<Feed>, Unit> {
 
     override suspend fun execute(params: Unit): List<Feed> {
-        return repository.getFavoritesFeedList()
+        return repository.getFeedList()
     }
 }

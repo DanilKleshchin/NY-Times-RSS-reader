@@ -5,9 +5,11 @@ import com.danil.kleshchin.rss.domain.entity.Feed
 
 interface FavoriteFeedRepository {
 
-    suspend fun addFeedToFavorites(feed: Feed)
+    suspend fun addFeed(feed: Feed)
 
-    suspend fun removeFeedFromFavorites(feed: Feed)
+    suspend fun removeFeeds()
 
-    suspend fun getFavoritesFeedList(): List<Feed>
+    suspend fun getFeedList(): List<Feed>
+
+    suspend fun markFeedToRemove(id: Int, toRemove: Boolean)
 }

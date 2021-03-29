@@ -14,31 +14,34 @@ class FavoriteFeedsListViewModel : BaseFeedViewModel() {
 
     lateinit var feedList: ArrayList<FeedEntity>
     var feedToRemove: FeedEntity? = null
-    var feedToRemovePosition:Int = -1
+    var feedToRemovePosition: Int = -1
 
     fun loadFavoriteFeedsList(): LiveData<List<FeedEntity>> {
         return liveData {
             val favoritesList = getFavoriteFeedsListUseCase.execute(Unit)
             val currentTime = System.currentTimeMillis()
-            feedList = mapper.transform(
-                favoritesList,
-                currentTime,
-                resourceHelper.getAndroidResources()
-            ) as ArrayList
+            feedList = (favoritesList.map {
+                mapper.transform(it, currentTime, resourceHelper.getAndroidResources())
+            }
+                    ) as ArrayList
             emit(
                 feedList
             )
         }
     }
 
-    fun selectFeedToRemove(position: Int) {
+    fun removeFeed(position: Int) {
         feedToRemove = feedList[position]
         feedToRemovePosition = position
         feedList.removeAt(position)
+        feedToRemove?.let {
+            addRemoveFavoriteFeed(it)
+        }
     }
 
-    fun deselectFeedToRemove() {
+    fun undoFeedRemoving() {
         feedToRemove?.let { feed ->
+            undoFeedRemoving(feed)
             feedList.add(feedToRemovePosition, feed)
         }
     }

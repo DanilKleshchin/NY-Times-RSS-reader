@@ -10,11 +10,14 @@ import com.danil.kleshchin.rss.data.feeds.features.favorites.datasource.entity.F
 interface FavoriteFeedDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addFeedToFavorites(feed: FavoriteFeedEntity)
+    suspend fun addFeed(feed: FavoriteFeedEntity)
 
-    @Query("DELETE FROM FAVORITE_FEED_TABLE WHERE id = :feedId")
-    suspend fun removeFeedFromFavorites(feedId: Int)
+    @Query("DELETE FROM FAVORITE_FEED_TABLE WHERE toRemove = :toRemove")
+    suspend fun removeFeeds(toRemove: Boolean = true)
 
-    @Query("SELECT * FROM FAVORITE_FEED_TABLE ORDER BY position DESC")
-    suspend fun getFavoritesFeedList(): List<FavoriteFeedEntity>
+    @Query("SELECT * FROM FAVORITE_FEED_TABLE WHERE toRemove = :toRemove ORDER BY position DESC")
+    suspend fun getFeedList(toRemove: Boolean = false): List<FavoriteFeedEntity>
+
+    @Query("UPDATE FAVORITE_FEED_TABLE SET toRemove = :toRemove WHERE id = :id")
+    suspend fun markFeedToRemove(id: Int, toRemove: Boolean)
 }

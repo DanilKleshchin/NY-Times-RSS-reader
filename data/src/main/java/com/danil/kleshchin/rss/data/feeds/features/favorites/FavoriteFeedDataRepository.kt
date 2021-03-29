@@ -10,12 +10,15 @@ class FavoriteFeedDataRepository(
     private val mapper: FavoriteFeedMapper
 ) : FavoriteFeedRepository {
 
-    override suspend fun addFeedToFavorites(feed: Feed) =
-        localDataSource.addFeedToFavorites(mapper.transformToDb(feed))
+    override suspend fun addFeed(feed: Feed) =
+        localDataSource.addFeed(mapper.transformToDb(feed))
 
-    override suspend fun removeFeedFromFavorites(feed: Feed) =
-        localDataSource.removeFeedFromFavorites(mapper.transformToDb(feed))
+    override suspend fun removeFeeds() =
+        localDataSource.removeFeeds()
 
-    override suspend fun getFavoritesFeedList(): List<Feed> =
-        localDataSource.getFavoritesFeedList().map { mapper.transformToDomain(it) }
+    override suspend fun getFeedList(): List<Feed> =
+        localDataSource.getFeedList().map { mapper.transformToDomain(it) }
+
+    override suspend fun markFeedToRemove(id: Int, toRemove: Boolean) =
+        localDataSource.markFeedToRemove(id, toRemove)
 }

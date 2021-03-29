@@ -6,15 +6,15 @@ class FavoriteFeedLocalDataSourceImpl(
     private val database: FavoriteFeedDatabase
 ) : FavoriteFeedLocalDataSource {
 
-    override suspend fun addFeedToFavorites(feed: FavoriteFeedEntity) {
-        database.feedDao.addFeedToFavorites(feed)
-    }
+    override suspend fun addFeed(feed: FavoriteFeedEntity) =
+        database.feedDao.addFeed(feed)
 
-    override suspend fun removeFeedFromFavorites(feed: FavoriteFeedEntity) {
-        database.feedDao.removeFeedFromFavorites(feed.id)
-    }
+    override suspend fun removeFeeds() =
+        database.feedDao.removeFeeds()
 
-    override suspend fun getFavoritesFeedList(): List<FavoriteFeedEntity> {
-        return database.feedDao.getFavoritesFeedList()
-    }
+    override suspend fun getFeedList(): List<FavoriteFeedEntity> =
+        database.feedDao.getFeedList()
+
+    override suspend fun markFeedToRemove(id: Int, toRemove: Boolean) =
+        database.feedDao.markFeedToRemove(id, toRemove)
 }

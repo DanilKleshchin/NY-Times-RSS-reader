@@ -33,6 +33,8 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     private var _binding: FragmentFavoriteFeedsListBinding? = null
     private val binding get() = _binding!!
 
+    private var undoSnackbar:Snackbar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel()
@@ -63,6 +65,7 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        undoSnackbar = null
     }
 
     override fun onFeedClick(feed: FeedEntity) {
@@ -104,32 +107,26 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     }
 
     private fun removeFeed(position: Int) {
-        viewModel.selectFeedToRemove(position)
+        viewModel.removeFeed(position)
         updateAdapterFeedsList(viewModel.feedList)
         binding.favoriteFeedsListView.adapter?.notifyItemRemoved(position)
         showUndoSnackbar()
     }
 
     private fun showUndoSnackbar() {
-        val snackbar: Snackbar = Snackbar.make(
+        undoSnackbar?.dismiss()
+        undoSnackbar = Snackbar.make(
             binding.root, getString(R.string.undo_snack_bar_title),
             Snackbar.LENGTH_LONG
         )
-        snackbar.setAction(getString(R.string.undo_snackbar_undo_text)) {
+        undoSnackbar?.setAction(getString(R.string.undo_snackbar_undo_text)) {
             undoRemoving()
         }
-            .addCallback(object : Snackbar.Callback() {
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    if (event == DISMISS_EVENT_TIMEOUT) { // When user didn't click on the snackbar
-                        viewModel.feedToRemove?.let { viewModel.addRemoveFavoriteFeed(it) }
-                    }
-                }
-            })
-        snackbar.show()
+        undoSnackbar?.show()
     }
 
     private fun undoRemoving() {
-        viewModel.deselectFeedToRemove()
+        viewModel.undoFeedRemoving()
         updateAdapterFeedsList(viewModel.feedList)
         binding.favoriteFeedsListView.adapter?.notifyItemInserted(viewModel.feedToRemovePosition)
         binding.favoriteFeedsListView.scrollToPosition(viewModel.feedToRemovePosition)

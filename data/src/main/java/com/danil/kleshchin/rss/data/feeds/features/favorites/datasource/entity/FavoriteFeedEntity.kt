@@ -21,5 +21,6 @@ data class FavoriteFeedEntity(
     val iconUrl: String,
     val iconCaption: String,
     val iconCopyright: String,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val toRemove: Boolean = false // Use this flag for implementing "soft-delete" technique
 )

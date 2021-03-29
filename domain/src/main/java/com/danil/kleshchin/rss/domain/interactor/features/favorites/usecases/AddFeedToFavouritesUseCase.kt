@@ -11,6 +11,6 @@ class AddFeedToFavouritesUseCase @Inject constructor(
 
     //TODO think about params
     override suspend fun execute(params: Feed) {
-        repository.addFeedToFavorites(params)
+        repository.addFeed(params)
     }
 }
