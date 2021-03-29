@@ -96,6 +96,10 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         createShareIntent(feed)
     }
 
+    override fun onFeedImageClick(feed: FeedEntity) {
+        navigateToFeedImageScreen(feed.title, feed.iconUrl)
+    }
+
     private fun changeErrorViewVisibility(isVisible: Boolean) {
         binding.apply {
             errorContainer.isVisible = isVisible
@@ -170,6 +174,12 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
         val action = FeedsListFragmentDirections.actionFeedsListFragmentToFeedFragment(feed)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToFeedImageScreen(title: String, iconUrl: String) {
+        val action =
+            FeedsListFragmentDirections.actionFeedsListFragmentToFeedImageFragment(iconUrl, title)
         findNavController().navigate(action)
     }
 

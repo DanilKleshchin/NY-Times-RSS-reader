@@ -20,6 +20,8 @@ class FeedsListAdapter(
     interface OnFeedClickListener {
         fun onFeedClick(feed: FeedEntity)
 
+        fun onFeedImageClick(feed: FeedEntity)
+
         fun onStarClick(feed: FeedEntity)
 
         fun onShareClick(feed: FeedEntity)
@@ -104,6 +106,7 @@ class FeedsListAdapter(
                 setClickListener { feedClickListener.onFeedClick(feed) }
                 iconStar.setOnClickListener { feedClickListener.onStarClick(feed) }
                 iconShare.setOnClickListener { feedClickListener.onShareClick(feed) }
+                thumb.setOnClickListener { feedClickListener.onFeedImageClick(feed) }
             }
         }
     }
