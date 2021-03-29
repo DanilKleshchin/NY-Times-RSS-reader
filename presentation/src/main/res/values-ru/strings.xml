@@ -17,4 +17,31 @@
     <string name="image_saved">Изображение сохранено!</string>
     <string name="unable_to_save">Невозможно сохранить изображение</string>
     <string name="visit_site_for_more">Посетите <a href="https://www.nytimes.com">The New York Times</a> чтобы получить больше новостей</string>
+
+    <string name="section_arts">Искусство</string>
+    <string name="section_automobiles">Автомобили</string>
+    <string name="section_books">Книги</string>
+    <string name="section_business">Бизнес</string>
+    <string name="section_fashion">Мода</string>
+    <string name="section_food">Еда</string>
+    <string name="section_health">Здоровье</string>
+    <string name="section_home">Дом</string>
+    <string name="section_insider">Инсайдер</string>
+    <string name="section_magazine">Журнал</string>
+    <string name="section_movies">Кино</string>
+    <string name="section_ny_region">Нью-Йорк</string>
+    <string name="section_obituaries">Некрологи</string>
+    <string name="section_opinion">Мнение</string>
+    <string name="section_politics">Политика</string>
+    <string name="section_real_estate">Недвижимость</string>
+    <string name="section_science">Наука</string>
+    <string name="section_sports">Спорт</string>
+    <string name="section_sunday_review">Воскресный обзор</string>
+    <string name="section_technology">Технология</string>
+    <string name="section_theater">Театр</string>
+    <string name="section_t_magazine">T-Magazine</string>
+    <string name="section_travel">Путешествие</string>
+    <string name="section_upshot">Upshot</string>
+    <string name="section_us">США</string>
+    <string name="section_world">Мир</string>
 </resources>

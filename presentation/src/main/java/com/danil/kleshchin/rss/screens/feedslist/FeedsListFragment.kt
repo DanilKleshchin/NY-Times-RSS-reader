@@ -39,7 +39,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     private var _binding: FragmentFeedsListBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var feedsListAdapter: FeedsListAdapter
+    private var feedsListAdapter: FeedsListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +81,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        feedsListAdapter = null
     }
 
     override fun onFeedClick(feed: FeedEntity) {
@@ -145,8 +146,8 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         }
         changeErrorViewVisibility(false)
         binding.feedListView.isVisible = true
-        feedsListAdapter.feedList = feedList
-        feedsListAdapter.notifyDataSetChanged()
+        feedsListAdapter?.feedList = feedList
+        feedsListAdapter?.notifyDataSetChanged()
     }
 
     private fun onErrorReceived(exception: Exception) {

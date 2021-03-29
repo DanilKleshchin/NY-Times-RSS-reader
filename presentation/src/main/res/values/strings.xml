@@ -19,4 +19,31 @@
     <string name="image_saved">Image saved!</string>
     <string name="unable_to_save">Unable to save image</string>
     <string name="visit_site_for_more">Visit <a href="https://www.nytimes.com">The New York Times</a> for getting more</string>
+
+    <string name="section_arts">Arts</string>
+    <string name="section_automobiles">Automobiles</string>
+    <string name="section_books">Books</string>
+    <string name="section_business">Business</string>
+    <string name="section_fashion">Fashion</string>
+    <string name="section_food">Food</string>
+    <string name="section_health">Health</string>
+    <string name="section_home">Home</string>
+    <string name="section_insider">Insider</string>
+    <string name="section_magazine">Magazine</string>
+    <string name="section_movies">Movies</string>
+    <string name="section_ny_region">NY region</string>
+    <string name="section_obituaries">Obituaries</string>
+    <string name="section_opinion">Opinion</string>
+    <string name="section_politics">Politics</string>
+    <string name="section_real_estate">Real estate</string>
+    <string name="section_science">Science</string>
+    <string name="section_sports">Sports</string>
+    <string name="section_sunday_review">Sunday review</string>
+    <string name="section_technology">Technology</string>
+    <string name="section_theater">Theater</string>
+    <string name="section_t_magazine">T-Magazine</string>
+    <string name="section_travel">Travel</string>
+    <string name="section_upshot">Upshot</string>
+    <string name="section_us">US</string>
+    <string name="section_world">World</string>
 </resources>
