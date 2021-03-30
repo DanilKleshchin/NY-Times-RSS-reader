@@ -6,7 +6,7 @@ buildscript {
 
         gradle_version = '4.1.1'
         kotlin_version = '1.4.21'
-        coroutines_version = '1.4.2'
+        coroutines_version = '1.4.3'
         lifecycle_version = '2.2.0'
         material_design_version = '1.2.1'
         constraint_version = '1.1.3'

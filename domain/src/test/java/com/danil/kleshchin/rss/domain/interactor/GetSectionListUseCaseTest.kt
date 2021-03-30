@@ -1,14 +1,16 @@
 package com.danil.kleshchin.rss.domain.interactor
 
+import com.danil.kleshchin.rss.domain.BaseTestCoroutineScope
 import com.danil.kleshchin.rss.domain.entity.Section
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetSectionListUseCase
+import kotlinx.coroutines.launch
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class GetSectionListUseCaseTest {
+class GetSectionListUseCaseTest : BaseTestCoroutineScope() {
 
-    private val SUNDAY_SECTION = Section.`Sunday-Review`
+    private val T_MAGAZINE_SECTION = Section.`T-Magazine`
 
     private lateinit var getSectionListUseCase: GetSectionListUseCase
     private lateinit var sectionList: List<Section>
@@ -16,11 +18,13 @@ class GetSectionListUseCaseTest {
     @Before
     fun setUp() {
         getSectionListUseCase = GetSectionListUseCase()
-        sectionList = getSectionListUseCase.getSectionList()
+        testCoroutineScope.launch {
+            sectionList = getSectionListUseCase.execute(Unit)
+        }
     }
 
     @Test
-    fun `test section list with real section`() {
-        Assert.assertTrue(sectionList.contains(SUNDAY_SECTION))
+    fun `test section list contains t-magazine section`() {
+        Assert.assertTrue(sectionList.contains(T_MAGAZINE_SECTION))
     }
 }

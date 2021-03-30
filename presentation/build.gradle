@@ -81,6 +81,7 @@ dependencies {
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     androidTestImplementation "androidx.test:rules:$android_instrumental_test_version"
     androidTestImplementation "androidx.test:runner:$android_instrumental_test_version"

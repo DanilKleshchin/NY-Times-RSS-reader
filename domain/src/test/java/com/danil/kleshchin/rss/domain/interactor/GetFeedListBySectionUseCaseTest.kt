@@ -1,7 +1,9 @@
 package com.danil.kleshchin.rss.domain.interactor
 
-import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetFeedListBySectionUseCase
+import com.danil.kleshchin.rss.domain.BaseTestCoroutineScope
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.FeedRepository
+import com.danil.kleshchin.rss.domain.interactor.features.feedslist.usecases.GetFeedListBySectionUseCase
+import kotlinx.coroutines.launch
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,10 +12,10 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
-class GetFeedBySectionUseCaseTest {
+const val SECTION_NAME = "Arts"
 
-    private val SECTION_ID = 5
+@RunWith(MockitoJUnitRunner::class)
+class GetFeedListBySectionUseCaseTest : BaseTestCoroutineScope() {
 
     private lateinit var getFeedBySection: GetFeedListBySectionUseCase
 
@@ -26,10 +28,11 @@ class GetFeedBySectionUseCaseTest {
     }
 
     @Test
-    fun testGetFeedBySectionUseCase() {
-        getFeedBySection.execute(GetFeedListBySectionUseCase.Params(SECTION_ID))
-
-        verify(mockFeedRepository).getFeedListBySection(SECTION_ID)
-        verifyNoMoreInteractions(mockFeedRepository)
+    fun testGetFeedListBySectionUseCase() {
+        testCoroutineScope.launch {
+            getFeedBySection.execute(GetFeedListBySectionUseCase.Params(SECTION_NAME))
+            verify(mockFeedRepository).getFeedListBySection(SECTION_NAME)
+            verifyNoMoreInteractions(mockFeedRepository)
+        }
     }
 }

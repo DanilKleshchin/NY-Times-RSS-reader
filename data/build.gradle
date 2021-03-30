@@ -6,6 +6,17 @@ plugins {
 
 android {
     compileSdkVersion compile_sdk_version
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
+//Coroutines cause exception with 'META-INF/AL2.0'
+configurations.all {
+    resolutionStrategy {
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }
 }
 
 dependencies {
@@ -29,4 +40,10 @@ dependencies {
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    androidTestImplementation "androidx.test:rules:$android_instrumental_test_version"
+    androidTestImplementation "androidx.test:runner:$android_instrumental_test_version"
+    androidTestImplementation "androidx.test.ext:junit:$android_instrumental_junit_version"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 }
