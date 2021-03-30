@@ -14,18 +14,11 @@ import com.danil.kleshchin.rss.entities.feed.FeedEntity
 
 class FeedsListAdapter(
     private val context: Context,
-    private val feedClickListener: OnFeedClickListener
+    private val onFeedClick: ((feed: FeedEntity) -> Unit),
+    private val onFeedImageClick: ((feed: FeedEntity) -> Unit),
+    private val onStarClick: ((feed: FeedEntity) -> Unit),
+    private val onShareClick: ((feed: FeedEntity) -> Unit),
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    interface OnFeedClickListener {
-        fun onFeedClick(feed: FeedEntity)
-
-        fun onFeedImageClick(feed: FeedEntity)
-
-        fun onStarClick(feed: FeedEntity)
-
-        fun onShareClick(feed: FeedEntity)
-    }
 
     private val TYPE_FEED = 0
     private val TYPE_VISIT_SITE = 1
@@ -70,7 +63,13 @@ class FeedsListAdapter(
             else -> {
                 val binding =
                     ItemFeedListBinding.inflate(LayoutInflater.from(context), parent, false)
-                FeedListViewHolder(binding, feedClickListener)
+                FeedListViewHolder(
+                    binding,
+                    onFeedClick,
+                    onFeedImageClick,
+                    onStarClick,
+                    onShareClick
+                )
             }
         }
     }
@@ -95,7 +94,10 @@ class FeedsListAdapter(
 
     class FeedListViewHolder(
         private val binding: ItemFeedListBinding,
-        private val feedClickListener: OnFeedClickListener
+        private val onFeedClick: ((feed: FeedEntity) -> Unit),
+        private val onFeedImageClick: ((feed: FeedEntity) -> Unit),
+        private val onStarClick: ((feed: FeedEntity) -> Unit),
+        private val onShareClick: ((feed: FeedEntity) -> Unit)
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun getBinding() = binding
@@ -103,10 +105,10 @@ class FeedsListAdapter(
         fun bind(feed: FeedEntity) {
             binding.apply {
                 this.feed = feed
-                setClickListener { feedClickListener.onFeedClick(feed) }
-                iconStar.setOnClickListener { feedClickListener.onStarClick(feed) }
-                iconShare.setOnClickListener { feedClickListener.onShareClick(feed) }
-                thumb.setOnClickListener { feedClickListener.onFeedImageClick(feed) }
+                setClickListener { onFeedClick(feed) }
+                iconShare.setOnClickListener { onShareClick(feed) }
+                thumb.setOnClickListener { onFeedImageClick(feed) }
+                iconStar.setOnClickListener { onStarClick(feed) }
             }
         }
     }

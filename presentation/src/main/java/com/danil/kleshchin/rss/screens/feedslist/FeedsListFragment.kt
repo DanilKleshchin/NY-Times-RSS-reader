@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
+class FeedsListFragment : Fragment() {
 
     private val INSTANCE_STATE_PARAM_SECTION = "STATE_PARAM_SECTION"
     private val LIST_ITEMS_MARGIN = 40
@@ -56,13 +56,10 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         init(savedInstanceState)
         changeLoadingViewVisibility(true)
 
+        setUpRecyclerListView()
+
         loadFeedsList()
         observeFeedsListLoading()
-
-        binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
-        feedsListAdapter = FeedsListAdapter(requireContext(), this)
-        binding.feedListView.adapter = feedsListAdapter
-        binding.feedListView.isVisible = false
         return binding.root
     }
 
@@ -84,19 +81,32 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         feedsListAdapter = null
     }
 
-    override fun onFeedClick(feed: FeedEntity) {
+    private fun setUpRecyclerListView() {
+        binding.feedListView.addItemDecoration(VerticalSpaceItemDecoration(LIST_ITEMS_MARGIN))
+        feedsListAdapter = FeedsListAdapter(
+            requireContext(),
+            this::onFeedClick,
+            this::onFeedImageClick,
+            this::onStarClick,
+            this::onShareClick
+        )
+        binding.feedListView.adapter = feedsListAdapter
+        binding.feedListView.isVisible = false
+    }
+
+    private fun onFeedClick(feed: FeedEntity) {
         navigateToFeedScreen(feed)
     }
 
-    override fun onStarClick(feed: FeedEntity) {
+    private fun onStarClick(feed: FeedEntity) {
         viewModel.addRemoveFavoriteFeed(feed)
     }
 
-    override fun onShareClick(feed: FeedEntity) {
+    private fun onShareClick(feed: FeedEntity) {
         createShareIntent(feed)
     }
 
-    override fun onFeedImageClick(feed: FeedEntity) {
+    private fun onFeedImageClick(feed: FeedEntity) {
         navigateToFeedImageScreen(feed.title, feed.iconUrl)
     }
 
@@ -132,8 +142,8 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
     }
 
     private fun onFeedsListLoaded(feeds: Result<List<FeedEntity>>) {
-        when(feeds) {
-            is Result.Success ->  {
+        when (feeds) {
+            is Result.Success -> {
                 changeLoadingViewVisibility(false)
                 changeErrorViewVisibility(false)
                 showFeedsList(feeds.value)
@@ -158,7 +168,7 @@ class FeedsListFragment : Fragment(), FeedsListAdapter.OnFeedClickListener {
         changeLoadingViewVisibility(false)
         changeErrorViewVisibility(true)
         exception.printStackTrace()
-        when(exception) {
+        when (exception) {
             is HttpException -> {
                 showErrorSnackbar(getString(R.string.error_text))
             }

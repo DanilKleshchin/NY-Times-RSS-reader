@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.danil.kleshchin.rss.NYTimesRSSFeedsApp
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFavoriteFeedsListBinding
@@ -23,7 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedClickListener {
+class FavoriteFeedsListFragment : Fragment() {
 
     private val LIST_ITEMS_MARGIN = 40
 
@@ -34,6 +33,7 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     private val binding get() = _binding!!
 
     private var undoSnackbar:Snackbar? = null
+    private var favoriteFeedsListAdapter: FavoriteFeedsListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +47,9 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     ): View {
         _binding = FragmentFavoriteFeedsListBinding.inflate(inflater, container, false)
 
+        setUpFeedsRecyclerView()
         loadFavoriteFeedsList()
 
-        binding.favoriteFeedsListView.addItemDecoration(
-            VerticalSpaceItemDecoration(
-                LIST_ITEMS_MARGIN
-            )
-        )
         return binding.root
     }
 
@@ -66,18 +62,23 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
         super.onDestroyView()
         _binding = null
         undoSnackbar = null
+        favoriteFeedsListAdapter = null
     }
 
-    override fun onFeedClick(feed: FeedEntity) {
+    private fun onFeedClick(feed: FeedEntity) {
         navigateToFeedScreen(feed)
     }
 
-    override fun onStarClick(viewHolder: RecyclerView.ViewHolder, feed: FeedEntity) {
-        removeFeed(viewHolder.adapterPosition)
+    private fun onStarClick(position: Int) {
+        removeFeed(position)
     }
 
-    override fun onShareClick(feed: FeedEntity) {
+    private fun onShareClick(feed: FeedEntity) {
         createShareIntent(feed)
+    }
+
+    private fun onFeedImageClick(feed: FeedEntity) {
+        navigateToFeedImageScreen(feed.title, feed.iconUrl)
     }
 
     private fun changeEmptyViewVisibility(isVisible: Boolean) {
@@ -102,8 +103,8 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
     }
 
     private fun showFeedList(feedList: List<FeedEntity>) {
-        binding.favoriteFeedsListView.adapter =
-            FavoriteFeedsListAdapter(feedList, requireContext(), this)
+        favoriteFeedsListAdapter?.feedList = feedList
+        favoriteFeedsListAdapter?.notifyDataSetChanged()
     }
 
     private fun removeFeed(position: Int) {
@@ -111,6 +112,22 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
         updateAdapterFeedsList(viewModel.feedList)
         binding.favoriteFeedsListView.adapter?.notifyItemRemoved(position)
         showUndoSnackbar()
+    }
+
+    private fun setUpFeedsRecyclerView() {
+        binding.favoriteFeedsListView.addItemDecoration(
+            VerticalSpaceItemDecoration(
+                LIST_ITEMS_MARGIN
+            )
+        )
+        favoriteFeedsListAdapter = FavoriteFeedsListAdapter(
+            requireContext(),
+            this::onFeedClick,
+            this::onFeedImageClick,
+            this::onStarClick,
+            this::onShareClick
+        )
+        binding.favoriteFeedsListView.adapter = favoriteFeedsListAdapter
     }
 
     private fun showUndoSnackbar() {
@@ -137,14 +154,21 @@ class FavoriteFeedsListFragment : Fragment(), FavoriteFeedsListAdapter.OnFeedCli
             changeEmptyViewVisibility(true)
         } else {
             changeEmptyViewVisibility(false)
-            (binding.favoriteFeedsListView.adapter as FavoriteFeedsListAdapter)
-                .updateFeedList(feedList)
+            favoriteFeedsListAdapter?.feedList = feedList
         }
     }
 
     private fun navigateToFeedScreen(feed: FeedEntity) {
         val action =
             HomeViewPagerFragmentDirections.actionHomeViewPagerFragmentToFeedFragment(feed)
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToFeedImageScreen(title: String, iconUrl: String) {
+        val action = HomeViewPagerFragmentDirections.actionHomeViewPagerFragmentToFeedImageFragment(
+                iconUrl,
+                title
+            )
         findNavController().navigate(action)
     }
 

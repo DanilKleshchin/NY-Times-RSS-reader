@@ -3,6 +3,8 @@ package com.danil.kleshchin.rss.screens.favorites.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.danil.kleshchin.rss.databinding.ItemFeedListBinding
@@ -10,18 +12,27 @@ import com.danil.kleshchin.rss.entities.feed.FeedEntity
 
 
 class FavoriteFeedsListAdapter(
-    private var feedList: List<FeedEntity>,
     private val context: Context,
-    private val feedClickListener: OnFeedClickListener
+    private val onFeedClick: ((feed: FeedEntity) -> Unit),
+    private val onFeedImageClick: ((feed: FeedEntity) -> Unit),
+    private val onStarClick: ((position: Int) -> Unit),
+    private val onShareClick: ((feed: FeedEntity) -> Unit),
 ) : RecyclerView.Adapter<FavoriteFeedsListAdapter.FavoriteFeedsListViewHolder>() {
 
-    interface OnFeedClickListener {
-        fun onFeedClick(feed: FeedEntity)
+    private val diffCallback = object : DiffUtil.ItemCallback<FeedEntity>() {
+        override fun areItemsTheSame(oldItem: FeedEntity, newItem: FeedEntity): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-        fun onStarClick(viewHolder: RecyclerView.ViewHolder, feed: FeedEntity)
-
-        fun onShareClick(feed: FeedEntity)
+        override fun areContentsTheSame(oldItem: FeedEntity, newItem: FeedEntity): Boolean {
+            return oldItem.id == newItem.id
+        }
     }
+    private val differ = AsyncListDiffer(this, diffCallback)
+
+    var feedList: List<FeedEntity>
+        get() = differ.currentList
+        set(value) { differ.submitList(value) }
 
     override fun getItemCount(): Int = feedList.size
 
@@ -30,7 +41,13 @@ class FavoriteFeedsListAdapter(
         viewType: Int
     ): FavoriteFeedsListViewHolder {
         val binding = ItemFeedListBinding.inflate(LayoutInflater.from(context), parent, false)
-        return FavoriteFeedsListViewHolder(binding, feedClickListener)
+        return FavoriteFeedsListViewHolder(
+            binding,
+            onFeedClick,
+            onFeedImageClick,
+            onStarClick,
+            onShareClick
+        )
     }
 
     override fun onBindViewHolder(
@@ -47,13 +64,12 @@ class FavoriteFeedsListAdapter(
         super.onViewRecycled(holder)
     }
 
-    fun updateFeedList(feedList: List<FeedEntity>) {
-        this.feedList = feedList
-    }
-
     class FavoriteFeedsListViewHolder(
         private val binding: ItemFeedListBinding,
-        private val feedClickListener: OnFeedClickListener
+        private val onFeedClick: ((feed: FeedEntity) -> Unit),
+        private val onFeedImageClick: ((feed: FeedEntity) -> Unit),
+        private val onStarClick: ((position: Int) -> Unit),
+        private val onShareClick: ((feed: FeedEntity) -> Unit),
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun getBinding() = binding
@@ -61,11 +77,10 @@ class FavoriteFeedsListAdapter(
         fun bind(feed: FeedEntity) {
             binding.apply {
                 this.feed = feed
-                setClickListener { feedClickListener.onFeedClick(feed) }
-                iconStar.setOnClickListener {
-                    feedClickListener.onStarClick(this@FavoriteFeedsListViewHolder, feed)
-                }
-                iconShare.setOnClickListener { feedClickListener.onShareClick(feed) }
+                setClickListener { onFeedClick(feed) }
+                iconShare.setOnClickListener { onShareClick(feed) }
+                thumb.setOnClickListener { onFeedImageClick(feed) }
+                iconStar.setOnClickListener { onStarClick(adapterPosition) }
             }
         }
     }
