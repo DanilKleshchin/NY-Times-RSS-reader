@@ -42,8 +42,8 @@ class FeedMapperTest {
         Assert.assertEquals(feedEntity.description, actualFeed.description)
         Assert.assertEquals(feedEntity.pageUrl, actualFeed.pageUrl)
         Assert.assertEquals(feedEntity.author, actualFeed.author)
-        Assert.assertEquals(DATE_CREATED_LONG, actualFeed.dateCreated)
-        Assert.assertEquals(DATE_UPDATED_LONG, actualFeed.dateUpdated)
+        Assert.assertEquals(feedEntity.dateCreatedTimestamp, actualFeed.dateCreated)
+        Assert.assertEquals(feedEntity.dateUpdatedTimestamp, actualFeed.dateUpdated)
         Assert.assertEquals(feedEntity.kicker, actualFeed.kicker)
         Assert.assertEquals(feedEntity.thumbUrl, actualFeed.thumbUrl)
         Assert.assertEquals(feedEntity.iconUrl, actualFeed.iconUrl)
@@ -62,6 +62,8 @@ class FeedMapperTest {
             timeElapsed = "",
             dateCreated = DATE_CREATED_STRING,
             dateUpdated = DATE_UPDATED_STRING,
+            dateCreatedTimestamp = DATE_CREATED_LONG,
+            dateUpdatedTimestamp = DATE_UPDATED_LONG,
             kicker = KICKER,
             thumbUrl = THUMB_URL,
             iconUrl = ICON_URL,

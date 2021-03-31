@@ -12,6 +12,8 @@ data class FeedEntity(
     val timeElapsed: String,
     val dateCreated: String,
     val dateUpdated: String,
+    val dateCreatedTimestamp: Long,
+    val dateUpdatedTimestamp: Long,
     val kicker: String,
     val thumbUrl: String,
     val iconUrl: String,
