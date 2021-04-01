@@ -20,9 +20,6 @@ class FeedsListAdapter(
     private val onShareClick: ((feed: FeedEntity) -> Unit),
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val TYPE_FEED = 0
-    private val TYPE_VISIT_SITE = 1
-
     private val diffCallback = object : DiffUtil.ItemCallback<FeedEntity>() {
         override fun areItemsTheSame(oldItem: FeedEntity, newItem: FeedEntity): Boolean {
             return oldItem.id == newItem.id
@@ -39,7 +36,11 @@ class FeedsListAdapter(
         set(value) { differ.submitList(value) }
 
 
-    override fun getItemCount(): Int = feedList.size + 1 //Plus one for the Visit NYTimes site item
+    override fun getItemCount(): Int = if (feedList.isEmpty()) {
+        NO_ITEMS_COUNT
+    } else {
+        feedList.size + 1 //Plus one for the Visit NYTimes site item
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
@@ -118,5 +119,11 @@ class FeedsListAdapter(
         init {
             binding.visitText.movementMethod = LinkMovementMethod.getInstance()
         }
+    }
+
+    private companion object {
+        const val TYPE_FEED = 0
+        const val TYPE_VISIT_SITE = 1
+        const val NO_ITEMS_COUNT = 0
     }
 }

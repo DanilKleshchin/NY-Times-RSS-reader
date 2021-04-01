@@ -66,7 +66,6 @@ class SectionFragment : Fragment() {
     private fun loadSectionList() {
         viewModel.sections.observe(viewLifecycleOwner) { sections ->
             sectionListAdapter?.sectionList = sections
-            sectionListAdapter?.notifyDataSetChanged()
         }
     }
 

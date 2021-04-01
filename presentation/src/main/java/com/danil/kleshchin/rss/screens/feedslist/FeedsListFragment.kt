@@ -161,7 +161,6 @@ class FeedsListFragment : Fragment() {
         changeErrorViewVisibility(false)
         binding.feedListView.isVisible = true
         feedsListAdapter?.feedList = feedList
-        feedsListAdapter?.notifyDataSetChanged()
     }
 
     private fun onErrorReceived(exception: Exception) {

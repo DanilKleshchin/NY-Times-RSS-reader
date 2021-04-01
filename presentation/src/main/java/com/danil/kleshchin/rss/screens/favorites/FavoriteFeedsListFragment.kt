@@ -104,7 +104,6 @@ class FavoriteFeedsListFragment : Fragment() {
 
     private fun showFeedList(feedList: List<FeedEntity>) {
         favoriteFeedsListAdapter?.feedList = feedList
-        favoriteFeedsListAdapter?.notifyDataSetChanged()
     }
 
     private fun removeFeed(position: Int) {
