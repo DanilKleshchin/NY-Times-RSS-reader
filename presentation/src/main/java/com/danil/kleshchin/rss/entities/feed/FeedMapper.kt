@@ -34,7 +34,7 @@ class FeedMapper @Inject constructor() {
             description = feed.description,
             pageUrl = feed.pageUrl,
             author = feed.author,
-            timeElapsed = getElapsedTimeString(feed.dateCreated, currentTime, resources),
+            timeElapsed = getElapsedTimeString(feed.dateUpdated, currentTime, resources),
             dateCreated = getDateTimeFromTimestamp(feed.dateCreated, pattern_7),
             dateUpdated = getDateTimeFromTimestamp(feed.dateUpdated, pattern_7),
             dateCreatedTimestamp = feed.dateCreated,
