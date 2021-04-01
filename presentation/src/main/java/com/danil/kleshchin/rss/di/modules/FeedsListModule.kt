@@ -6,14 +6,12 @@ import com.danil.kleshchin.rss.data.feeds.features.feedslist.FeedDataRepository
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDatabase
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedDbMapper
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedLocalDataSource
-import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.local.FeedLocalDataSourceImpl
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.API_KEY_PARAM
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.API_TIMEOUT_SECONDS
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.BASE_URL
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApi
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedApiMapper
 import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedRemoteDataSource
-import com.danil.kleshchin.rss.data.feeds.features.feedslist.datasource.remote.FeedRemoteDataSourceImpl
 import com.danil.kleshchin.rss.data.feeds.utils.DispatcherProvider
 import com.danil.kleshchin.rss.domain.interactor.features.feedslist.FeedRepository
 import dagger.Module
@@ -30,14 +28,6 @@ import javax.inject.Singleton
 class FeedsListModule(
     private val dispatcher: Dispatchers
 ) {
-
-    @Provides
-    fun provideRemoteDataSource(feedApi: FeedApi): FeedRemoteDataSource =
-        FeedRemoteDataSourceImpl(feedApi)
-
-    @Provides
-    fun provideLocalDataSource(feedDatabase: FeedDatabase): FeedLocalDataSource =
-        FeedLocalDataSourceImpl(feedDatabase)
 
     @Provides
     fun provideFeedRepository(

@@ -1,14 +1,21 @@
 package com.danil.kleshchin.rss.data.feeds.features.favorites.datasource
 
 import com.danil.kleshchin.rss.data.feeds.features.favorites.datasource.entity.FavoriteFeedEntity
+import javax.inject.Inject
 
-interface FavoriteFeedLocalDataSource {
+class FavoriteFeedLocalDataSource @Inject constructor(
+    private val database: FavoriteFeedDatabase
+) {
 
-    suspend fun addFeed(feed: FavoriteFeedEntity)
+    suspend fun addFeed(feed: FavoriteFeedEntity) =
+        database.feedDao.addFeed(feed)
 
-    suspend fun removeFeeds()
+    suspend fun removeFeeds() =
+        database.feedDao.removeFeeds()
 
-    suspend fun getFeedList(): List<FavoriteFeedEntity>
+    suspend fun getFeedList(): List<FavoriteFeedEntity> =
+        database.feedDao.getFeedList()
 
-    suspend fun markFeedToRemove(id: Int, toRemove: Boolean)
+    suspend fun markFeedToRemove(id: Int, toRemove: Boolean) =
+        database.feedDao.markFeedToRemove(id, toRemove)
 }

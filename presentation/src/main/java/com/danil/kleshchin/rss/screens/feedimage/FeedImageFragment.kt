@@ -23,7 +23,6 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.danil.kleshchin.rss.R
 import com.danil.kleshchin.rss.databinding.FragmentFeedImageBinding
-import com.danil.kleshchin.rss.widgets.ZoomableImageView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
@@ -52,12 +51,7 @@ class FeedImageFragment : Fragment() {
             it.imageUrl = args.imageUrlArg
             it.toolbarTitle = args.toolbarTitleArg
             it.setClickListener { navigateBack() }
-            it.image.setOnSingleTapConfirmedListener(object :
-                ZoomableImageView.OnSingleTapConfirmedListener {
-                override fun onSingleTapConfirmed() {
-                    setToolbarVisibility()
-                }
-            })
+            it.image.setOnSingleTapConfirmedListener(this::setToolbarVisibility)
         }
         setBackPressedCallback()
 

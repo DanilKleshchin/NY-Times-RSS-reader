@@ -16,10 +16,6 @@ import androidx.appcompat.widget.AppCompatImageView
 class ZoomableImageView : AppCompatImageView, View.OnTouchListener,
     GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
-    interface OnSingleTapConfirmedListener {
-        fun onSingleTapConfirmed()
-    }
-
     // Scales
     private val minScale = 1f
     private val maxScale = 25f
@@ -36,7 +32,7 @@ class ZoomableImageView : AppCompatImageView, View.OnTouchListener,
     private var lastPointF = PointF()
     private var startPointF = PointF()
 
-    private var singleTapConfirmedListener: OnSingleTapConfirmedListener? = null
+    private var singleTapConfirmedListener: (() -> Unit)? = null
 
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private lateinit var gestureDetector: GestureDetector
@@ -125,7 +121,7 @@ class ZoomableImageView : AppCompatImageView, View.OnTouchListener,
     ) = false
 
     override fun onSingleTapConfirmed(motionEvent: MotionEvent): Boolean {
-        singleTapConfirmedListener?.onSingleTapConfirmed()
+        singleTapConfirmedListener?.invoke()
         return false
     }
 
@@ -136,7 +132,7 @@ class ZoomableImageView : AppCompatImageView, View.OnTouchListener,
 
     override fun onDoubleTapEvent(motionEvent: MotionEvent) = false
 
-    fun setOnSingleTapConfirmedListener(listener: OnSingleTapConfirmedListener) {
+    fun setOnSingleTapConfirmedListener(listener: (() -> Unit)) {
         this.singleTapConfirmedListener = listener
     }
 
