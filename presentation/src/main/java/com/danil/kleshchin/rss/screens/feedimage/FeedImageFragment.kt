@@ -5,13 +5,10 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.view.isVisible
@@ -52,23 +49,19 @@ class FeedImageFragment : Fragment() {
             it.toolbarTitle = args.toolbarTitleArg
             it.setClickListener { navigateBack() }
             it.image.setOnSingleTapConfirmedListener(this::setToolbarVisibility)
+            it.toolbar.inflateMenu(R.menu.feed_image_menu)
+            it.toolbar.setOnMenuItemClickListener { item ->
+                onOptionsItemSelected(item)
+            }
         }
         setBackPressedCallback()
-
-        setHasOptionsMenu(true)
-        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
-
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE //show status bar
-        (activity as AppCompatActivity).setSupportActionBar(null)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.feed_image_menu, menu)
+        _binding = null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
