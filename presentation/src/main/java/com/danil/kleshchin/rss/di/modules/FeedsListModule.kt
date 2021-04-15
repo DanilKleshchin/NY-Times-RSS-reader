@@ -47,13 +47,20 @@ class FeedsListModule(
 
     @Provides
     @Singleton
-    fun provideFeedApi(okHttpClient: OkHttpClient): FeedApi =
+    fun provideFeedApi(
+        okHttpClient: OkHttpClient,
+        gsonConverterFactory: GsonConverterFactory
+    ): FeedApi =
         Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(gsonConverterFactory)
             .build()
             .create(FeedApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
     @Singleton
@@ -69,14 +76,12 @@ class FeedsListModule(
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        return OkHttpClient.Builder()
+    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+        OkHttpClient.Builder()
             .connectTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(API_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .addInterceptor(logging)
+            .addInterceptor(loggingInterceptor)
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                 val originalHttpUrl = chain.request().url()
@@ -86,5 +91,12 @@ class FeedsListModule(
                 return@addInterceptor chain.proceed(request.build())
             }
             .build()
+
+    @Provides
+    @Singleton
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        return interceptor
     }
 }
